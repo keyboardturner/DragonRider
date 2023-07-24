@@ -65,6 +65,18 @@ DR.backdropM:SetAtlas("widgetstatusbar-bordercenter") -- _UI-Frame-Dragonflight-
 DR.backdropM:SetPoint("TOPLEFT", DR.backdropL, "TOPRIGHT", 0, 0)
 DR.backdropM:SetPoint("BOTTOMRIGHT", DR.backdropR, "BOTTOMLEFT", 0, 0)
 
+DR.backdropTopper = DR.statusbar:CreateTexture(nil, "OVERLAY")
+DR.backdropTopper:SetAtlas("dragonflight-score-topper")
+DR.backdropTopper:SetPoint("TOP", DR.statusbar, "TOP", 0, 38)
+DR.backdropTopper:SetWidth(350)
+DR.backdropTopper:SetHeight(65)
+
+DR.backdropFooter = DR.statusbar:CreateTexture(nil, "OVERLAY")
+DR.backdropFooter:SetAtlas("dragonflight-score-footer")
+DR.backdropFooter:SetPoint("BOTTOM", DR.statusbar, "BOTTOM", 0, -32)
+DR.backdropFooter:SetWidth(350)
+DR.backdropFooter:SetHeight(65)
+
 DR.statusbar.bg = DR.statusbar:CreateTexture(nil, "BACKGROUND")
 DR.statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
 DR.statusbar.bg:SetAllPoints(true)
