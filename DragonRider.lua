@@ -9,7 +9,10 @@ DR.statusbar:GetStatusBarTexture():SetHorizTile(false)
 DR.statusbar:GetStatusBarTexture():SetVertTile(false)
 DR.statusbar:SetStatusBarColor(.98, .61, .0)
 DR.statusbar:SetMinMaxValues(0, 100)
+Mixin(DR.statusbar, SmoothStatusBarMixin)
+DR.statusbar:SetMinMaxSmoothedValue(0,100)
 
+--[[ ancient method of smooth progress, now uses mixin
 local targetProgress = 0
 local progressSpeed = 0.1 -- Adjust the speed as needed
 
@@ -26,7 +29,7 @@ local function UpdateStatusBar(self, elapsed)
     end
 end
 
-function SetSmoothProgress(value)
+local function SetSmoothProgress(value)
     if value < 0 then
         value = 0
     elseif value > 100 then
@@ -36,6 +39,7 @@ function SetSmoothProgress(value)
     targetProgress = value
     DR.statusbar:SetScript("OnUpdate", UpdateStatusBar)
 end
+]]
 
 DR.tick1 = DR.statusbar:CreateTexture(nil, "OVERLAY")
 DR.tick1:SetAtlas("UI-Frame-Bar-BorderTick")
@@ -163,8 +167,7 @@ DR.model6:SetPosition(5,0,-1.5)
 DR.model6:SetYaw(5)
 DR.modelScene6:Show()
 
-
-C_Timer.NewTicker(.1, function()
+function DR.updateSpeed()
     local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
     local base = isGliding and forwardSpeed or GetUnitSpeed("player")
     local movespeed = Round(base / BASE_MOVEMENT_SPEED * 100)
@@ -192,8 +195,14 @@ C_Timer.NewTicker(.1, function()
         DR.glide:SetText(format("|cffffffff" .. "%.1f" .. "yd/s|r", forwardSpeed)) -- fff2a305 (nice yellow?) - 
         DR.statusbar:SetStatusBarColor(196/255, 97/255, 0/255)
     end
-    SetSmoothProgress(forwardSpeed)
+    --SetSmoothProgress(forwardSpeed)
+    DR.statusbar:SetSmoothedValue(forwardSpeed)
+end
+
+DR.TimerNamed = C_Timer.NewTicker(.1, function()
+    DR.updateSpeed()
 end)
+DR.TimerNamed:Cancel();
 
 --DR:Hide()
 --DR.statusbar:Hide()
@@ -285,10 +294,15 @@ function DR:toggleEvent(event, arg1)
             for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do
                 if select(4, C_MountJournal.GetMountInfoByID(mountId)) then
                     DR.setPositions();
+                    DR.TimerNamed:Cancel();
+                    DR.TimerNamed = C_Timer.NewTicker(.1, function()
+                        DR.updateSpeed()
+                    end)
                 end
             end
         else
             DR.clearPositions();
+            DR.TimerNamed:Cancel();
         end
     end
 end
