@@ -51,6 +51,23 @@ DR.tick2:SetAtlas("UI-Frame-Bar-BorderTick")
 DR.tick2:SetSize(17,DR.statusbar:GetHeight()*1.5)
 DR.tick2:SetPoint("TOP", DR.statusbar, "TOPLEFT", (60 / 100) * DR.statusbar:GetWidth(), 5)
 
+--[[
+DR.tick25 = DR.statusbar:CreateTexture(nil, "OVERLAY")
+DR.tick25:SetAtlas("UI-Frame-Bar-BorderTick")
+DR.tick25:SetSize(17,DR.statusbar:GetHeight()*1)
+DR.tick25:SetPoint("TOP", DR.statusbar, "TOPLEFT", (25 / 100) * DR.statusbar:GetWidth(), 5)
+
+DR.tick50 = DR.statusbar:CreateTexture(nil, "OVERLAY")
+DR.tick50:SetAtlas("UI-Frame-Bar-BorderTick")
+DR.tick50:SetSize(17,DR.statusbar:GetHeight()*1)
+DR.tick50:SetPoint("TOP", DR.statusbar, "TOPLEFT", (50 / 100) * DR.statusbar:GetWidth(), 5)
+
+DR.tick75 = DR.statusbar:CreateTexture(nil, "OVERLAY")
+DR.tick75:SetAtlas("UI-Frame-Bar-BorderTick")
+DR.tick75:SetSize(17,DR.statusbar:GetHeight()*1)
+DR.tick75:SetPoint("TOP", DR.statusbar, "TOPLEFT", (75 / 100) * DR.statusbar:GetWidth(), 5)
+]]
+
 
 DR.backdropL = DR.statusbar:CreateTexture(nil, "OVERLAY")
 DR.backdropL:SetAtlas("widgetstatusbar-borderleft") -- UI-Frame-Dragonflight-TitleLeft
@@ -93,7 +110,8 @@ DR.modelScene1 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene1:SetPoint("CENTER", DR.statusbar, "CENTER", -105, -36)
 DR.modelScene1:SetWidth(43)
 DR.modelScene1:SetHeight(43)
-DR.modelScene1:SetFrameStrata("HIGH")
+DR.modelScene1:SetFrameStrata("MEDIUM")
+DR.modelScene1:SetFrameLevel(500)
 
 DR.model1 = DR.modelScene1:CreateActor()
 DR.model1:SetModelByFileID(1100194)
@@ -106,7 +124,8 @@ DR.modelScene2 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene2:SetPoint("CENTER", DR.statusbar, "CENTER", -65, -36)
 DR.modelScene2:SetWidth(43)
 DR.modelScene2:SetHeight(43)
-DR.modelScene2:SetFrameStrata("HIGH")
+DR.modelScene2:SetFrameStrata("MEDIUM")
+DR.modelScene2:SetFrameLevel(500)
 
 DR.model2 = DR.modelScene2:CreateActor()
 DR.model2:SetModelByFileID(1100194)
@@ -119,7 +138,8 @@ DR.modelScene3 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene3:SetPoint("CENTER", DR.statusbar, "CENTER", -25, -36)
 DR.modelScene3:SetWidth(43)
 DR.modelScene3:SetHeight(43)
-DR.modelScene3:SetFrameStrata("HIGH")
+DR.modelScene3:SetFrameStrata("MEDIUM")
+DR.modelScene3:SetFrameLevel(500)
 
 DR.model3 = DR.modelScene3:CreateActor()
 DR.model3:SetModelByFileID(1100194)
@@ -132,7 +152,8 @@ DR.modelScene4 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene4:SetPoint("CENTER", DR.statusbar, "CENTER", 25, -36)
 DR.modelScene4:SetWidth(43)
 DR.modelScene4:SetHeight(43)
-DR.modelScene4:SetFrameStrata("HIGH")
+DR.modelScene4:SetFrameStrata("MEDIUM")
+DR.modelScene4:SetFrameLevel(500)
 
 DR.model4 = DR.modelScene4:CreateActor()
 DR.model4:SetModelByFileID(1100194)
@@ -145,7 +166,8 @@ DR.modelScene5 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene5:SetPoint("CENTER", DR.statusbar, "CENTER", 65, -36)
 DR.modelScene5:SetWidth(43)
 DR.modelScene5:SetHeight(43)
-DR.modelScene5:SetFrameStrata("HIGH")
+DR.modelScene5:SetFrameStrata("MEDIUM")
+DR.modelScene5:SetFrameLevel(500)
 
 DR.model5 = DR.modelScene5:CreateActor()
 DR.model5:SetModelByFileID(1100194)
@@ -158,7 +180,8 @@ DR.modelScene6 = CreateFrame("ModelScene", nil, DR.statusbar)
 DR.modelScene6:SetPoint("CENTER", DR.statusbar, "CENTER", 105, -36)
 DR.modelScene6:SetWidth(43)
 DR.modelScene6:SetHeight(43)
-DR.modelScene6:SetFrameStrata("HIGH")
+DR.modelScene6:SetFrameStrata("MEDIUM")
+DR.modelScene6:SetFrameLevel(500)
 
 DR.model6 = DR.modelScene6:CreateActor()
 DR.model6:SetModelByFileID(1100194)
@@ -216,6 +239,14 @@ DR.MountEvents = {
     ["PLAYER_LOGIN"] = true,
 };
 
+DR.FakeMounts = {
+    413409,
+    417556,
+    417548,
+    417554,
+    417552,
+};
+
 DR.vigorEvent = CreateFrame("Frame")
 DR.vigorEvent:RegisterEvent("UNIT_POWER_UPDATE")
 
@@ -261,6 +292,14 @@ function DR.vigorCounter()
     else
         DR.modelScene6:Hide()
     end
+
+    local frameLevelThing = UIWidgetPowerBarContainerFrame:GetFrameLevel()+15
+    DR.modelScene1:SetFrameLevel(frameLevelThing)
+    DR.modelScene2:SetFrameLevel(frameLevelThing)
+    DR.modelScene3:SetFrameLevel(frameLevelThing)
+    DR.modelScene4:SetFrameLevel(frameLevelThing)
+    DR.modelScene5:SetFrameLevel(frameLevelThing)
+    DR.modelScene6:SetFrameLevel(frameLevelThing)
 end
 
 DR.vigorEvent:SetScript("OnEvent", DR.vigorCounter)
@@ -293,6 +332,15 @@ function DR:toggleEvent(event, arg1)
         if IsMounted() == true then
             for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do
                 if select(4, C_MountJournal.GetMountInfoByID(mountId)) then
+                    DR.setPositions();
+                    DR.TimerNamed:Cancel();
+                    DR.TimerNamed = C_Timer.NewTicker(.1, function()
+                        DR.updateSpeed()
+                    end)
+                end
+            end
+            for _, fakeMount in ipairs(DR.FakeMounts) do
+                if C_UnitAuras.GetPlayerAuraBySpellID(fakeMount) then
                     DR.setPositions();
                     DR.TimerNamed:Cancel();
                     DR.TimerNamed = C_Timer.NewTicker(.1, function()

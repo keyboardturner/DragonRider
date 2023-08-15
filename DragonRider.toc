@@ -3,6 +3,6 @@
 ## Notes: Displays speed values above the vigor bar and maybe does some other stuff.
 ## IconTexture: Interface/Icons/ability_dragonriding_glyph01.blp
 ## Author: Keyboardturner
-## Version: 0.0.1
+## Version: 0.0.2
 
 DragonRider.lua
