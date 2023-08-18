@@ -18,3 +18,5 @@ Displays speed values above the vigor bar and maybe does some other stuff.
 </ul>
 <p>&nbsp;</p>
 <p>The project is fairly early in conception. It may take some time to fully flesh out these features - the goal will be to have some of the more basic features implemented for the Kalimdor / Eastern Kingdoms Cups, and to help with the future challenging races.</p>
+
+A link to my discord for addon projects and other things can be found [here](https://discord.gg/tA4rrmjPp8).
