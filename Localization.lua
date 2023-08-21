@@ -13,6 +13,8 @@ local LOCALE = GetLocale()
 if LOCALE == "enUS" then
 	-- The EU English game client also
 	-- uses the US English locale code.
+	L["Vigor"] = "Vigor"
+	L["Speedometer"] = "Speedometer"
 	L["ToggleModelsName"] = "Show Vigor Models"
 	L["ToggleModelsTT"] = "Display the swirling model effect on the vigor bubbles."
 	L["SpeedPosPointName"] = "Speedometer Position"
@@ -27,6 +29,10 @@ if LOCALE == "enUS" then
 	L["SpeedPosYTT"] = "Adjust the vertical position of the speedometer."
 	L["SpeedScaleName"] = "Speedometer Scale"
 	L["SpeedScaleTT"] = "Adjust the scale of the speedometer."
+	L["Large"] = "Large"
+	L["Small"] = "Small"
+	L["Units"] = "Units"
+	L["UnitsTT"] = "Change the units displayed on the speedometer.\n(Mechanically 1 metre = 1 yard)"
 	L["UnitYards"] = "yds/s"
 	L["Yards"] = "Yards"
 	L["UnitMiles"] = "mph"
@@ -37,6 +43,14 @@ if LOCALE == "enUS" then
 	L["Kilometers"] = "Kilometres"
 	L["UnitPercent"] = "%"
 	L["Percentage"] = "Percentage"
+	L["Version"] = "Version %s"
+	L["ResetAllSettings"] = "Reset All Settings"
+	L["ResetAllSettingsTT"] = "Resets all settings specifically for this addon."
+	L["ResetAllSettingsConfirm"] = "Are you sure you want to reset the settings for Dragon Rider?"
+	L["Low"] = "Low"
+	L["High"] = "High"
+	L["ProgressBar"] = "Progress Bar"
+
 
 
 return end
