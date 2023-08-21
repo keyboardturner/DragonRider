@@ -4,5 +4,7 @@
 ## IconTexture: Interface/Icons/ability_dragonriding_glyph01.blp
 ## Author: Keyboardturner
 ## Version: 0.0.2
+## SavedVariables: DragonRider_DB
 
+Localization.lua
 DragonRider.lua

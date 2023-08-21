@@ -1,3 +1,5 @@
+local _, L = ...
+
 local DR = CreateFrame("Frame", nil, UIParent)
 
 DR.statusbar = CreateFrame("StatusBar", nil, UIParent)
@@ -106,7 +108,7 @@ DR.statusbar.bg:SetVertexColor(.0, .0, .0, .8)
 DR.glide = DR.statusbar:CreateFontString(nil, nil, "GameTooltipText")
 DR.glide:SetPoint("LEFT", DR.statusbar, "LEFT", 10, 0)
 
-DR.modelScene1 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene1 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene1:SetPoint("CENTER", DR.statusbar, "CENTER", -105, -36)
 DR.modelScene1:SetWidth(43)
 DR.modelScene1:SetHeight(43)
@@ -120,7 +122,7 @@ DR.model1:SetPosition(5,0,-1.5)
 DR.model1:SetYaw(0)
 DR.modelScene1:Show()
 
-DR.modelScene2 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene2 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene2:SetPoint("CENTER", DR.statusbar, "CENTER", -65, -36)
 DR.modelScene2:SetWidth(43)
 DR.modelScene2:SetHeight(43)
@@ -134,7 +136,7 @@ DR.model2:SetPosition(5,0,-1.5)
 DR.model2:SetYaw(1)
 DR.modelScene2:Show()
 
-DR.modelScene3 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene3 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene3:SetPoint("CENTER", DR.statusbar, "CENTER", -25, -36)
 DR.modelScene3:SetWidth(43)
 DR.modelScene3:SetHeight(43)
@@ -148,7 +150,7 @@ DR.model3:SetPosition(5,0,-1.5)
 DR.model3:SetYaw(2)
 DR.modelScene3:Show()
 
-DR.modelScene4 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene4 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene4:SetPoint("CENTER", DR.statusbar, "CENTER", 25, -36)
 DR.modelScene4:SetWidth(43)
 DR.modelScene4:SetHeight(43)
@@ -162,7 +164,7 @@ DR.model4:SetPosition(5,0,-1.5)
 DR.model4:SetYaw(3)
 DR.modelScene4:Show()
 
-DR.modelScene5 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene5 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene5:SetPoint("CENTER", DR.statusbar, "CENTER", 65, -36)
 DR.modelScene5:SetWidth(43)
 DR.modelScene5:SetHeight(43)
@@ -176,7 +178,7 @@ DR.model5:SetPosition(5,0,-1.5)
 DR.model5:SetYaw(4)
 DR.modelScene5:Show()
 
-DR.modelScene6 = CreateFrame("ModelScene", nil, DR.statusbar)
+DR.modelScene6 = CreateFrame("ModelScene", nil, UIParent)
 DR.modelScene6:SetPoint("CENTER", DR.statusbar, "CENTER", 105, -36)
 DR.modelScene6:SetWidth(43)
 DR.modelScene6:SetHeight(43)
@@ -189,6 +191,50 @@ DR.model6:SetPosition(5,0,-1.5)
 --DR.model6:SetPitch(.3)
 DR.model6:SetYaw(5)
 DR.modelScene6:Show()
+
+
+function DR.toggleModels()
+    DR.modelScene1:Hide()
+    DR.modelScene2:Hide()
+    DR.modelScene3:Hide()
+    DR.modelScene4:Hide()
+    DR.modelScene5:Hide()
+    DR.modelScene6:Hide()
+end
+
+DR.toggleModels()
+
+function DR.useUnits()
+    if DragonRider_DB.speedValUnits == 1 then
+        return " " .. L["UnitYards"]
+    elseif DragonRider_DB.speedValUnits == 2 then
+        return " " .. L["UnitMiles"]
+    elseif DragonRider_DB.speedValUnits == 3 then
+        return " " .. L["UnitMeters"]
+    elseif DragonRider_DB.speedValUnits == 4 then
+        return " " .. L["UnitKilometers"]
+    elseif DragonRider_DB.speedValUnits == 5 then
+        return "%" .. L["UnitPercent"]
+    else
+        return L["UnitYards"]
+    end
+end
+
+function DR:convertUnits(forwardSpeed)
+    if DragonRider_DB.speedValUnits == 1 then
+        return forwardSpeed
+    elseif DragonRider_DB.speedValUnits == 2 then
+        return forwardSpeed*2.045
+    elseif DragonRider_DB.speedValUnits == 3 then
+        return forwardSpeed
+    elseif DragonRider_DB.speedValUnits == 4 then
+        return forwardSpeed*3.6
+    elseif DragonRider_DB.speedValUnits == 5 then
+        return forwardSpeed/7*100
+    else
+        return forwardSpeed
+    end
+end
 
 function DR.updateSpeed()
     local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
@@ -209,13 +255,13 @@ function DR.updateSpeed()
         --DR.statusbar:Hide()
     end
     if forwardSpeed > 65 then
-        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. "yd/s|r", forwardSpeed)) -- ff71d5ff (nice purple?) -
+        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice purple?) -
         DR.statusbar:SetStatusBarColor(168/255, 77/255, 195/255)
     elseif forwardSpeed >= 60 and forwardSpeed <= 65 then
-        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. "yd/s|r", forwardSpeed)) -- ff71d5ff (nice blue?) - 
+        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice blue?) - 
         DR.statusbar:SetStatusBarColor(0/255, 144/255, 155/255)
     else
-        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. "yd/s|r", forwardSpeed)) -- fff2a305 (nice yellow?) - 
+        DR.glide:SetText(format("|cffffffff" .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- fff2a305 (nice yellow?) - 
         DR.statusbar:SetStatusBarColor(196/255, 97/255, 0/255)
     end
     --SetSmoothProgress(forwardSpeed)
@@ -254,12 +300,14 @@ DR.vigorEvent:RegisterEvent("UNIT_POWER_UPDATE")
 function DR.vigorCounter()
     local vigorCurrent = UnitPower("player", Enum.PowerType.AlternateMount)
     local vigorMax = UnitPowerMax("player", Enum.PowerType.AlternateMount)
+
+    if DragonRider_DB.toggleModels == false then
+        DR.toggleModels()
+        return
+    end
+
     if vigorCurrent == 0 then
-        DR.modelScene1:Hide()
-        DR.modelScene2:Hide()
-        DR.modelScene3:Hide()
-        DR.modelScene4:Hide()
-        DR.modelScene5:Hide()
+        DR.toggleModels()
     end
 
     if vigorCurrent >=1 then
@@ -300,6 +348,7 @@ function DR.vigorCounter()
     DR.modelScene4:SetFrameLevel(frameLevelThing)
     DR.modelScene5:SetFrameLevel(frameLevelThing)
     DR.modelScene6:SetFrameLevel(frameLevelThing)
+    DR.setPositions()
 end
 
 DR.vigorEvent:SetScript("OnEvent", DR.vigorCounter)
@@ -311,13 +360,66 @@ DR:RegisterEvent("LEARNED_SPELL_IN_TAB")
 DR:RegisterEvent("PLAYER_CAN_GLIDE_CHANGED")
 DR:RegisterEvent("COMPANION_UPDATE")
 DR:RegisterEvent("PLAYER_LOGIN")
+
 --DR:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 
 
 function DR.setPositions()
     DR.statusbar:ClearAllPoints();
     DR.statusbar:SetPoint("BOTTOM", UIWidgetPowerBarContainerFrame, "TOP", 0, 5);
+    local posX = DragonRider_DB.speedometerPosX
+    local posY = DragonRider_DB.speedometerPosY
+    if DragonRider_DB.speedometerPosPoint == 1 then
+        DR.statusbar:ClearAllPoints();
+        DR.statusbar:SetPoint("BOTTOM", UIWidgetPowerBarContainerFrame, "TOP", posX, posY);
+    elseif DragonRider_DB.speedometerPosPoint == 2 then
+        DR.statusbar:ClearAllPoints();
+        DR.statusbar:SetPoint("TOP", UIWidgetPowerBarContainerFrame, "BOTTOM", posX, posY);
+    elseif DragonRider_DB.speedometerPosPoint == 3 then
+        DR.statusbar:ClearAllPoints();
+        DR.statusbar:SetPoint("RIGHT", UIWidgetPowerBarContainerFrame, "LEFT", posX, posY);
+    elseif DragonRider_DB.speedometerPosPoint == 4 then
+        DR.statusbar:ClearAllPoints();
+        DR.statusbar:SetPoint("LEFT", UIWidgetPowerBarContainerFrame, "RIGHT", posX, posY);
+    end
+    DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
     DR.statusbar:Show();
+    DR.modelScene1:ClearAllPoints();
+    DR.modelScene2:ClearAllPoints();
+    DR.modelScene3:ClearAllPoints();
+    DR.modelScene4:ClearAllPoints();
+    DR.modelScene5:ClearAllPoints();
+    DR.modelScene6:ClearAllPoints();
+    
+    if IsPlayerSpell(377922) == true then -- 6 vigor
+        DR.modelScene1:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -105, 14);
+        DR.modelScene2:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -63, 14);
+        DR.modelScene3:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -21, 14);
+        DR.modelScene4:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 21, 14);
+        DR.modelScene5:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 63, 14);
+        DR.modelScene6:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 105, 14);
+    elseif IsPlayerSpell(377921) == true then -- 5 vigor
+        DR.modelScene1:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -84, 14);
+        DR.modelScene2:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -42, 14);
+        DR.modelScene3:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 0, 14);
+        DR.modelScene4:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 42, 14);
+        DR.modelScene5:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 84, 14);
+        DR.modelScene6:Hide()
+    elseif IsPlayerSpell(377920) == true then -- 4 vigor
+        DR.modelScene1:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -63, 14);
+        DR.modelScene2:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -21, 14);
+        DR.modelScene3:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 21, 14);
+        DR.modelScene4:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 63, 14);
+        DR.modelScene5:Hide()
+        DR.modelScene6:Hide()
+    else
+        DR.modelScene1:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -42, 14);
+        DR.modelScene2:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 0, 14);
+        DR.modelScene3:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", 42, 14);
+        DR.modelScene4:Hide()
+        DR.modelScene5:Hide()
+        DR.modelScene6:Hide()
+    end
 end
 
 function DR.clearPositions()
@@ -327,10 +429,144 @@ end
 
 DR.clearPositions()
 
+
 function DR:toggleEvent(event, arg1)
+    if event == "ADDON_LOADED" and arg1 == "DragonRider" then
+        
+        if DragonRider_DB == nil then
+            DragonRider_DB = {
+                toggleModels = true,
+                speedometerPosPoint = 1,
+                speedometerPosX = 0,
+                speedometerPosY = 5,
+                speedometerScale = 1,
+                speedValUnits = 1,
+            };
+        end
+
+        local function OnSettingChanged(_, setting, value)
+            local variable = setting:GetVariable()
+            DragonRider_DB[variable] = value
+            DR.vigorCounter()
+            DR.setPositions()
+        end
+
+        local category = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
+
+        do
+            local variable = "toggleModels"
+            local name = L["ToggleModelsName"]
+            local tooltip = L["ToggleModelsTT"]
+            local defaultValue = true
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateCheckBox(category, setting, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedometerPosPoint"
+            local defaultValue = 1  -- Corresponds to "Option 1" below.
+            local name = L["SpeedPosPointName"]
+            local tooltip = L["SpeedPosPointTT"]
+
+            local function GetOptions()
+                local container = Settings.CreateControlTextContainer()
+                container:Add(1, L["Top"])
+                container:Add(2, L["Bottom"])
+                container:Add(3, L["Left"])
+                container:Add(4, L["Right"])
+                return container:GetData()
+            end
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedometerPosX"
+            local name = L["SpeedPosXName"]
+            local tooltip = L["SpeedPosXTT"]
+            local defaultValue = 0
+            local minValue = -Round(GetScreenWidth())
+            local maxValue = Round(GetScreenWidth())
+            local step = 1
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedometerPosY"
+            local name = L["SpeedPosYName"]
+            local tooltip = L["SpeedPosYTT"]
+            local defaultValue = 5
+            local minValue = -Round(GetScreenHeight())
+            local maxValue = Round(GetScreenHeight())
+            local step = 1
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedometerScale"
+            local name = L["SpeedScaleName"]
+            local tooltip = L["SpeedScaleTT"]
+            local defaultValue = 1
+            local minValue = .4
+            local maxValue = 4
+            local step = .1
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedValUnits"
+            local defaultValue = 1  -- Corresponds to "Option 1" below.
+            local name = L["SpeedPosPointName"]
+            local tooltip = L["SpeedPosPointTT"]
+
+            local function GetOptions()
+                local container = Settings.CreateControlTextContainer()
+                container:Add(1, L["Yards"] .. " - " .. L["UnitYards"])
+                container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
+                container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
+                container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
+                container:Add(5, L["Percentage"] .. " - " .. L["UnitPercentage"])
+                return container:GetData()
+            end
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        Settings.RegisterAddOnCategory(category)
+
+        DR.vigorCounter()
+    end
+
     if DR.MountEvents[event] then
         if IsMounted() == true then
-            for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do
+            for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do -- should be future-proof for all dragonriding mounts
                 if select(4, C_MountJournal.GetMountInfoByID(mountId)) then
                     DR.setPositions();
                     DR.TimerNamed:Cancel();
@@ -339,7 +575,7 @@ function DR:toggleEvent(event, arg1)
                     end)
                 end
             end
-            for _, fakeMount in ipairs(DR.FakeMounts) do
+            for _, fakeMount in ipairs(DR.FakeMounts) do -- handles the Kalimdor Cup that use fake buffs
                 if C_UnitAuras.GetPlayerAuraBySpellID(fakeMount) then
                     DR.setPositions();
                     DR.TimerNamed:Cancel();
@@ -352,6 +588,15 @@ function DR:toggleEvent(event, arg1)
             DR.clearPositions();
             DR.TimerNamed:Cancel();
         end
+        --[[
+        if C_UnitAuras.GetPlayerAuraBySpellID(369536) then -- this could supposedly handle the Dracthyr Soar, but addon currently anchors to vigor bar, so this is for future update
+            DR.setPositions();
+            DR.TimerNamed:Cancel();
+            DR.TimerNamed = C_Timer.NewTicker(.1, function()
+                DR.updateSpeed()
+            end)
+        end
+        ]]
     end
 end
 
