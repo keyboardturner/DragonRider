@@ -499,7 +499,6 @@ function DR.setPositions()
         DR.statusbar:SetPoint("LEFT", UIWidgetPowerBarContainerFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
     end
     DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
-    DR.statusbar:Show();
     DR.modelScene1:ClearAllPoints();
     DR.modelScene2:ClearAllPoints();
     DR.modelScene3:ClearAllPoints();
@@ -903,6 +902,8 @@ function DR:toggleEvent(event, arg1)
                     DR.TimerNamed = C_Timer.NewTicker(.1, function()
                         DR.updateSpeed()
                     end)
+                    DR.statusbar:Show();
+
                 end
             end
             for _, fakeMount in ipairs(DR.FakeMounts) do -- handles the Kalimdor Cup that use fake buffs
@@ -912,6 +913,7 @@ function DR:toggleEvent(event, arg1)
                     DR.TimerNamed = C_Timer.NewTicker(.1, function()
                         DR.updateSpeed()
                     end)
+                    DR.statusbar:Show();
                 end
             end
         else
