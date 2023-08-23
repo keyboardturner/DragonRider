@@ -44,6 +44,7 @@ local defaultsTable = {
             b=1,
         },
     },
+    speedTextScale = 12,
     glyphDetector = true,
     vigorProgressStyle = 1, -- 1 = vertical, 2 = horizontal, 3 = cooldown
     cooldownTimer = {
@@ -535,6 +536,8 @@ function DR.setPositions()
         DR.modelScene5:Hide()
         DR.modelScene6:Hide()
     end
+
+    DR.glide:SetFont("Fonts\\FRIZQT__.TTF", DragonRider_DB.speedTextScale)    
 end
 
 function DR.clearPositions()
@@ -747,8 +750,32 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.positionButton2:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
 
 
+        settingsPanel.scrollChild.scaleText = CreateFrame("Slider", nil, settingsPanel.scrollChild, "OptionsSliderTemplate");
+        settingsPanel.scrollChild.scaleText:SetWidth(250);
+        settingsPanel.scrollChild.scaleText:SetHeight(15);
+        settingsPanel.scrollChild.scaleText:SetMinMaxValues(2,30);
+        settingsPanel.scrollChild.scaleText:SetValueStep(.5);
+        settingsPanel.scrollChild.scaleText:SetObeyStepOnDrag(true)
+        settingsPanel.scrollChild.scaleText:ClearAllPoints();
+        settingsPanel.scrollChild.scaleText:SetPoint("TOPLEFT", settingsPanel.scrollChild, "TOPLEFT", 350, -53*5);
+        settingsPanel.scrollChild.scaleText.Low:SetText(L["Small"]);
+        settingsPanel.scrollChild.scaleText.High:SetText(L["Large"]);
+        settingsPanel.scrollChild.scaleText.Text:SetText(L["SpeedTextScale"]);
+        settingsPanel.scrollChild.scaleText:SetScript("OnValueChanged", function()
+            local scaleValue = settingsPanel.scrollChild.scaleText:GetValue();
+            DragonRider_DB.speedTextScale = scaleValue
+            DR.vigorCounter();
+            DR.setPositions();
+        end)
+        settingsPanel.scrollChild.scaleText:SetValue(DragonRider_DB.speedTextScale)
+        settingsPanel.scrollChild.scaleText:SetScript("OnEnter", function(self)
+            settingsPanel:tooltip_OnEnter(self, L["SpeedTextScaleTT"])
+        end);
+        settingsPanel.scrollChild.scaleText:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
+
+
         settingsPanel.scrollChild.progLowColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progLowColor:SetPoint("TOPLEFT", 350, -53*4.5);
+        settingsPanel.scrollChild.progLowColor:SetPoint("TOPLEFT", 350, -53*5.5);
         settingsPanel.scrollChild.progLowColor:SetSize(120, 26);
         settingsPanel.scrollChild.progLowColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progLowColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a, ProgBarLowColor); end)
@@ -757,12 +784,12 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.progLowColorText:SetFont(settingsPanel.scrollChild.progLowColorText:GetFont(), 11);
         settingsPanel.scrollChild.progLowColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.progLowColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progLowColorText:SetPoint("TOPLEFT", 475, -53*4.5);
+        settingsPanel.scrollChild.progLowColorText:SetPoint("TOPLEFT", 475, -53*5.5);
         settingsPanel.scrollChild.progLowColorText:SetText(L["ProgressBar"] .. " " .. COLOR .. " - " .. L["Low"]);
 
 
         settingsPanel.scrollChild.progMidColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progMidColor:SetPoint("TOPLEFT", 350, -53*5);
+        settingsPanel.scrollChild.progMidColor:SetPoint("TOPLEFT", 350, -53*6);
         settingsPanel.scrollChild.progMidColor:SetSize(120, 26);
         settingsPanel.scrollChild.progMidColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progMidColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a, ProgBarMidColor); end)
@@ -771,12 +798,12 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.progMidColorText:SetFont(settingsPanel.scrollChild.progMidColorText:GetFont(), 11);
         settingsPanel.scrollChild.progMidColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.progMidColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progMidColorText:SetPoint("TOPLEFT", 475, -53*5);
+        settingsPanel.scrollChild.progMidColorText:SetPoint("TOPLEFT", 475, -53*6);
         settingsPanel.scrollChild.progMidColorText:SetText(L["ProgressBar"] .. " - " .. L["Vigor"]);
 
 
         settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*5.5);
+        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*6.5);
         settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
         settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a, ProgBarHighColor); end)
@@ -785,12 +812,12 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.progHighColorText:SetFont(settingsPanel.scrollChild.progHighColorText:GetFont(), 11);
         settingsPanel.scrollChild.progHighColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.progHighColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progHighColorText:SetPoint("TOPLEFT", 475, -53*5.5);
+        settingsPanel.scrollChild.progHighColorText:SetPoint("TOPLEFT", 475, -53*6.5);
         settingsPanel.scrollChild.progHighColorText:SetText(L["ProgressBar"] .. " - " .. L["High"]);
 
 
         settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*6);
+        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*7);
         settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
         settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b, DragonRider_DB.speedTextColor.slow.a, TextLowColor); end)
@@ -799,12 +826,12 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.UnitsLowColorText:SetFont(settingsPanel.scrollChild.UnitsLowColorText:GetFont(), 11);
         settingsPanel.scrollChild.UnitsLowColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.UnitsLowColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsLowColorText:SetPoint("TOPLEFT", 475, -53*6);
+        settingsPanel.scrollChild.UnitsLowColorText:SetPoint("TOPLEFT", 475, -53*7);
         settingsPanel.scrollChild.UnitsLowColorText:SetText(L["Units"] .. " - " .. L["Low"]);
 
 
         settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*6.5);
+        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*7.5);
         settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
         settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextMidColor); end)
@@ -813,12 +840,12 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.UnitsMidColorText:SetFont(settingsPanel.scrollChild.UnitsMidColorText:GetFont(), 11);
         settingsPanel.scrollChild.UnitsMidColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.UnitsMidColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsMidColorText:SetPoint("TOPLEFT", 475, -53*6.5);
+        settingsPanel.scrollChild.UnitsMidColorText:SetPoint("TOPLEFT", 475, -53*7.5);
         settingsPanel.scrollChild.UnitsMidColorText:SetText(L["Units"] .. " - " .. L["Vigor"]);
 
 
         settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*7);
+        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*8);
         settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
         settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
         settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextHighColor); end)
@@ -827,7 +854,7 @@ function DR:toggleEvent(event, arg1)
         settingsPanel.scrollChild.UnitsHighColorText:SetFont(settingsPanel.scrollChild.UnitsHighColorText:GetFont(), 11);
         settingsPanel.scrollChild.UnitsHighColorText:SetTextColor(1,1,1,1);
         settingsPanel.scrollChild.UnitsHighColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsHighColorText:SetPoint("TOPLEFT", 475, -53*7);
+        settingsPanel.scrollChild.UnitsHighColorText:SetPoint("TOPLEFT", 475, -53*8);
         settingsPanel.scrollChild.UnitsHighColorText:SetText(L["Units"] .. " - " .. L["High"]);
 
 
@@ -850,6 +877,7 @@ function DR:toggleEvent(event, arg1)
             settingsPanel.scrollChild.xPos:SetValue(DragonRider_DB.speedometerPosX);
             settingsPanel.scrollChild.yPos:SetValue(DragonRider_DB.speedometerPosY);
             settingsPanel.scrollChild.scaleProg:SetValue(DragonRider_DB.speedometerScale);
+            settingsPanel.scrollChild.scaleText:SetValue(DragonRider_DB.speedTextScale);
         end
 
         StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
