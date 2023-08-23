@@ -407,11 +407,12 @@ DR.MountEvents = {
 };
 
 DR.FakeMounts = {
-    413409,
-    417556,
-    417548,
-    417554,
-    417552,
+    413409, -- highland drake
+    417556, -- slitherdrake
+    417548, -- proto-drake
+    417554, -- wylderdrake
+    417552, -- velocidrake
+    369536, -- soar
 };
 
 DR.vigorEvent = CreateFrame("Frame")
@@ -555,330 +556,223 @@ function DR:toggleEvent(event, arg1)
             DragonRider_DB = CopyTable(defaultsTable)
         end
 
-        local settingsPanel = CreateFrame("Frame")
-        local VERSION_TEXT = string.format(L["Version"], GetAddOnMetadata("DragonRider", "Version"));
-
-        settingsPanel.name = GetAddOnMetadata("DragonRider", "Title")
-
-        settingsPanel.Headline = settingsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.Headline:SetFont(settingsPanel.Headline:GetFont(), 23);
-        settingsPanel.Headline:SetTextColor(1,.73,0,1);
-        settingsPanel.Headline:ClearAllPoints();
-        settingsPanel.Headline:SetPoint("TOPLEFT", settingsPanel, "TOPLEFT",12,-12);
-        settingsPanel.Headline:SetText(GetAddOnMetadata("DragonRider", "Title"));
-
-        settingsPanel.Version = settingsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.Version:SetFont(settingsPanel.Version:GetFont(), 12);
-        settingsPanel.Version:SetTextColor(1,1,1,1);
-        settingsPanel.Version:ClearAllPoints();
-        settingsPanel.Version:SetPoint("TOPLEFT", settingsPanel, "TOPLEFT",400,-21);
-        settingsPanel.Version:SetText(VERSION_TEXT);
-
-        local settingsPanelScrollFrame = CreateFrame("ScrollFrame", nil, settingsPanel, "ScrollFrameTemplate")
-        settingsPanelScrollFrame:SetPoint("TOPLEFT", 3, -4)
-        settingsPanelScrollFrame:SetPoint("BOTTOMRIGHT", -27, 4)
-
-        settingsPanel.scrollChild = CreateFrame("Frame")
-        settingsPanelScrollFrame:SetScrollChild(settingsPanel.scrollChild)
-        settingsPanel.scrollChild:SetWidth(SettingsPanel:GetWidth()-18)
-        settingsPanel.scrollChild:SetHeight(1)
-
         ---------------------------------------------------------------------------------------------------------------------------------
         ---------------------------------------------------------------------------------------------------------------------------------
         ---------------------------------------------------------------------------------------------------------------------------------
-        
 
-        function settingsPanel:tooltip_OnEnter(frame, text)
-            if GameTooltip:IsShown() == false then
-                GameTooltip_SetDefaultAnchor(GameTooltip, frame);
+        local function OnSettingChanged(_, setting, value)
+            local variable = setting:GetVariable()
+            DragonRider_DB[variable] = value
+            DR.vigorCounter()
+            DR.setPositions()
+        end
+
+        local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
+
+        --layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(string.format(L["Version"], GetAddOnMetadata("DragonRider", "Version"))));
+
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["ProgressBar"]));
+
+        do
+            local variable = "speedometerPosPoint"
+            local defaultValue = 1  -- Corresponds to "Option 1" below.
+            local name = L["SpeedPosPointName"]
+            local tooltip = L["SpeedPosPointTT"]
+
+            local function GetOptions()
+                local container = Settings.CreateControlTextContainer()
+                container:Add(1, L["Top"])
+                container:Add(2, L["Bottom"])
+                container:Add(3, L["Left"])
+                container:Add(4, L["Right"])
+                return container:GetData()
             end
-            GameTooltip:ClearAllPoints();
-            GameTooltip:SetText(text, 1, 1, 1, 1, true);
-            GameTooltip:SetPoint("BOTTOMLEFT", frame, "TOPRIGHT", 0, 0);
-            GameTooltip:Show();
-        end
-        function settingsPanel.tooltip_OnLeave()
-            GameTooltip:Hide();
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
         end
 
-        settingsPanel.scrollChild.vigorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.vigorText:SetFont(settingsPanel.scrollChild.vigorText:GetFont(), 15);
-        settingsPanel.scrollChild.vigorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.vigorText:ClearAllPoints();
-        settingsPanel.scrollChild.vigorText:SetPoint("TOPLEFT", 5, -53*1);
-        settingsPanel.scrollChild.vigorText:SetText(L["Vigor"]);
+        do
+            local variable = "speedometerPosX"
+            local name = L["SpeedPosXName"]
+            local tooltip = L["SpeedPosXTT"]
+            local defaultValue = 0
+            local minValue = -Round(GetScreenWidth())
+            local maxValue = Round(GetScreenWidth())
+            local step = 1
 
-        settingsPanel.scrollChild.speedometerText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.speedometerText:SetFont(settingsPanel.scrollChild.speedometerText:GetFont(), 15);
-        settingsPanel.scrollChild.speedometerText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.speedometerText:ClearAllPoints();
-        settingsPanel.scrollChild.speedometerText:SetPoint("TOPLEFT", 350, -53*1);
-        settingsPanel.scrollChild.speedometerText:SetText(L["Speedometer"]);
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
 
+        do
+            local variable = "speedometerPosY"
+            local name = L["SpeedPosYName"]
+            local tooltip = L["SpeedPosYTT"]
+            local defaultValue = 5
+            local minValue = -Round(GetScreenHeight())
+            local maxValue = Round(GetScreenHeight())
+            local step = 1
 
-        settingsPanel.scrollChild.modelCheckbox = CreateFrame("CheckButton", nil, settingsPanel.scrollChild, "UICheckButtonTemplate"); -- SettingsCheckBoxTemplate
-        settingsPanel.scrollChild.modelCheckbox:ClearAllPoints();
-        settingsPanel.scrollChild.modelCheckbox:SetPoint("TOPLEFT", 5, -53*1.5);
-        settingsPanel.scrollChild.modelCheckbox.text:SetText(L["ToggleModelsName"]);
-        settingsPanel.scrollChild.modelCheckbox:SetScript("OnClick", function(self)
-            if settingsPanel.scrollChild.modelCheckbox:GetChecked() then
-                DragonRider_DB.toggleModels = true;
-                DR.vigorCounter();
-                DR.setPositions();
-            else
-                DragonRider_DB.toggleModels = false;
-                DR.vigorCounter();
-                DR.setPositions();
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedometerScale"
+            local name = L["SpeedScaleName"]
+            local tooltip = L["SpeedScaleTT"]
+            local defaultValue = 1
+            local minValue = .4
+            local maxValue = 4
+            local step = .1
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "speedValUnits"
+            local defaultValue = 1  -- Corresponds to "Option 1" below.
+            local name = L["Units"]
+            local tooltip = L["UnitsTT"]
+
+            local function GetOptions()
+                local container = Settings.CreateControlTextContainer()
+                container:Add(1, L["Yards"] .. " - " .. L["UnitYards"])
+                container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
+                container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
+                container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
+                container:Add(5, L["Percentage"] .. " - " .. L["UnitPercentage"])
+                return container:GetData()
             end
-        end);
-        settingsPanel.scrollChild.modelCheckbox:SetChecked(DragonRider_DB.toggleModels)
-        settingsPanel.scrollChild.modelCheckbox:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["ToggleModelsTT"])
-        end);
-        settingsPanel.scrollChild.modelCheckbox:SetScript("OnLeave", settingsPanel.tooltip_OnLeave
-        );
 
-
-        settingsPanel.menu = {
-            { text = L["Top"], func = function() DragonRider_DB.speedometerPosPoint = 1; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Bottom"], func = function() DragonRider_DB.speedometerPosPoint = 2; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Left"], func = function() DragonRider_DB.speedometerPosPoint = 3; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Right"], func = function() DragonRider_DB.speedometerPosPoint = 4; DR.vigorCounter(); DR.setPositions(); end },
-        };
-
-        settingsPanel.scrollChild.menuFrame = CreateFrame("Frame", nil, settingsPanel.scrollChild, "UIDropDownMenuTemplate")
-        settingsPanel.scrollChild.positionButton = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.positionButton:SetPoint("TOPLEFT", 350, -53*1.5);
-        settingsPanel.scrollChild.positionButton:SetSize(150, 26);
-        settingsPanel.scrollChild.positionButton:SetText(L["SpeedPosPointName"])
-        settingsPanel.scrollChild.positionButton:SetScript("OnClick", function() EasyMenu(settingsPanel.menu, settingsPanel.scrollChild.menuFrame, settingsPanel.scrollChild.positionButton, 0 , 0, "MENU", 10) end)
-        settingsPanel.scrollChild.positionButton:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["SpeedPosPointTT"])
-        end);
-        settingsPanel.scrollChild.positionButton:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.scrollChild.xPos = CreateFrame("Slider", nil, settingsPanel.scrollChild, "OptionsSliderTemplate");
-        settingsPanel.scrollChild.xPos:SetWidth(250);
-        settingsPanel.scrollChild.xPos:SetHeight(15);
-        settingsPanel.scrollChild.xPos:SetMinMaxValues(-Round(GetScreenWidth()),Round(GetScreenWidth()));
-        settingsPanel.scrollChild.xPos:SetValueStep(1);
-        settingsPanel.scrollChild.xPos:SetObeyStepOnDrag(true)
-        settingsPanel.scrollChild.xPos:ClearAllPoints();
-        settingsPanel.scrollChild.xPos:SetPoint("TOPLEFT", settingsPanel.scrollChild, "TOPLEFT", 350, -53*2.5);
-        settingsPanel.scrollChild.xPos.Low:SetText(L["Left"]);
-        settingsPanel.scrollChild.xPos.High:SetText(L["Right"]);
-        settingsPanel.scrollChild.xPos.Text:SetText(L["SpeedPosXName"]);
-        settingsPanel.scrollChild.xPos:SetScript("OnValueChanged", function()
-            local scaleValue = settingsPanel.scrollChild.xPos:GetValue();
-            DragonRider_DB.speedometerPosX = scaleValue
-            DR.vigorCounter();
-            DR.setPositions();
-        end)
-        settingsPanel.scrollChild.xPos:SetValue(DragonRider_DB.speedometerPosX)
-        settingsPanel.scrollChild.xPos:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["SpeedPosXTT"])
-        end);
-        settingsPanel.scrollChild.xPos:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.scrollChild.yPos = CreateFrame("Slider", nil, settingsPanel.scrollChild, "OptionsSliderTemplate");
-        settingsPanel.scrollChild.yPos:SetWidth(250);
-        settingsPanel.scrollChild.yPos:SetHeight(15);
-        settingsPanel.scrollChild.yPos:SetMinMaxValues(-Round(GetScreenWidth()),Round(GetScreenWidth()));
-        settingsPanel.scrollChild.yPos:SetValueStep(1);
-        settingsPanel.scrollChild.yPos:SetObeyStepOnDrag(true)
-        settingsPanel.scrollChild.yPos:ClearAllPoints();
-        settingsPanel.scrollChild.yPos:SetPoint("TOPLEFT", settingsPanel.scrollChild, "TOPLEFT", 350, -53*3);
-        settingsPanel.scrollChild.yPos.Low:SetText(L["Bottom"]);
-        settingsPanel.scrollChild.yPos.High:SetText(L["Top"]);
-        settingsPanel.scrollChild.yPos.Text:SetText(L["SpeedPosYName"]);
-        settingsPanel.scrollChild.yPos:SetScript("OnValueChanged", function()
-            local scaleValue = settingsPanel.scrollChild.yPos:GetValue();
-            DragonRider_DB.speedometerPosY = scaleValue
-            DR.vigorCounter();
-            DR.setPositions();
-        end)
-        settingsPanel.scrollChild.yPos:SetValue(DragonRider_DB.speedometerPosY)
-        settingsPanel.scrollChild.yPos:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["SpeedPosYTT"])
-        end);
-        settingsPanel.scrollChild.yPos:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.scrollChild.scaleProg = CreateFrame("Slider", nil, settingsPanel.scrollChild, "OptionsSliderTemplate");
-        settingsPanel.scrollChild.scaleProg:SetWidth(250);
-        settingsPanel.scrollChild.scaleProg:SetHeight(15);
-        settingsPanel.scrollChild.scaleProg:SetMinMaxValues(.4,4);
-        settingsPanel.scrollChild.scaleProg:SetValueStep(.1);
-        settingsPanel.scrollChild.scaleProg:SetObeyStepOnDrag(true)
-        settingsPanel.scrollChild.scaleProg:ClearAllPoints();
-        settingsPanel.scrollChild.scaleProg:SetPoint("TOPLEFT", settingsPanel.scrollChild, "TOPLEFT", 350, -53*3.5);
-        settingsPanel.scrollChild.scaleProg.Low:SetText(L["Small"]);
-        settingsPanel.scrollChild.scaleProg.High:SetText(L["Large"]);
-        settingsPanel.scrollChild.scaleProg.Text:SetText(L["SpeedScaleName"]);
-        settingsPanel.scrollChild.scaleProg:SetScript("OnValueChanged", function()
-            local scaleValue = settingsPanel.scrollChild.scaleProg:GetValue();
-            DragonRider_DB.speedometerScale = scaleValue
-            DR.vigorCounter();
-            DR.setPositions();
-        end)
-        settingsPanel.scrollChild.scaleProg:SetValue(DragonRider_DB.speedometerScale)
-        settingsPanel.scrollChild.scaleProg:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["SpeedPosYTT"])
-        end);
-        settingsPanel.scrollChild.scaleProg:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.menu2 = {
-            { text = L["Yards"] .. " - " .. L["UnitYards"], func = function() DragonRider_DB.speedValUnits = 1; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Miles"] .. " - " .. L["UnitMiles"], func = function() DragonRider_DB.speedValUnits = 2; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Meters"] .. " - " .. L["UnitMeters"], func = function() DragonRider_DB.speedValUnits = 3; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Kilometers"] .. " - " .. L["UnitKilometers"], func = function() DragonRider_DB.speedValUnits = 4; DR.vigorCounter(); DR.setPositions(); end },
-            { text = L["Percentage"] .. " - " .. L["UnitPercent"], func = function() DragonRider_DB.speedValUnits = 5; DR.vigorCounter(); DR.setPositions(); end },
-        };
-
-        settingsPanel.scrollChild.menuFrame2 = CreateFrame("Frame", nil, settingsPanel.scrollChild, "UIDropDownMenuTemplate")
-        settingsPanel.scrollChild.positionButton2 = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.positionButton2:SetPoint("TOPLEFT", 350, -53*4);
-        settingsPanel.scrollChild.positionButton2:SetSize(150, 26);
-        settingsPanel.scrollChild.positionButton2:SetText(L["Units"])
-        settingsPanel.scrollChild.positionButton2:SetScript("OnClick", function() EasyMenu(settingsPanel.menu2, settingsPanel.scrollChild.menuFrame2, settingsPanel.scrollChild.positionButton2, 0 , 0, "MENU", 10) end)
-        settingsPanel.scrollChild.positionButton2:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["UnitsTT"])
-        end);
-        settingsPanel.scrollChild.positionButton2:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.scrollChild.scaleText = CreateFrame("Slider", nil, settingsPanel.scrollChild, "OptionsSliderTemplate");
-        settingsPanel.scrollChild.scaleText:SetWidth(250);
-        settingsPanel.scrollChild.scaleText:SetHeight(15);
-        settingsPanel.scrollChild.scaleText:SetMinMaxValues(2,30);
-        settingsPanel.scrollChild.scaleText:SetValueStep(.5);
-        settingsPanel.scrollChild.scaleText:SetObeyStepOnDrag(true)
-        settingsPanel.scrollChild.scaleText:ClearAllPoints();
-        settingsPanel.scrollChild.scaleText:SetPoint("TOPLEFT", settingsPanel.scrollChild, "TOPLEFT", 350, -53*5);
-        settingsPanel.scrollChild.scaleText.Low:SetText(L["Small"]);
-        settingsPanel.scrollChild.scaleText.High:SetText(L["Large"]);
-        settingsPanel.scrollChild.scaleText.Text:SetText(L["SpeedTextScale"]);
-        settingsPanel.scrollChild.scaleText:SetScript("OnValueChanged", function()
-            local scaleValue = settingsPanel.scrollChild.scaleText:GetValue();
-            DragonRider_DB.speedTextScale = scaleValue
-            DR.vigorCounter();
-            DR.setPositions();
-        end)
-        settingsPanel.scrollChild.scaleText:SetValue(DragonRider_DB.speedTextScale)
-        settingsPanel.scrollChild.scaleText:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["SpeedTextScaleTT"])
-        end);
-        settingsPanel.scrollChild.scaleText:SetScript("OnLeave", settingsPanel.tooltip_OnLeave);
-
-
-        settingsPanel.scrollChild.progLowColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progLowColor:SetPoint("TOPLEFT", 350, -53*5.5);
-        settingsPanel.scrollChild.progLowColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progLowColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progLowColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a, ProgBarLowColor); end)
-
-        settingsPanel.scrollChild.progLowColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.progLowColorText:SetFont(settingsPanel.scrollChild.progLowColorText:GetFont(), 11);
-        settingsPanel.scrollChild.progLowColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.progLowColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progLowColorText:SetPoint("TOPLEFT", 475, -53*5.5);
-        settingsPanel.scrollChild.progLowColorText:SetText(L["ProgressBar"] .. " " .. COLOR .. " - " .. L["Low"]);
-
-
-        settingsPanel.scrollChild.progMidColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progMidColor:SetPoint("TOPLEFT", 350, -53*6);
-        settingsPanel.scrollChild.progMidColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progMidColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progMidColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a, ProgBarMidColor); end)
-
-        settingsPanel.scrollChild.progMidColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.progMidColorText:SetFont(settingsPanel.scrollChild.progMidColorText:GetFont(), 11);
-        settingsPanel.scrollChild.progMidColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.progMidColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progMidColorText:SetPoint("TOPLEFT", 475, -53*6);
-        settingsPanel.scrollChild.progMidColorText:SetText(L["ProgressBar"] .. " - " .. L["Vigor"]);
-
-
-        settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*6.5);
-        settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a, ProgBarHighColor); end)
-
-        settingsPanel.scrollChild.progHighColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.progHighColorText:SetFont(settingsPanel.scrollChild.progHighColorText:GetFont(), 11);
-        settingsPanel.scrollChild.progHighColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.progHighColorText:ClearAllPoints();
-        settingsPanel.scrollChild.progHighColorText:SetPoint("TOPLEFT", 475, -53*6.5);
-        settingsPanel.scrollChild.progHighColorText:SetText(L["ProgressBar"] .. " - " .. L["High"]);
-
-
-        settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*7);
-        settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b, DragonRider_DB.speedTextColor.slow.a, TextLowColor); end)
-
-        settingsPanel.scrollChild.UnitsLowColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.UnitsLowColorText:SetFont(settingsPanel.scrollChild.UnitsLowColorText:GetFont(), 11);
-        settingsPanel.scrollChild.UnitsLowColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.UnitsLowColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsLowColorText:SetPoint("TOPLEFT", 475, -53*7);
-        settingsPanel.scrollChild.UnitsLowColorText:SetText(L["Units"] .. " - " .. L["Low"]);
-
-
-        settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*7.5);
-        settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextMidColor); end)
-
-        settingsPanel.scrollChild.UnitsMidColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.UnitsMidColorText:SetFont(settingsPanel.scrollChild.UnitsMidColorText:GetFont(), 11);
-        settingsPanel.scrollChild.UnitsMidColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.UnitsMidColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsMidColorText:SetPoint("TOPLEFT", 475, -53*7.5);
-        settingsPanel.scrollChild.UnitsMidColorText:SetText(L["Units"] .. " - " .. L["Vigor"]);
-
-
-        settingsPanel.scrollChild.progHighColor = CreateFrame("Button", nil, settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.progHighColor:SetPoint("TOPLEFT", 350, -53*8);
-        settingsPanel.scrollChild.progHighColor:SetSize(120, 26);
-        settingsPanel.scrollChild.progHighColor:SetText(COLOR_PICKER)
-        settingsPanel.scrollChild.progHighColor:SetScript("OnClick", function() ShowColorPicker(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextHighColor); end)
-
-        settingsPanel.scrollChild.UnitsHighColorText = settingsPanel.scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-        settingsPanel.scrollChild.UnitsHighColorText:SetFont(settingsPanel.scrollChild.UnitsHighColorText:GetFont(), 11);
-        settingsPanel.scrollChild.UnitsHighColorText:SetTextColor(1,1,1,1);
-        settingsPanel.scrollChild.UnitsHighColorText:ClearAllPoints();
-        settingsPanel.scrollChild.UnitsHighColorText:SetPoint("TOPLEFT", 475, -53*8);
-        settingsPanel.scrollChild.UnitsHighColorText:SetText(L["Units"] .. " - " .. L["High"]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        function DR.resetMenuValues()
-            settingsPanel.scrollChild.modelCheckbox:SetChecked(DragonRider_DB.toggleModels);
-            settingsPanel.scrollChild.xPos:SetValue(DragonRider_DB.speedometerPosX);
-            settingsPanel.scrollChild.yPos:SetValue(DragonRider_DB.speedometerPosY);
-            settingsPanel.scrollChild.scaleProg:SetValue(DragonRider_DB.speedometerScale);
-            settingsPanel.scrollChild.scaleText:SetValue(DragonRider_DB.speedTextScale);
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
         end
+
+        do
+            local variable = "speedTextScale"
+            local name = L["SpeedTextScale"]
+            local tooltip = L["SpeedTextScaleTT"]
+            local defaultValue = 12
+            local minValue = 2
+            local maxValue = 30
+            local step = .5
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+            Settings.CreateSlider(category, setting, options, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"]));
+
+        do
+            local variable = "toggleModels"
+            local name = L["ToggleModelsName"]
+            local tooltip = L["ToggleModelsTT"]
+            local defaultValue = true
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateCheckBox(category, setting, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
+
+        do -- color picker - low progress bar color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a, ProgBarLowColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+        do -- color picker - mid progress bar color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a, ProgBarMidColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+        do -- color picker - high progress bar color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a, ProgBarHighColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+        do -- color picker - low speed text color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b, DragonRider_DB.speedTextColor.slow.a, TextLowColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+        do -- color picker - mid speed text color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextMidColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+        do -- color picker - high speed text color
+            local function OnButtonClick()
+                ShowColorPicker(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextHighColor);
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"]);
+            layout:AddInitializer(initializer);
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
             text = L["ResetAllSettingsConfirm"],
@@ -889,40 +783,35 @@ function DR:toggleEvent(event, arg1)
                 DragonRider_DB = CopyTable(defaultsTable);
                 DR.vigorCounter();
                 DR.setPositions();
-                DR.resetMenuValues();
             end,
             timeout = 0,
             whileDead = true,
             hideOnEscape = true,
         };
-        
-        settingsPanel.scrollChild.resetSettings = CreateFrame("Button", "Bingus", settingsPanel.scrollChild, "SharedGoldRedButtonSmallTemplate")
-        settingsPanel.scrollChild.resetSettings:SetPoint("TOPRIGHT", -280, -16);
-        settingsPanel.scrollChild.resetSettings:SetSize(96, 22);
-        settingsPanel.scrollChild.resetSettings:SetText(SETTINGS_DEFAULTS)
-        settingsPanel.scrollChild.resetSettings:SetScript("OnClick", function()
-            StaticPopup_Show("DRAGONRIDER_RESET_SETTINGS")
-        end)
-        settingsPanel.scrollChild.resetSettings:SetScript("OnEnter", function(self)
-            settingsPanel:tooltip_OnEnter(self, L["ResetAllSettingsTT"])
-        end);
-        settingsPanel.scrollChild.resetSettings:SetScript("OnLeave", settingsPanel.tooltip_OnLeave
-        );
 
 
-        ---------------------------------------------------------------------------------------------------------------------------------
-        ---------------------------------------------------------------------------------------------------------------------------------
-        ---------------------------------------------------------------------------------------------------------------------------------
+        do -- color picker - high speed text color
+            local function OnButtonClick()
+                StaticPopup_Show("DRAGONRIDER_RESET_SETTINGS");
+            end
 
+            local initializer = CreateSettingsButtonInitializer(L["ResetAllSettings"], RESET, OnButtonClick, L["ResetAllSettingsTT"]);
+            layout:AddInitializer(initializer);
+        end
 
-        local category = Settings.RegisterCanvasLayoutCategory(settingsPanel,"Dragon Rider")
         Settings.RegisterAddOnCategory(category)
+
+
+
+        ---------------------------------------------------------------------------------------------------------------------------------
+        ---------------------------------------------------------------------------------------------------------------------------------
+        ---------------------------------------------------------------------------------------------------------------------------------
 
         DR.vigorCounter()
     end
 
     if DR.MountEvents[event] then
-        if IsMounted() == true then
+        if IsMounted() == true or C_UnitAuras.GetPlayerAuraBySpellID(369536) then
             for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do -- should be future-proof for all dragonriding mounts
                 if select(4, C_MountJournal.GetMountInfoByID(mountId)) then
                     DR.setPositions();
@@ -948,15 +837,6 @@ function DR:toggleEvent(event, arg1)
             DR.clearPositions();
             DR.TimerNamed:Cancel();
         end
-        --[[
-        if C_UnitAuras.GetPlayerAuraBySpellID(369536) then -- this could supposedly handle the Dracthyr Soar, but addon currently anchors to vigor bar, so this is for future update
-            DR.setPositions();
-            DR.TimerNamed:Cancel();
-            DR.TimerNamed = C_Timer.NewTicker(.1, function()
-                DR.updateSpeed()
-            end)
-        end
-        ]]
     end
 end
 
