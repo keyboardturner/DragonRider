@@ -772,7 +772,7 @@ function DR:toggleEvent(event, arg1)
 
 
 
-
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(RESET));
 
         StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
             text = L["ResetAllSettingsConfirm"],
