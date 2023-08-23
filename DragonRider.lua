@@ -657,7 +657,7 @@ function DR:toggleEvent(event, arg1)
                 container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
                 container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
                 container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
-                container:Add(5, L["Percentage"] .. " - " .. L["UnitPercentage"])
+                container:Add(5, L["Percent"] .. " - " .. L["UnitPercent"])
                 return container:GetData()
             end
 

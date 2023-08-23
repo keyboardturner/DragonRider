@@ -513,7 +513,7 @@ if LOCALE == "zhTW" then
 	L["UnitKilometers"] = "公里/小時"
 	L["Kilometers"] = "公里"
 	L["UnitPercent"] = "%"
-	L["Percentage"] = "百分比"
+	L["Percent"] = "百分比"
 	L["SpeedTextScale"] = "車速表文字大小"
 	L["SpeedTextScaleTT"] = "調整車速表上文字的大小。"
 	L["Version"] = "版本 %s"
