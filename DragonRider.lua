@@ -346,6 +346,8 @@ function DR.useUnits()
         return " " .. L["UnitKilometers"]
     elseif DragonRider_DB.speedValUnits == 5 then
         return "%" .. L["UnitPercent"]
+    elseif DragonRider_DB.speedValUnits == 6 then
+        return ""
     else
         return L["UnitYards"]
     end
@@ -362,6 +364,8 @@ function DR:convertUnits(forwardSpeed)
         return forwardSpeed*3.6
     elseif DragonRider_DB.speedValUnits == 5 then
         return forwardSpeed/7*100
+    elseif DragonRider_DB.speedValUnits == 6 then
+        return forwardSpeed
     else
         return forwardSpeed
     end
@@ -387,6 +391,9 @@ function DR.updateSpeed()
         local textColor = CreateColor(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b):GenerateHexColor()
         DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- fff2a305 (nice yellow?) - 
         DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a)
+    end
+    if DragonRider_DB.speedValUnits == 6 then
+        DR.glide:SetText("")
     end
     DR.statusbar:SetSmoothedValue(forwardSpeed)
 end
@@ -658,6 +665,7 @@ function DR:toggleEvent(event, arg1)
                 container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
                 container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
                 container:Add(5, L["Percent"] .. " - " .. L["UnitPercent"])
+                container:Add(6, NONE)
                 return container:GetData()
             end
 
@@ -697,6 +705,19 @@ function DR:toggleEvent(event, arg1)
             Settings.CreateCheckBox(category, setting, tooltip)
             Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
             setting:SetValue(DragonRider_DB[variable])
+        end
+
+
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["DragonridingTalents"]));
+
+        do -- dragonriding talents 
+            local function OnButtonClick()
+                CloseWindows();
+                DragonridingPanelSkillsButtonMixin:OnClick();
+            end
+
+            local initializer = CreateSettingsButtonInitializer(L["OpenDragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"]);
+            layout:AddInitializer(initializer);
         end
 
 

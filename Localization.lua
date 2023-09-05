@@ -60,6 +60,9 @@ if LOCALE == "enUS" then
 	L["ColorPickerLowTextTT"] = "Choose a custom color for the low speed values of the speed value. This occurs when the player is not gaining any vigor."
 	L["ColorPickerMidTextTT"] = "Choose a custom color for the vigor speed values of the speed value. This occurs when the player is gaining vigor within standard a speed range."
 	L["ColorPickerHighTextTT"] = "Choose a custom color for the high speed values of the speed value. This occurs when the player is gaining vigor, but is above the standard speed range."
+	L["DragonridingTalents"] = "Dragonriding Talents"
+	L["OpenDragonridingTalents"] = "Open Dragonriding Talents"
+	L["OpenDragonridingTalentsTT"] = "Open Dragonriding Talents Window."
 
 return end
 
@@ -112,6 +115,9 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["ColorPickerLowTextTT"] = "Elija un color personalizado para los valores de baja velocidad del valor de velocidad. Esto ocurre cuando el jugador no gana vigor."
 	L["ColorPickerMidTextTT"] = "Elija un color personalizado para los valores de velocidad de vigor del valor de velocidad. Esto ocurre cuando el jugador gana vigor dentro de un rango de velocidad estándar."
 	L["ColorPickerHighTextTT"] = "Elija un color personalizado para los valores de alta velocidad del valor de velocidad. Esto ocurre cuando el jugador está ganando vigor, pero está por encima del rango de velocidad estándar."
+	L["DragonridingTalents"] = "Talentos para montar dragones"
+	L["OpenDragonridingTalents"] = "Talentos abiertos para montar dragones"
+	L["OpenDragonridingTalentsTT"] = "Abrir ventana de talentos de montar dragón."
 
 return end
 
@@ -164,6 +170,9 @@ if LOCALE == "deDE" then
 	L["ColorPickerLowTextTT"] = "Wählen Sie eine benutzerdefinierte Farbe für die niedrigen Geschwindigkeitswerte des Geschwindigkeitswerts. Dies geschieht, wenn der Spieler keine Kraft gewinnt."
 	L["ColorPickerMidTextTT"] = "Wählen Sie eine benutzerdefinierte Farbe für die Kraftgeschwindigkeitswerte des Geschwindigkeitswerts. Dies geschieht, wenn der Spieler innerhalb eines normalen Geschwindigkeitsbereichs an Kraft gewinnt."
 	L["ColorPickerHighTextTT"] = "Wählen Sie eine benutzerdefinierte Farbe für die hohen Geschwindigkeitswerte des Geschwindigkeitswerts. Dies geschieht, wenn der Spieler an Kraft gewinnt, die Geschwindigkeit jedoch über dem Standardbereich liegt."
+	L["DragonridingTalents"] = "Drachenreitende Talente"
+	L["OpenDragonridingTalents"] = "Öffnen Sie Drachenreiten-Talente"
+	L["OpenDragonridingTalentsTT"] = "Öffnen Sie das Fenster „Drachenreiten-Talente“."
 
 return end
 
@@ -216,6 +225,9 @@ if LOCALE == "frFR" then
 	L["ColorPickerLowTextTT"] = "Choisissez une couleur personnalisée pour les valeurs de faible vitesse de la valeur de vitesse. Cela se produit lorsque le joueur ne gagne aucune vigueur."
 	L["ColorPickerMidTextTT"] = "Choisissez une couleur personnalisée pour les valeurs de vitesse de vigueur de la valeur de vitesse. Cela se produit lorsque le joueur gagne en vigueur dans une plage de vitesse standard."
 	L["ColorPickerHighTextTT"] = "Choisissez une couleur personnalisée pour les valeurs de vitesse élevée de la valeur de vitesse. Cela se produit lorsque le joueur gagne en vigueur, mais est au-dessus de la plage de vitesse standard."
+	L["DragonridingTalents"] = "Talents de chevauchée de dragon"
+	L["OpenDragonridingTalents"] = "Ouvrir les talents de chevaucheur de dragon"
+	L["OpenDragonridingTalentsTT"] = "Ouvrez la fenêtre des talents de Dragonriding."
 
 return end
 
@@ -268,6 +280,9 @@ if LOCALE == "itIT" then
 	L["ColorPickerLowTextTT"] = "Scegli un colore personalizzato per i valori di bassa velocità del valore di velocità. Ciò si verifica quando il giocatore non sta guadagnando vigore."
 	L["ColorPickerMidTextTT"] = "Scegli un colore personalizzato per i valori di velocità del vigore del valore di velocità. Ciò si verifica quando il giocatore sta guadagnando vigore entro un intervallo di velocità standard."
 	L["ColorPickerHighTextTT"] = "Scegli un colore personalizzato per i valori ad alta velocità del valore della velocità. Ciò si verifica quando il giocatore sta guadagnando vigore, ma è al di sopra della gamma di velocità standard."
+	L["DragonridingTalents"] = "DragonridingTalents"
+	L["OpenDragonridingTalents"] = "OpenDragonridingTalents"
+	L["OpenDragonridingTalentsTT"] = "OpenDragonridingTalentsTT"
 
 return end
 
@@ -320,6 +335,9 @@ if LOCALE == "ptBR" then
 	L["ColorPickerLowTextTT"] = "Escolha uma cor personalizada para os valores de velocidade baixa do valor de velocidade. Isso ocorre quando o jogador não está ganhando vigor."
 	L["ColorPickerMidTextTT"] = "Escolha uma cor personalizada para os valores de velocidade de vigor do valor de velocidade. Isso ocorre quando o jogador está ganhando vigor dentro de uma faixa de velocidade padrão."
 	L["ColorPickerHighTextTT"] = "Escolha uma cor personalizada para os valores de alta velocidade do valor de velocidade. Isso ocorre quando o jogador está ganhando vigor, mas está acima da faixa de velocidade padrão."
+	L["DragonridingTalents"] = "Talenti di cavalcatura del drago"
+	L["OpenDragonridingTalents"] = "Apri Talenti di cavalcatura del drago"
+	L["OpenDragonridingTalentsTT"] = "Apri la finestra dei talenti di cavalcatura del drago."
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -374,6 +392,9 @@ if LOCALE == "ruRU" then
 	L["ColorPickerLowTextTT"] = "Выберите пользовательский цвет для значений низкой скорости значения скорости. Это происходит, когда игрок не набирает сил."
 	L["ColorPickerMidTextTT"] = "Выберите пользовательский цвет для значений скорости силы значения скорости. Это происходит, когда игрок набирает силу в пределах стандартного диапазона скоростей."
 	L["ColorPickerHighTextTT"] = "Выберите пользовательский цвет для высокоскоростных значений значения скорости. Это происходит, когда игрок набирает силу, но его скорость выше стандартного диапазона."
+	L["DragonridingTalents"] = "Таланты верховой езды на драконах"
+	L["OpenDragonridingTalents"] = "Открытые таланты верховой езды на драконах"
+	L["OpenDragonridingTalentsTT"] = "Откройте окно талантов верховой езды на драконах."
 
 return end
 
@@ -426,6 +447,9 @@ if LOCALE == "koKR" then
 	L["ColorPickerLowTextTT"] = "속도 값의 저속 값에 대한 사용자 지정 색상을 선택합니다. 이것은 플레이어가 활력을 얻지 못할 때 발생합니다."
 	L["ColorPickerMidTextTT"] = "속도 값의 활력 속도 값에 대한 사용자 정의 색상을 선택하십시오. 이것은 플레이어가 표준 a 속도 범위 내에서 활력을 얻고 있을 때 발생합니다."
 	L["ColorPickerHighTextTT"] = "속도 값의 고속 값에 대한 사용자 지정 색상을 선택합니다. 이것은 플레이어가 활력을 얻고 있지만 표준 속도 범위를 초과할 때 발생합니다."
+	L["DragonridingTalents"] = "용 타기 재능"
+	L["OpenDragonridingTalents"] = "용 타기 재능 공개"
+	L["OpenDragonridingTalentsTT"] = "용 타기 특성 창을 엽니다."
 
 return end
 
@@ -478,6 +502,9 @@ if LOCALE == "zhCN" then
 	L["ColorPickerLowTextTT"] = "为速度值的低速度值选择自定义颜色。 当玩家没有获得任何活力时就会发生这种情况。"
 	L["ColorPickerMidTextTT"] = "为速度值的活力速度值选择自定义颜色。 当玩家在标准速度范围内获得活力时，就会发生这种情况。"
 	L["ColorPickerHighTextTT"] = "为速度值的高速值选择自定义颜色。 当玩家精力充沛但速度高于标准速度范围时，就会发生这种情况。"
+	L["DragonridingTalents"] = "龙骑天赋"
+	L["OpenDragonridingTalents"] = "开放龙骑天赋"
+	L["OpenDragonridingTalentsTT"] = "打开龙骑天赋窗口。"
 
 return end
 
@@ -530,5 +557,8 @@ if LOCALE == "zhTW" then
 	L["ColorPickerLowTextTT"] = "為速度值的低速度值選擇自定義顏色。 當玩家沒有獲得任何活力時就會發生這種情況。"
 	L["ColorPickerMidTextTT"] = "為速度值的活力速度值選擇自定義顏色。 當玩家在標準速度範圍內獲得活力時，就會發生這種情況。"
 	L["ColorPickerHighTextTT"] = "為速度值的高速值選擇自定義顏色。 當玩家精力充沛但速度高於標準速度範圍時，就會發生這種情況。"
+	L["DragonridingTalents"] = "龍騎天賦"
+	L["OpenDragonridingTalents"] = "開放龍騎天賦"
+	L["OpenDragonridingTalentsTT"] = "打開龍騎天賦窗口。"
 
 return end
