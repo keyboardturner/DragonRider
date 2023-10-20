@@ -716,7 +716,7 @@ function DR:toggleEvent(event, arg1)
                 DragonridingPanelSkillsButtonMixin:OnClick();
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["OpenDragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["OpenDragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -728,7 +728,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a, ProgBarLowColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -738,7 +738,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a, ProgBarMidColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -748,7 +748,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a, ProgBarHighColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -758,7 +758,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b, DragonRider_DB.speedTextColor.slow.a, TextLowColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -768,7 +768,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextMidColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -778,7 +778,7 @@ function DR:toggleEvent(event, arg1)
                 ShowColorPicker(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, DragonRider_DB.speedTextColor.over.a, TextHighColor);
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
             layout:AddInitializer(initializer);
         end
 
@@ -832,28 +832,14 @@ function DR:toggleEvent(event, arg1)
     end
 
     if DR.MountEvents[event] then
-        if IsMounted() == true or C_UnitAuras.GetPlayerAuraBySpellID(369536) then
-            for _, mountId in ipairs(C_MountJournal.GetCollectedDragonridingMounts()) do -- should be future-proof for all dragonriding mounts
-                if select(4, C_MountJournal.GetMountInfoByID(mountId)) then
-                    DR.setPositions();
-                    DR.TimerNamed:Cancel();
-                    DR.TimerNamed = C_Timer.NewTicker(.1, function()
-                        DR.updateSpeed()
-                    end)
-                    DR.statusbar:Show();
-
-                end
-            end
-            for _, fakeMount in ipairs(DR.FakeMounts) do -- handles the Kalimdor Cup that use fake buffs
-                if C_UnitAuras.GetPlayerAuraBySpellID(fakeMount) then
-                    DR.setPositions();
-                    DR.TimerNamed:Cancel();
-                    DR.TimerNamed = C_Timer.NewTicker(.1, function()
-                        DR.updateSpeed()
-                    end)
-                    DR.statusbar:Show();
-                end
-            end
+        local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
+        if canGlide == true then
+            DR.setPositions();
+            DR.TimerNamed:Cancel();
+            DR.TimerNamed = C_Timer.NewTicker(.1, function()
+                DR.updateSpeed()
+            end)
+            DR.statusbar:Show();
         else
             DR.clearPositions();
             DR.TimerNamed:Cancel();
