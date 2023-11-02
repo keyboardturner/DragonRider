@@ -1,9 +1,13 @@
-## Interface: 100107
+## Interface: 100200
 ## Author: Keyboardturner
-## Version: 0.0.5
+## Version: @project-version@
 ## Title: Dragon Rider
 ## Notes: Displays a speedometer paired with the vigor bar and some other dragonriding-related options.
 ## IconTexture: Interface/Icons/ability_dragonriding_glyph01.blp
+## X-Curse-Project-ID: 893295
+## X-WoWI-ID: 26618
+## X-Wago-ID: XKq9EDKy
+
 ## Title-enUS: Dragon Rider
 ## Notes-enUS: Displays a speedometer paired with the vigor bar and some other dragonriding-related options.
 ## Title-frFR: Dragonnier
