@@ -63,6 +63,8 @@ if LOCALE == "enUS" then
 	L["DragonridingTalents"] = "Dragonriding Talents"
 	L["OpenDragonridingTalents"] = "Open Dragonriding Talents"
 	L["OpenDragonridingTalentsTT"] = "Open Dragonriding Talents Window."
+	L["SideArtName"] = "Side Art"
+	L["SideArtTT"] = "Toggle the art on the sides of the main Vigor bar."
 
 return end
 
@@ -118,6 +120,8 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["DragonridingTalents"] = "Talentos para montar dragones"
 	L["OpenDragonridingTalents"] = "Talentos abiertos para montar dragones"
 	L["OpenDragonridingTalentsTT"] = "Abrir ventana de talentos de montar dragón."
+	L["SideArtName"] = "Arte Lateral"
+	L["SideArtTT"] = "Alterna el arte en los lados de la barra principal de Vigor."
 
 return end
 
@@ -172,7 +176,9 @@ if LOCALE == "deDE" then
 	L["ColorPickerHighTextTT"] = "Wählen Sie eine benutzerdefinierte Farbe für die hohen Geschwindigkeitswerte des Geschwindigkeitswerts. Dies geschieht, wenn der Spieler an Kraft gewinnt, die Geschwindigkeit jedoch über dem Standardbereich liegt."
 	L["DragonridingTalents"] = "Drachenreitende Talente"
 	L["OpenDragonridingTalents"] = "Öffnen Sie Drachenreiten-Talente"
-	L["OpenDragonridingTalentsTT"] = "Öffnen Sie das Fenster „Drachenreiten-Talente“."
+	L["OpenDragonridingTalentsTT"] = "Öffnen Sie das Fenster Drachenreiten-Talente."
+	L["SideArtName"] = "Seitenkunst"
+	L["SideArtTT"] = "Schalten Sie die Grafik an den Seiten der Haupt-Vigor-Leiste um."
 
 return end
 
@@ -228,6 +234,8 @@ if LOCALE == "frFR" then
 	L["DragonridingTalents"] = "Talents de chevauchée de dragon"
 	L["OpenDragonridingTalents"] = "Ouvrir les talents de chevaucheur de dragon"
 	L["OpenDragonridingTalentsTT"] = "Ouvrez la fenêtre des talents de Dragonriding."
+	L["SideArtName"] = "Art Parallèle"
+	L["SideArtTT"] = "Basculez l’art sur les côtés de la barre Vigor principale."
 
 return end
 
@@ -280,9 +288,11 @@ if LOCALE == "itIT" then
 	L["ColorPickerLowTextTT"] = "Scegli un colore personalizzato per i valori di bassa velocità del valore di velocità. Ciò si verifica quando il giocatore non sta guadagnando vigore."
 	L["ColorPickerMidTextTT"] = "Scegli un colore personalizzato per i valori di velocità del vigore del valore di velocità. Ciò si verifica quando il giocatore sta guadagnando vigore entro un intervallo di velocità standard."
 	L["ColorPickerHighTextTT"] = "Scegli un colore personalizzato per i valori ad alta velocità del valore della velocità. Ciò si verifica quando il giocatore sta guadagnando vigore, ma è al di sopra della gamma di velocità standard."
-	L["DragonridingTalents"] = "DragonridingTalents"
-	L["OpenDragonridingTalents"] = "OpenDragonridingTalents"
-	L["OpenDragonridingTalentsTT"] = "OpenDragonridingTalentsTT"
+	L["DragonridingTalents"] = "Talenti di Cavalcadraghi"
+	L["OpenDragonridingTalents"] = "Apri Talenti di cavalcatura del drago"
+	L["OpenDragonridingTalentsTT"] = "Apri la finestra dei talenti di cavalcatura del drago."
+	L["SideArtName"] = "Arte Laterale"
+	L["SideArtTT"] = "Attiva/disattiva la grafica sui lati della barra principale del Vigore."
 
 return end
 
@@ -338,6 +348,8 @@ if LOCALE == "ptBR" then
 	L["DragonridingTalents"] = "Talenti di cavalcatura del drago"
 	L["OpenDragonridingTalents"] = "Apri Talenti di cavalcatura del drago"
 	L["OpenDragonridingTalentsTT"] = "Apri la finestra dei talenti di cavalcatura del drago."
+	L["SideArtName"] = "Arte Lateral"
+	L["SideArtTT"] = "Alterne a arte nas laterais da barra principal do Vigor."
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -395,6 +407,8 @@ if LOCALE == "ruRU" then
 	L["DragonridingTalents"] = "Таланты верховой езды на драконах"
 	L["OpenDragonridingTalents"] = "Открытые таланты верховой езды на драконах"
 	L["OpenDragonridingTalentsTT"] = "Откройте окно талантов верховой езды на драконах."
+	L["SideArtName"] = "Боковой арт"
+	L["SideArtTT"] = "Переключите изображение по бокам главной панели Vigor."
 
 return end
 
@@ -450,6 +464,8 @@ if LOCALE == "koKR" then
 	L["DragonridingTalents"] = "용 타기 재능"
 	L["OpenDragonridingTalents"] = "용 타기 재능 공개"
 	L["OpenDragonridingTalentsTT"] = "용 타기 특성 창을 엽니다."
+	L["SideArtName"] = "사이드 아트"
+	L["SideArtTT"] = "메인 Vigor 바의 측면에 있는 아트를 전환합니다."
 
 return end
 
@@ -505,6 +521,8 @@ if LOCALE == "zhCN" then
 	L["DragonridingTalents"] = "龙骑天赋"
 	L["OpenDragonridingTalents"] = "开放龙骑天赋"
 	L["OpenDragonridingTalentsTT"] = "打开龙骑天赋窗口。"
+	L["SideArtName"] = "侧面艺术"
+	L["SideArtTT"] = "切换主活力条两侧的艺术。"
 
 return end
 
@@ -560,5 +578,7 @@ if LOCALE == "zhTW" then
 	L["DragonridingTalents"] = "龍騎天賦"
 	L["OpenDragonridingTalents"] = "開放龍騎天賦"
 	L["OpenDragonridingTalentsTT"] = "打開龍騎天賦窗口。"
+	L["SideArtName"] = "側面藝術"
+	L["SideArtTT"] = "切換主活力條兩側的藝術。"
 
 return end

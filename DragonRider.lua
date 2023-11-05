@@ -55,6 +55,8 @@ local defaultsTable = {
     barStyle = 1, -- 1 = standard
     statistics = {},
     multiplayer = true,
+    sideArt = true,
+    sideArtStyle = 1,
 
 };
 
@@ -507,6 +509,16 @@ function DR.setPositions()
         DR.statusbar:ClearAllPoints();
         DR.statusbar:SetPoint("LEFT", UIWidgetPowerBarContainerFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
     end
+    local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
+    if PowerBarChildren[3] ~= nil then
+        for _, child in ipairs({PowerBarChildren[3]:GetRegions()}) do
+            if DragonRider_DB.sideArt == false then
+                child:SetAlpha(0)
+            else
+                child:SetAlpha(1)
+            end
+        end
+    end
     DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
     DR.modelScene1:ClearAllPoints();
     DR.modelScene2:ClearAllPoints();
@@ -562,6 +574,14 @@ function DR:toggleEvent(event, arg1)
         if DragonRider_DB == nil then
             DragonRider_DB = CopyTable(defaultsTable)
         end
+
+        if DragonRider_DB.sideArt == nil then
+            DragonRider_DB.sideArt = true
+        end
+        if DragonRider_DB.sideArtStyle == nil then
+            DragonRider_DB.sideArtStyle = 1
+        end
+
 
         ---------------------------------------------------------------------------------------------------------------------------------
         ---------------------------------------------------------------------------------------------------------------------------------
@@ -699,6 +719,18 @@ function DR:toggleEvent(event, arg1)
             local variable = "toggleModels"
             local name = L["ToggleModelsName"]
             local tooltip = L["ToggleModelsTT"]
+            local defaultValue = true
+
+            local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+            Settings.CreateCheckBox(category, setting, tooltip)
+            Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+            setting:SetValue(DragonRider_DB[variable])
+        end
+
+        do
+            local variable = "sideArt"
+            local name = L["SideArtName"]
+            local tooltip = L["SideArtTT"]
             local defaultValue = true
 
             local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
