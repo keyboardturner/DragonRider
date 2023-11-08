@@ -848,7 +848,7 @@ function DR:toggleEvent(event, arg1)
                 StaticPopup_Show("DRAGONRIDER_RESET_SETTINGS");
             end
 
-            local initializer = CreateSettingsButtonInitializer(L["ResetAllSettings"], RESET, OnButtonClick, L["ResetAllSettingsTT"]);
+            local initializer = CreateSettingsButtonInitializer(L["ResetAllSettings"], RESET, OnButtonClick, L["ResetAllSettingsTT"], true);
             layout:AddInitializer(initializer);
         end
 
