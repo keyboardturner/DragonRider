@@ -2,6 +2,10 @@
 
 Adjustments for 10.2.5 world dragonriding changes with 80% max speed change for [Riding Abroad](https://www.wowhead.com/ptr/spell=432503/riding-abroad)
 
+Modelscene changes when mounted on the Algarian Stormrider, which now display as lightning effects over vigor gems rather than the default swirling wind effects.
+
+Added an experimental bugfix option to hide vigor when dismounted.
+
 # 0.0.7
 
 Fix "assertion failed" issue in 10.2
