@@ -65,6 +65,10 @@ if LOCALE == "enUS" then
 	L["OpenDragonridingTalentsTT"] = "Open Dragonriding Talents Window."
 	L["SideArtName"] = "Side Art"
 	L["SideArtTT"] = "Toggle the art on the sides of the main Vigor bar."
+	L["BugfixesName"] = "Bugfixes"
+	L["BugfixesTT"] = "Experimental bug fix attempts for when default Blizzard frames aren't working as intended."
+	L["BugfixHideVigor"] = "Force Hide Vigor"
+	L["BugfixHideVigorTT"] = "Force hide the vigor bar when dismounted, and re-show when mounted on a dynamic flying mount."
 
 return end
 
@@ -122,6 +126,10 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["OpenDragonridingTalentsTT"] = "Abrir ventana de talentos de montar dragón."
 	L["SideArtName"] = "Arte Lateral"
 	L["SideArtTT"] = "Alterna el arte en los lados de la barra principal de Vigor."
+	L["BugfixesName"] = "Corrección de errores"
+	L["BugfixesTT"] = "Intentos experimentales de corrección de errores cuando los marcos predeterminados de Blizzard no funcionan según lo previsto."
+	L["BugfixHideVigor"] = "Fuerza Ocultar Vigor"
+	L["BugfixHideVigorTT"] = "Fuerce la ocultación de la barra de vigor cuando esté desmontado y vuelva a mostrarla cuando esté montado en una montura voladora dinámica."
 
 return end
 
@@ -179,6 +187,10 @@ if LOCALE == "deDE" then
 	L["OpenDragonridingTalentsTT"] = "Öffnen Sie das Fenster Drachenreiten-Talente."
 	L["SideArtName"] = "Seitenkunst"
 	L["SideArtTT"] = "Schalten Sie die Grafik an den Seiten der Haupt-Vigor-Leiste um."
+	L["BugfixesName"] = "Fehlerbehebung"
+	L["BugfixesTT"] = "Experimentelle Fehlerbehebungsversuche für den Fall, dass Standard-Blizzard-Frames nicht wie vorgesehen funktionieren."
+	L["BugfixHideVigor"] = "Force Hide Vigor"
+	L["BugfixHideVigorTT"] = "Erzwingen Sie das Ausblenden der Energieleiste beim Absteigen und das erneute Einblenden, wenn Sie auf einem dynamischen Flugreittier montiert sind."
 
 return end
 
@@ -236,6 +248,10 @@ if LOCALE == "frFR" then
 	L["OpenDragonridingTalentsTT"] = "Ouvrez la fenêtre des talents de Dragonriding."
 	L["SideArtName"] = "Art Parallèle"
 	L["SideArtTT"] = "Basculez l’art sur les côtés de la barre Vigor principale."
+	L["BugfixesName"] = "Corrections de bugs"
+	L["BugfixesTT"] = "Tentatives expérimentales de correction de bogues lorsque les images Blizzard par défaut ne fonctionnent pas comme prévu."
+	L["BugfixHideVigor"] = "Forcer à masquer la vigueur"
+	L["BugfixHideVigorTT"] = "Forcer à masquer la barre de vigueur une fois démonté et à la réafficher lorsqu'il est monté sur une monture volante dynamique."
 
 return end
 
@@ -293,6 +309,10 @@ if LOCALE == "itIT" then
 	L["OpenDragonridingTalentsTT"] = "Apri la finestra dei talenti di cavalcatura del drago."
 	L["SideArtName"] = "Arte Laterale"
 	L["SideArtTT"] = "Attiva/disattiva la grafica sui lati della barra principale del Vigore."
+	L["BugfixesName"] = "Correzioni di bug"
+	L["BugfixesTT"] = "Tentativi sperimentali di correzione di bug per quando i frame Blizzard predefiniti non funzionano come previsto."
+	L["BugfixHideVigor"] = "Forza Nascondi Vigore"
+	L["BugfixHideVigorTT"] = "Nascondi forzatamente la barra del vigore quando scendi e la mostri quando sei montata su una cavalcatura volante dinamica."
 
 return end
 
@@ -350,6 +370,10 @@ if LOCALE == "ptBR" then
 	L["OpenDragonridingTalentsTT"] = "Apri la finestra dei talenti di cavalcatura del drago."
 	L["SideArtName"] = "Arte Lateral"
 	L["SideArtTT"] = "Alterne a arte nas laterais da barra principal do Vigor."
+	L["BugfixesName"] = "Correções de bugs"
+	L["BugfixesTT"] = "Tentativas experimentais de correção de bugs quando os frames padrão da Blizzard não estão funcionando conforme o esperado."
+	L["BugfixHideVigor"] = "Forçar Ocultar Vigor"
+	L["BugfixHideVigorTT"] = "Force a ocultação da barra de vigor quando desmontada e mostre-a novamente quando montada em uma montaria voadora dinâmica."
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -409,6 +433,10 @@ if LOCALE == "ruRU" then
 	L["OpenDragonridingTalentsTT"] = "Откройте окно талантов верховой езды на драконах."
 	L["SideArtName"] = "Боковой арт"
 	L["SideArtTT"] = "Переключите изображение по бокам главной панели Vigor."
+	L["BugfixesName"] = "Исправление ошибок"
+	L["BugfixesTT"] = "Экспериментальные попытки исправить ошибку, когда стандартные фреймы Blizzard не работают должным образом."
+	L["BugfixHideVigor"] = "Сила Скрыть Энергию"
+	L["BugfixHideVigorTT"] = "Принудительно скройте шкалу энергии при спешивании и снова отобразите ее при установке на динамического летающего средства передвижения."
 
 return end
 
@@ -466,6 +494,10 @@ if LOCALE == "koKR" then
 	L["OpenDragonridingTalentsTT"] = "용 타기 특성 창을 엽니다."
 	L["SideArtName"] = "사이드 아트"
 	L["SideArtTT"] = "메인 Vigor 바의 측면에 있는 아트를 전환합니다."
+	L["BugfixesName"] = "버그 수정"
+	L["BugfixesTT"] = "기본 블리자드 프레임이 의도한 대로 작동하지 않는 경우를 위한 실험적인 버그 수정 시도입니다."
+	L["BugfixHideVigor"] = "포스 하이드 활력"
+	L["BugfixHideVigorTT"] = "분리되면 활력 바를 강제로 숨기고 동적 비행 탈것에 장착하면 다시 표시됩니다."
 
 return end
 
@@ -523,6 +555,10 @@ if LOCALE == "zhCN" then
 	L["OpenDragonridingTalentsTT"] = "打开龙骑天赋窗口。"
 	L["SideArtName"] = "侧面艺术"
 	L["SideArtTT"] = "切换主活力条两侧的艺术。"
+	L["BugfixesName"] = "Bug修复"
+	L["BugfixesTT"] = "当默认暴雪框架未按预期工作时尝试进行实验性错误修复。"
+	L["BugfixHideVigor"] = "强制隐藏活力"
+	L["BugfixHideVigorTT"] = "拆卸时强制隐藏活力条，安装在动态飞行坐骑上时重新显示。"
 
 return end
 
@@ -580,5 +616,9 @@ if LOCALE == "zhTW" then
 	L["OpenDragonridingTalentsTT"] = "打開龍騎天賦窗口。"
 	L["SideArtName"] = "側面藝術"
 	L["SideArtTT"] = "切換主活力條兩側的藝術。"
+	L["BugfixesName"] = "Bug修復"
+	L["BugfixesTT"] = "當預設暴雪框架未如預期工作時嘗試進行實驗性錯誤修復。"
+	L["BugfixHideVigor"] = "強制隱藏活力"
+	L["BugfixHideVigorTT"] = "拆卸時強制隱藏活力條，安裝在動態飛行坐騎上時重新顯示。"
 
 return end
