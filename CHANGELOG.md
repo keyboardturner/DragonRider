@@ -1,3 +1,7 @@
+# 0.0.9
+
+Revert experimental bugfix option for hiding vigor bar as this was unintentionally hiding other bars that were attached to it.
+
 # 0.0.8
 
 Adjustments for 10.2.5 world dragonriding changes with 80% max speed change for [Riding Abroad](https://www.wowhead.com/ptr/spell=432503/riding-abroad)
