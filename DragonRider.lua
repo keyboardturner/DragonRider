@@ -329,7 +329,7 @@ function DR.updateSpeed()
 		DR:Show()
 	end
 	if NotDragonIsles then
-		DR.statusbar:SetMinMaxValues(0, 80)
+		DR.statusbar:SetMinMaxValues(0, 85)
 		if forwardSpeed > 52 then
 			local textColor = CreateColor(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice purple?) -
