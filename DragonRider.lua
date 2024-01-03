@@ -546,7 +546,7 @@ function DR.setPositions()
 		end
 	end
 
-	DR.glide:SetFont("Fonts\\FRIZQT__.TTF", DragonRider_DB.speedTextScale)    
+	DR.glide:SetFont("GameTooltipText", DragonRider_DB.speedTextScale)
 end
 
 function DR.clearPositions()
