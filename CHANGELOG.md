@@ -1,3 +1,11 @@
+# 0.1.1
+
+Font Fixes - hopefully should fix for russian and maybe other localizations
+
+# 0.1.0
+
+PTR 85% old world flight cap
+
 # 0.0.9
 
 Revert experimental bugfix option for hiding vigor bar as this was unintentionally hiding other bars that were attached to it.
