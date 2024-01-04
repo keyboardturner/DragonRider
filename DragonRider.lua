@@ -326,7 +326,7 @@ function DR.updateSpeed()
 	local roundedSpeed = Round(forwardSpeed, 3)
 	local NotDragonIsles = C_UnitAuras.GetPlayerAuraBySpellID(432503)
 	if UIWidgetPowerBarContainerFrame:HasAnyWidgetsShowing() == true then
-		DR:Show()
+		DR:Show();
 	end
 	if NotDragonIsles then
 		DR.statusbar:SetMinMaxValues(0, 85)
@@ -445,21 +445,121 @@ DR:RegisterEvent("COMPANION_UPDATE")
 DR:RegisterEvent("PLAYER_LOGIN")
 
 
+
+DR.WidgetFrameIDs = {
+	4460, -- generic DR
+	4604, -- non-DR
+	5140, -- gold gryphon
+	5143, -- silver gryphon
+	5144, -- bronze gryphon
+	5145, -- dark gryphon
+};
+
+
+function DR.GetWidgetAlpha()
+	for k, v in pairs(DR.WidgetFrameIDs) do
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+			return UIWidgetPowerBarContainerFrame.widgetFrames[v]:GetAlpha()
+		end
+	end
+end
+
+function DR.WidgetTooltipFallback_OnEnter(frame, tooltip)
+	GameTooltip_SetDefaultAnchor(GameTooltip, frame);
+	--GameTooltip_SetTitle(GameTooltip);
+	GameTooltip_AddNormalLine(GameTooltip, tooltip);
+	GameTooltip:Show();
+end
+
+function DR.WidgetTooltipFallback_OnLeave()
+	GameTooltip:Hide();
+end
+
+
+function DR.GetVigorValueExact()
+	local fillCurrent = (UnitPower("player", Enum.PowerType.AlternateMount) + (C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillValue*.01) )
+	--local fillMin = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillMax
+	local fillMax = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).numTotalFrames
+	return fillCurrent, fillMax
+end
+
+function DR.DoWidgetThings()
+	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
+	local fillCurrent, fillMax = DR.GetVigorValueExact()
+	for k, v in pairs(DR.WidgetFrameIDs) do
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] == nil then
+			return
+		else
+			if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
+				UIWidgetPowerBarContainerFrame.widgetFrames[4460] = nil
+				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout()
+				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
+				return
+			end
+			-- These will be for tooltip on mouseover options.
+			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
+			--UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
+			--UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+			if not DR["fadeOutWidgetGroup" .. v] then
+
+				DR["fadeOutWidgetGroup" .. v] = UIWidgetPowerBarContainerFrame.widgetFrames[v]:CreateAnimationGroup()
+
+				-- Set scripts for when animations start and finish
+				DR["fadeOutWidgetGroup" .. v]:SetScript("OnFinished", function()
+					if UIWidgetPowerBarContainerFrame.widgetFrames[v] == nil then
+						return
+					else
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetAlpha(0);
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
+					--DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
+					end
+				end)
+
+				-- Function to hide the frame with a fade out animation
+				function DR.HideWithFadeWidget()
+					DR["fadeOutWidgetGroup" .. v]:Stop(); -- Stop any ongoing animations
+					DR["fadeOutWidgetGroup" .. v]:Play(); -- Play the fade out animation
+				end
+				
+			end
+			-- Create a fade out animation
+			DR["fadeOutWidget" .. v] = DR["fadeOutWidgetGroup" .. v]:CreateAnimation("Alpha")
+			DR["fadeOutWidget" .. v]:SetFromAlpha(DR.GetWidgetAlpha())
+			DR["fadeOutWidget" .. v]:SetToAlpha(0)
+			DR["fadeOutWidget" .. v]:SetDuration(1) -- Duration of the fade out animation
+
+			if fillCurrent >= fillMax and isGliding == false then
+				DR.HideWithFadeWidget();
+			else
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Show();
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetAlpha(1);
+			end
+		end
+	end
+end
+
+
 function DR.setPositions()
+	local ParentFrame = UIWidgetPowerBarContainerFrame
+	for k, v in pairs(DR.WidgetFrameIDs) do
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+			ParentFrame = UIWidgetPowerBarContainerFrame.widgetFrames[v]
+		end
+	end
 	DR.statusbar:ClearAllPoints();
-	DR.statusbar:SetPoint("BOTTOM", UIWidgetPowerBarContainerFrame, "TOP", 0, 5);
+	DR.statusbar:SetPoint("BOTTOM", ParentFrame, "TOP", 0, 5);
 	if DragonRider_DB.speedometerPosPoint == 1 then
 		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("BOTTOM", UIWidgetPowerBarContainerFrame, "TOP", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		DR.statusbar:SetPoint("BOTTOM", ParentFrame, "TOP", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	elseif DragonRider_DB.speedometerPosPoint == 2 then
 		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("TOP", UIWidgetPowerBarContainerFrame, "BOTTOM", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		DR.statusbar:SetPoint("TOP", ParentFrame, "BOTTOM", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	elseif DragonRider_DB.speedometerPosPoint == 3 then
 		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("RIGHT", UIWidgetPowerBarContainerFrame, "LEFT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		DR.statusbar:SetPoint("RIGHT", ParentFrame, "LEFT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	elseif DragonRider_DB.speedometerPosPoint == 4 then
 		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("LEFT", UIWidgetPowerBarContainerFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		DR.statusbar:SetPoint("LEFT", ParentFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	end
 	local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
 	if PowerBarChildren[3] ~= nil then
@@ -473,6 +573,7 @@ function DR.setPositions()
 	end
 	DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
 	for i = 1,6 do
+		DR.modelScene[i]:SetParent(ParentFrame)
 		DR.modelScene[i]:ClearAllPoints();
 	end
 	
@@ -485,26 +586,27 @@ function DR.setPositions()
 		end
 		-- algarian stormrider uses gems for the vigor bar, spacing is ~50
 		if IsPlayerSpell(377922) == true then -- 6 vigor
-			for i = 1,6 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -175+(i*spacing), 14);
+			for i = 1,6 do
+				DR.modelScene[i]:SetParent(ParentFrame)
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -175+(i*spacing), 14);
 			end
 		elseif IsPlayerSpell(377921) == true then -- 5 vigor
 			for i = 1,5 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -150+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -150+(i*spacing), 14);
 			end
 			for i = 6,6,-1 do
 				DR.modelScene[i]:Hide()
 			end
 		elseif IsPlayerSpell(377920) == true then -- 4 vigor
 			for i = 1,4 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -125+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -125+(i*spacing), 14);
 			end
 			for i = 6,5,-1 do
 				DR.modelScene[i]:Hide()
 			end
 		else
 			for i = 1,3 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -100+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -100+(i*spacing), 14);
 			end
 			for i = 6,4,-1 do
 				DR.modelScene[i]:Hide()
@@ -520,25 +622,25 @@ function DR.setPositions()
 		--dragonriding is a spacing diff of 42
 		if IsPlayerSpell(377922) == true then -- 6 vigor
 			for i = 1,6 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -147+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -147+(i*spacing), 14);
 			end
 		elseif IsPlayerSpell(377921) == true then -- 5 vigor
 			for i = 1,5 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -126+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -126+(i*spacing), 14);
 			end
 			for i = 6,6,-1 do
 				DR.modelScene[i]:Hide()
 			end
 		elseif IsPlayerSpell(377920) == true then -- 4 vigor
 			for i = 1,4 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -105+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -105+(i*spacing), 14);
 			end
 			for i = 6,5,-1 do
 				DR.modelScene[i]:Hide()
 			end
 		else
 			for i = 1,3 do 
-				DR.modelScene[i]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, "CENTER", -84+(i*spacing), 14);
+				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -84+(i*spacing), 14);
 			end
 			for i = 6,4,-1 do
 				DR.modelScene[i]:Hide()
@@ -549,9 +651,50 @@ function DR.setPositions()
 	DR.glide:SetFont("GameTooltipText", DragonRider_DB.speedTextScale)
 end
 
-function DR.clearPositions()
+
+function DR.GetBarAlpha()
+	return DR.statusbar:GetAlpha()
+end
+
+DR.fadeInBarGroup = DR.statusbar:CreateAnimationGroup()
+DR.fadeOutBarGroup = DR.statusbar:CreateAnimationGroup()
+
+-- Create a fade in animation
+DR.fadeInBar = DR.fadeInBarGroup:CreateAnimation("Alpha")
+DR.fadeInBar:SetFromAlpha(DR.GetBarAlpha())
+DR.fadeInBar:SetToAlpha(1)
+DR.fadeInBar:SetDuration(.1) -- Duration of the fade in animation
+
+-- Create a fade out animation
+DR.fadeOutBar = DR.fadeOutBarGroup:CreateAnimation("Alpha")
+DR.fadeOutBar:SetFromAlpha(DR.GetBarAlpha())
+DR.fadeOutBar:SetToAlpha(0)
+DR.fadeOutBar:SetDuration(.5) -- Duration of the fade out animation
+
+-- Set scripts for when animations start and finish
+DR.fadeOutBarGroup:SetScript("OnFinished", function()
 	DR.statusbar:ClearAllPoints();
-	DR.statusbar:Hide();
+	DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
+end)
+DR.fadeInBarGroup:SetScript("OnPlay", function()
+	DR.setPositions();
+	DR.statusbar:Show() -- Show the frame when the fade in animation starts
+end)
+
+-- Function to show the frame with a fade in animation
+function DR.ShowWithFadeBar()
+	DR.fadeInBarGroup:Stop() -- Stop any ongoing animations
+	DR.fadeInBarGroup:Play() -- Play the fade in animation
+end
+
+-- Function to hide the frame with a fade out animation
+function DR.HideWithFadeBar()
+	DR.fadeOutBarGroup:Stop() -- Stop any ongoing animations
+	DR.fadeOutBarGroup:Play() -- Play the fade out animation
+end
+
+function DR.clearPositions()
+	DR.HideWithFadeBar()
 end
 
 DR.clearPositions()
@@ -855,22 +998,32 @@ function DR:toggleEvent(event, arg1)
 		---------------------------------------------------------------------------------------------------------------------------------
 
 		DR.vigorCounter()
+
+		function DR.RepeatChecker()
+			local curentVigor, maxVigor = DR.GetVigorValueExact()
+			--print(curentVigor) -- for some fun spam
+			DR.DoWidgetThings()
+			local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
+			if canGlide == true and isGliding == true then
+				DR.setPositions();
+				DR.TimerNamed:Cancel();
+				DR.TimerNamed = C_Timer.NewTicker(.1, function()
+					DR.updateSpeed();
+				end)
+				DR.ShowWithFadeBar();
+			elseif canGlide == true and isGliding == false then
+				DR.clearPositions();
+				DR.TimerNamed:Cancel();
+			else
+				DR.clearPositions();
+				DR.TimerNamed:Cancel();
+			end
+		end
+
+		C_Timer.NewTicker(1, DR.RepeatChecker)
 	end
 
-	if DR.MountEvents[event] then
-		local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
-		if canGlide == true then
-			DR.setPositions();
-			DR.TimerNamed:Cancel();
-			DR.TimerNamed = C_Timer.NewTicker(.1, function()
-				DR.updateSpeed();
-			end)
-			DR.statusbar:Show();
-		else
-			DR.clearPositions();
-			DR.TimerNamed:Cancel();
-		end
-	end
+	
 end
 
 
