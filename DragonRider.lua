@@ -457,10 +457,8 @@ DR.WidgetFrameIDs = {
 
 
 function DR.GetWidgetAlpha()
-	for k, v in pairs(DR.WidgetFrameIDs) do
-		if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
-			return UIWidgetPowerBarContainerFrame.widgetFrames[v]:GetAlpha()
-		end
+	if UIWidgetPowerBarContainerFrame then
+		return UIWidgetPowerBarContainerFrame:GetAlpha()
 	end
 end
 
@@ -487,56 +485,67 @@ function DR.GetVigorValueExact()
 	end
 end
 
+function DR.FixBlizzFrames()
+	for k, v in pairs(DR.WidgetFrameIDs) do
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
+			if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
+				UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
+				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
+				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
+				return
+			end
+		end
+	end
+end
+
 function DR.DoWidgetThings()
 	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 	local fillCurrent, fillMax = DR.GetVigorValueExact()
 	for k, v in pairs(DR.WidgetFrameIDs) do
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
-			if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
-				UIWidgetPowerBarContainerFrame.widgetFrames[4460] = nil
-				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout()
-				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
-				return
-			end
-			-- These will be for tooltip on mouseover options.
-			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
-			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
-			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
-			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnShow", function() UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide(); end)
-			if not DR["fadeOutWidgetGroup" .. v] then
+			DR.FixBlizzFrames()
 
-				DR["fadeOutWidgetGroup" .. v] = UIWidgetPowerBarContainerFrame.widgetFrames[v]:CreateAnimationGroup()
+			-- These will be for tooltip on mouseover options.
+			if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+			end
+
+			if not DR.fadeOutWidgetGroup then
+
+				DR.fadeOutWidgetGroup = UIWidgetPowerBarContainerFrame:CreateAnimationGroup()
 
 				-- Set scripts for when animations start and finish
-				DR["fadeOutWidgetGroup" .. v]:SetScript("OnFinished", function()
-					if UIWidgetPowerBarContainerFrame.widgetFrames[v] == nil then
+				DR.fadeOutWidgetGroup:SetScript("OnFinished", function()
+					if UIWidgetPowerBarContainerFrame == nil then
 						return
 					else
-					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetAlpha(0);
-					UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
-					--DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
+						UIWidgetPowerBarContainerFrame:SetAlpha(0);
+						UIWidgetPowerBarContainerFrame:Hide();
+						--DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
 					end
 				end)
 
 				-- Function to hide the frame with a fade out animation
 				function DR.HideWithFadeWidget()
-					DR["fadeOutWidgetGroup" .. v]:Stop(); -- Stop any ongoing animations
-					DR["fadeOutWidgetGroup" .. v]:Play(); -- Play the fade out animation
+					DR.fadeOutWidgetGroup:Stop(); -- Stop any ongoing animations
+					DR.fadeOutWidgetGroup:Play(); -- Play the fade out animation
 				end
 				-- Create a fade out animation
-				DR["fadeOutWidget" .. v] = DR["fadeOutWidgetGroup" .. v]:CreateAnimation("Alpha")
-				DR["fadeOutWidget" .. v]:SetFromAlpha(DR.GetWidgetAlpha())
-				DR["fadeOutWidget" .. v]:SetToAlpha(0)
-				DR["fadeOutWidget" .. v]:SetDuration(1) -- Duration of the fade out animation
+				DR.fadeOutWidget = DR.fadeOutWidgetGroup:CreateAnimation("Alpha")
+				DR.fadeOutWidget:SetFromAlpha(DR.GetWidgetAlpha())
+				DR.fadeOutWidget:SetToAlpha(0)
+				DR.fadeOutWidget:SetDuration(1) -- Duration of the fade out animation
 				
 			end
 
 			if fillCurrent >= fillMax and isGliding == false then
 				DR.HideWithFadeWidget();
 			else
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnShow", nil)
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Show();
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetAlpha(1);
+				UIWidgetPowerBarContainerFrame:Show();
+				UIWidgetPowerBarContainerFrame:SetAlpha(1);
 			end
 		end
 	end
