@@ -477,19 +477,21 @@ end
 
 
 function DR.GetVigorValueExact()
-	local fillCurrent = (UnitPower("player", Enum.PowerType.AlternateMount) + (C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillValue*.01) )
-	--local fillMin = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillMax
-	local fillMax = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).numTotalFrames
-	return fillCurrent, fillMax
+	if UnitPower("player", Enum.PowerType.AlternateMount) and C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460) then
+		local fillCurrent = (UnitPower("player", Enum.PowerType.AlternateMount) + (C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillValue*.01) )
+		--local fillMin = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillMax
+		local fillMax = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).numTotalFrames
+		return fillCurrent, fillMax
+	else
+		return
+	end
 end
 
 function DR.DoWidgetThings()
 	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 	local fillCurrent, fillMax = DR.GetVigorValueExact()
 	for k, v in pairs(DR.WidgetFrameIDs) do
-		if UIWidgetPowerBarContainerFrame.widgetFrames[v] == nil then
-			return
-		else
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
 			if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
 				UIWidgetPowerBarContainerFrame.widgetFrames[4460] = nil
 				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout()
@@ -498,8 +500,9 @@ function DR.DoWidgetThings()
 			end
 			-- These will be for tooltip on mouseover options.
 			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
-			--UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
-			--UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
+			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+			UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnShow", function() UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide(); end)
 			if not DR["fadeOutWidgetGroup" .. v] then
 
 				DR["fadeOutWidgetGroup" .. v] = UIWidgetPowerBarContainerFrame.widgetFrames[v]:CreateAnimationGroup()
@@ -520,17 +523,18 @@ function DR.DoWidgetThings()
 					DR["fadeOutWidgetGroup" .. v]:Stop(); -- Stop any ongoing animations
 					DR["fadeOutWidgetGroup" .. v]:Play(); -- Play the fade out animation
 				end
+				-- Create a fade out animation
+				DR["fadeOutWidget" .. v] = DR["fadeOutWidgetGroup" .. v]:CreateAnimation("Alpha")
+				DR["fadeOutWidget" .. v]:SetFromAlpha(DR.GetWidgetAlpha())
+				DR["fadeOutWidget" .. v]:SetToAlpha(0)
+				DR["fadeOutWidget" .. v]:SetDuration(1) -- Duration of the fade out animation
 				
 			end
-			-- Create a fade out animation
-			DR["fadeOutWidget" .. v] = DR["fadeOutWidgetGroup" .. v]:CreateAnimation("Alpha")
-			DR["fadeOutWidget" .. v]:SetFromAlpha(DR.GetWidgetAlpha())
-			DR["fadeOutWidget" .. v]:SetToAlpha(0)
-			DR["fadeOutWidget" .. v]:SetDuration(1) -- Duration of the fade out animation
 
 			if fillCurrent >= fillMax and isGliding == false then
 				DR.HideWithFadeWidget();
 			else
+				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnShow", nil)
 				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Show();
 				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetAlpha(1);
 			end
@@ -648,7 +652,7 @@ function DR.setPositions()
 		end
 	end
 
-	DR.glide:SetFont("GameTooltipText", DragonRider_DB.speedTextScale)
+	DR.glide:SetFont(STANDARD_TEXT_FONT, DragonRider_DB.speedTextScale)
 end
 
 
@@ -999,6 +1003,7 @@ function DR:toggleEvent(event, arg1)
 
 		DR.vigorCounter()
 
+
 		function DR.RepeatChecker()
 			local curentVigor, maxVigor = DR.GetVigorValueExact()
 			--print(curentVigor) -- for some fun spam
@@ -1011,12 +1016,15 @@ function DR:toggleEvent(event, arg1)
 					DR.updateSpeed();
 				end)
 				DR.ShowWithFadeBar();
+
 			elseif canGlide == true and isGliding == false then
 				DR.clearPositions();
 				DR.TimerNamed:Cancel();
+
 			else
 				DR.clearPositions();
 				DR.TimerNamed:Cancel();
+
 			end
 		end
 
