@@ -495,7 +495,7 @@ function DR.FixBlizzFrames()
 				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
 				UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
 				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
-				print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
+				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
 				return
 			end
 		end
@@ -688,41 +688,41 @@ DR.fadeOutBarGroup = DR.statusbar:CreateAnimationGroup()
 DR.fadeInBar = DR.fadeInBarGroup:CreateAnimation("Alpha")
 DR.fadeInBar:SetFromAlpha(DR.GetBarAlpha())
 DR.fadeInBar:SetToAlpha(1)
-DR.fadeInBar:SetDuration(.1) -- Duration of the fade in animation
+DR.fadeInBar:SetDuration(.5) -- Duration of the fade in animation
 
 -- Create a fade out animation
 DR.fadeOutBar = DR.fadeOutBarGroup:CreateAnimation("Alpha")
 DR.fadeOutBar:SetFromAlpha(DR.GetBarAlpha())
 DR.fadeOutBar:SetToAlpha(0)
-DR.fadeOutBar:SetDuration(.5) -- Duration of the fade out animation
+DR.fadeOutBar:SetDuration(.1) -- Duration of the fade out animation
 
 -- Set scripts for when animations start and finish
 DR.fadeOutBarGroup:SetScript("OnFinished", function()
 	DR.statusbar:ClearAllPoints();
-	DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
+	DR.statusbar:Hide(); -- Hide the frame when the fade out animation is finished
 end)
 DR.fadeInBarGroup:SetScript("OnPlay", function()
 	DR.setPositions();
-	DR.statusbar:Show() -- Show the frame when the fade in animation starts
+	DR.statusbar:Show(); -- Show the frame when the fade in animation starts
 end)
 
 -- Function to show the frame with a fade in animation
 function DR.ShowWithFadeBar()
-	DR.fadeInBarGroup:Stop() -- Stop any ongoing animations
-	DR.fadeInBarGroup:Play() -- Play the fade in animation
+	DR.fadeInBarGroup:Stop(); -- Stop any ongoing animations
+	DR.fadeInBarGroup:Play(); -- Play the fade in animation
 end
 
 -- Function to hide the frame with a fade out animation
 function DR.HideWithFadeBar()
-	DR.fadeOutBarGroup:Stop() -- Stop any ongoing animations
-	DR.fadeOutBarGroup:Play() -- Play the fade out animation
+	DR.fadeOutBarGroup:Stop(); -- Stop any ongoing animations
+	DR.fadeOutBarGroup:Play(); -- Play the fade out animation
 end
 
 function DR.clearPositions()
-	DR.HideWithFadeBar()
+	DR.HideWithFadeBar();
 end
 
-DR.clearPositions()
+DR.clearPositions();
 
 
 function DR:toggleEvent(event, arg1)
@@ -887,8 +887,8 @@ function DR:toggleEvent(event, arg1)
 
 		do
 			local variable = "fadeSpeed"
-			local name = L["[PH] Title"]
-			local tooltip = L["[PH] Fade Speedometer tooltip"]
+			local name = L["FadeSpeedometer"]
+			local tooltip = L["FadeSpeedometerTT"]
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
@@ -926,8 +926,8 @@ function DR:toggleEvent(event, arg1)
 
 		do
 			local variable = "showtooltip"
-			local name = L["[PH] Show Tooltip Title"]
-			local tooltip = L["[PH] Show Tooltip Tooltip"]
+			local name = L["ShowVigorTooltip"]
+			local tooltip = L["ShowVigorTooltipTT"]
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
@@ -938,8 +938,8 @@ function DR:toggleEvent(event, arg1)
 
 		do
 			local variable = "fadeVigor"
-			local name = L["[PH] Fade Vigor Title"]
-			local tooltip = L["[PH] Fade Vigor Tooltip"]
+			local name = L["FadeVigor"]
+			local tooltip = L["FadeVigorTT"]
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)

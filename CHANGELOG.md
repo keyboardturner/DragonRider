@@ -1,3 +1,7 @@
+# 0.1.2
+
+Added new options to fade the vigor bar and speedometer, an option to toggle the tooltip on the vigor bar that occurs during mouseover, and a fix to the double vigor bar Blizzard bug.
+
 # 0.1.1
 
 Font Fixes - hopefully should fix for russian and maybe other localizations
