@@ -60,6 +60,9 @@ local defaultsTable = {
 	tempFixes = {
 		hideVigor = true, -- this is now deprecated
 	},
+	showtooltip = true,
+	fadeVigor = true,
+	fadeSpeed = true,
 
 };
 
@@ -492,7 +495,7 @@ function DR.FixBlizzFrames()
 				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
 				UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
 				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
-				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
+				print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
 				return
 			end
 		end
@@ -502,15 +505,19 @@ end
 function DR.DoWidgetThings()
 	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 	local fillCurrent, fillMax = DR.GetVigorValueExact()
+	DR.FixBlizzFrames()
 	for k, v in pairs(DR.WidgetFrameIDs) do
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
-			DR.FixBlizzFrames()
+			
 
 			-- These will be for tooltip on mouseover options.
 			if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end )
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+				if DragonRider_DB.showtooltip == false then
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
+				else
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() if UIWidgetPowerBarContainerFrame.widgetFrames[v] then DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end end )
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+				end
 			end
 
 			if not DR.fadeOutWidgetGroup then
@@ -530,8 +537,13 @@ function DR.DoWidgetThings()
 
 				-- Function to hide the frame with a fade out animation
 				function DR.HideWithFadeWidget()
-					DR.fadeOutWidgetGroup:Stop(); -- Stop any ongoing animations
-					DR.fadeOutWidgetGroup:Play(); -- Play the fade out animation
+					if DragonRider_DB.fadeVigor == true then
+						DR.fadeOutWidgetGroup:Stop(); -- Stop any ongoing animations
+						DR.fadeOutWidgetGroup:Play(); -- Play the fade out animation
+					else
+						UIWidgetPowerBarContainerFrame:SetAlpha(1);
+						UIWidgetPowerBarContainerFrame:Show();
+					end
 				end
 				-- Create a fade out animation
 				DR.fadeOutWidget = DR.fadeOutWidgetGroup:CreateAnimation("Alpha")
@@ -732,6 +744,15 @@ function DR:toggleEvent(event, arg1)
 		if DragonRider_DB.tempFixes.hideVigor == nil then -- this is now deprecated
 			DragonRider_DB.tempFixes.hideVigor = true
 		end
+		if DragonRider_DB.showtooltip == nil then
+			DragonRider_DB.showtooltip = true
+		end
+		if DragonRider_DB.fadeVigor == nil then
+			DragonRider_DB.fadeVigor = true
+		end
+		if DragonRider_DB.fadeSpeed == nil then
+			DragonRider_DB.fadeSpeed = true
+		end
 
 
 		---------------------------------------------------------------------------------------------------------------------------------
@@ -743,6 +764,7 @@ function DR:toggleEvent(event, arg1)
 			DragonRider_DB[variable] = value
 			DR.vigorCounter()
 			DR.setPositions()
+			DR.DoWidgetThings()
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
@@ -863,6 +885,18 @@ function DR:toggleEvent(event, arg1)
 			setting:SetValue(DragonRider_DB[variable])
 		end
 
+		do
+			local variable = "fadeSpeed"
+			local name = L["[PH] Title"]
+			local tooltip = L["[PH] Fade Speedometer tooltip"]
+			local defaultValue = true
+
+			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+			Settings.CreateCheckBox(category, setting, tooltip)
+			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+			setting:SetValue(DragonRider_DB[variable])
+		end
+
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"]));
 
@@ -882,6 +916,30 @@ function DR:toggleEvent(event, arg1)
 			local variable = "sideArt"
 			local name = L["SideArtName"]
 			local tooltip = L["SideArtTT"]
+			local defaultValue = true
+
+			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+			Settings.CreateCheckBox(category, setting, tooltip)
+			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+			setting:SetValue(DragonRider_DB[variable])
+		end
+
+		do
+			local variable = "showtooltip"
+			local name = L["[PH] Show Tooltip Title"]
+			local tooltip = L["[PH] Show Tooltip Tooltip"]
+			local defaultValue = true
+
+			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+			Settings.CreateCheckBox(category, setting, tooltip)
+			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+			setting:SetValue(DragonRider_DB[variable])
+		end
+
+		do
+			local variable = "fadeVigor"
+			local name = L["[PH] Fade Vigor Title"]
+			local tooltip = L["[PH] Fade Vigor Tooltip"]
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
@@ -1027,8 +1085,17 @@ function DR:toggleEvent(event, arg1)
 				DR.ShowWithFadeBar();
 
 			elseif canGlide == true and isGliding == false then
-				DR.clearPositions();
-				DR.TimerNamed:Cancel();
+				if DragonRider_DB.fadeSpeed == true then
+					DR.clearPositions();
+					DR.TimerNamed:Cancel();
+				else
+					DR.setPositions();
+					DR.TimerNamed:Cancel();
+					DR.TimerNamed = C_Timer.NewTicker(.1, function()
+						DR.updateSpeed();
+					end)
+					DR.ShowWithFadeBar();
+				end
 
 			else
 				DR.clearPositions();
