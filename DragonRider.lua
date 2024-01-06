@@ -63,6 +63,7 @@ local defaultsTable = {
 	showtooltip = true,
 	fadeVigor = true,
 	fadeSpeed = true,
+	lightningRush = true,
 
 };
 
@@ -169,6 +170,15 @@ end
 
 
 local DR = CreateFrame("Frame", nil, UIParent)
+
+DR.WidgetFrameIDs = {
+	4460, -- generic DR
+	4604, -- non-DR
+	5140, -- gold gryphon
+	5143, -- silver gryphon
+	5144, -- bronze gryphon
+	5145, -- dark gryphon
+};
 
 DR.statusbar = CreateFrame("StatusBar", nil, UIParent)
 DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -285,6 +295,95 @@ function DR.toggleModels()
 end
 
 DR.toggleModels()
+
+
+
+DR.charge = CreateFrame("Frame")
+DR.charge:RegisterEvent("UNIT_AURA")
+DR.charge:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+
+function DR:chargeSetup(number)
+	if UIWidgetPowerBarContainerFrame then
+		if UIWidgetPowerBarContainerFrame.widgetFrames[5140] then -- gold tex
+			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
+			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
+		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5143] then -- silver tex
+			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Empty.blp")
+			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Cover.blp")
+		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5144] then -- bronze tex
+			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Empty.blp")
+			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Cover.blp")
+		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5145] then -- dark tex
+			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Empty.blp")
+			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Cover.blp")
+		else
+			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
+			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
+			DR.charge[number]:Hide();
+		end
+	end
+end
+
+for i = 1, 10 do
+	DR.charge[i] = CreateFrame("Frame")
+	DR.charge[i]:SetSize(25,25)
+	DR.charge[1]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, -61,15)
+	if i ~= 1 then
+		DR.charge[i]:SetPoint("CENTER", DR.charge[i-1], 30.5, 0)
+		DR.charge[i]:SetParent(DR.charge[i-1])
+	end
+	if DR.charge[6] then
+		DR.charge[6]:SetPoint("CENTER", DR.charge[1], 0, -30)
+	end
+	DR.charge[i].texBase = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 0)
+	DR.charge[i].texBase:SetAllPoints(DR.charge[i])
+	DR.charge[i].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
+	DR.charge[i].texFill = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 1)
+	DR.charge[i].texFill:SetAllPoints(DR.charge[i])
+	DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp")
+	DR.charge[i].texCover = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 2)
+	DR.charge[i].texCover:SetAllPoints(DR.charge[i])
+	DR.charge[i].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
+
+	DR.charge[i].texFill:Hide();
+
+end
+
+
+function DR.toggleCharges(self, event, arg1)
+	if event == "UNIT_AURA" and arg1 == "player" then
+		if C_UnitAuras.GetPlayerAuraBySpellID(418590) then
+			local chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(418590).applications
+			for i = 1,10 do
+				DR:chargeSetup(i)
+				if i <= chargeCount then
+					DR.charge[i].texFill:Show();
+				else
+					DR.charge[i].texFill:Hide();
+				end
+			end
+		else
+			for i = 1,10 do
+				DR.charge[i].texFill:Hide();
+			end
+		end
+	end
+	if event == "SPELL_UPDATE_COOLDOWN" then
+		local start, duration, enabled, modRate = GetSpellCooldown(418592)
+		if ( start > 0 and duration > 0) then
+			local cdLeft = start + duration - GetTime()
+			for i = 1,10 do
+				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill_CD.blp");
+			end
+		else
+			for i = 1,10 do
+				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp");
+			end
+		end
+	end
+end
+
+DR.charge:SetScript("OnEvent", DR.toggleCharges)
 
 function DR.useUnits()
 	if DragonRider_DB.speedValUnits == 1 then
@@ -448,17 +547,6 @@ DR:RegisterEvent("COMPANION_UPDATE")
 DR:RegisterEvent("PLAYER_LOGIN")
 
 
-
-DR.WidgetFrameIDs = {
-	4460, -- generic DR
-	4604, -- non-DR
-	5140, -- gold gryphon
-	5143, -- silver gryphon
-	5144, -- bronze gryphon
-	5145, -- dark gryphon
-};
-
-
 function DR.GetWidgetAlpha()
 	if UIWidgetPowerBarContainerFrame then
 		return UIWidgetPowerBarContainerFrame:GetAlpha()
@@ -490,14 +578,24 @@ end
 
 function DR.FixBlizzFrames()
 	for k, v in pairs(DR.WidgetFrameIDs) do
+
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
-			if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
-				UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
-				UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
-				UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
-				--print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
-				return
-			end
+			DR:SetScript("OnUpdate", function()
+				if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
+						if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+							UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
+							UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
+							UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
+							if DragonRider_DB.debug == true then
+								print("bingus")
+							end
+						end
+					if DragonRider_DB.debug == true then
+						print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
+					end
+					return
+				end
+			end)
 		end
 	end
 end
@@ -553,11 +651,13 @@ function DR.DoWidgetThings()
 				
 			end
 
-			if fillCurrent >= fillMax and isGliding == false then
-				DR.HideWithFadeWidget();
-			else
-				UIWidgetPowerBarContainerFrame:Show();
-				UIWidgetPowerBarContainerFrame:SetAlpha(1);
+			if C_PlayerInfo.GetGlidingInfo() then
+				if fillCurrent >= fillMax and isGliding == false then
+					DR.HideWithFadeWidget();
+				else
+					UIWidgetPowerBarContainerFrame:Show();
+					UIWidgetPowerBarContainerFrame:SetAlpha(1);
+				end
 			end
 		end
 	end
@@ -586,6 +686,17 @@ function DR.setPositions()
 		DR.statusbar:ClearAllPoints();
 		DR.statusbar:SetPoint("LEFT", ParentFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	end
+
+	DR.charge[1]:SetPoint("CENTER", ParentFrame, -61,15)
+	for i = 1, 10 do
+		if C_UnitAuras.GetPlayerAuraBySpellID(417888) and DragonRider_DB.lightningRush == true then
+			DR.charge[i]:Show();
+			DR:chargeSetup(i)
+		else
+			DR.charge[i]:Hide();
+		end
+	end
+
 	local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
 	if PowerBarChildren[3] ~= nil then
 		for _, child in ipairs({PowerBarChildren[3]:GetRegions()}) do
@@ -720,6 +831,9 @@ end
 
 function DR.clearPositions()
 	DR.HideWithFadeBar();
+	for i = 1, 10 do
+		DR.charge[i]:Hide();
+	end
 end
 
 DR.clearPositions();
@@ -752,6 +866,9 @@ function DR:toggleEvent(event, arg1)
 		end
 		if DragonRider_DB.fadeSpeed == nil then
 			DragonRider_DB.fadeSpeed = true
+		end
+		if DragonRider_DB.lightningRush == nil then
+			DragonRider_DB.lightningRush = true
 		end
 
 
@@ -949,6 +1066,21 @@ function DR:toggleEvent(event, arg1)
 		end
 
 
+		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
+
+		do
+			local variable = "lightningRush"
+			local name = L["LightningRush"]
+			local tooltip = L["LightningRushTT"]
+			local defaultValue = true
+
+			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+			Settings.CreateCheckBox(category, setting, tooltip)
+			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+			setting:SetValue(DragonRider_DB[variable])
+		end
+
+
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["DragonridingTalents"]));
 
 		do -- dragonriding talents 
@@ -1073,7 +1205,6 @@ function DR:toggleEvent(event, arg1)
 
 		function DR.RepeatChecker()
 			local curentVigor, maxVigor = DR.GetVigorValueExact()
-			--print(curentVigor) -- for some fun spam
 			DR.DoWidgetThings()
 			local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 			if canGlide == true and isGliding == true then

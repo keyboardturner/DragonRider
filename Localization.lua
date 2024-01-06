@@ -75,6 +75,8 @@ if LOCALE == "enUS" then
 	L["ShowVigorTooltipTT"] = "Toggle the tooltip that displays upon the Vigor bar."
 	L["FadeVigor"] = "Fade Vigor"
 	L["FadeVigorTT"] = "Toggle fading the Vigor bar when not gliding and while at full Vigor."
+	L["LightningRush"] = "Static Charge Orbs"
+	L["LightningRushTT"] = "Toggle custom frames made for Static Charge auras which are used by the Algarian Stormrider's Lightning Rush ability."
 
 return end
 
@@ -142,6 +144,8 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["ShowVigorTooltipTT"] = "Alternar la información sobre herramientas que se muestra en la barra de Vigor."
 	L["FadeVigor"] = "Desvanecer vigor"
 	L["FadeVigorTT"] = "Alternar el desvanecimiento de la barra de Vigor cuando no estás deslizándote y cuando tienes el Vigor máximo."
+	L["LightningRush"] = "Orbes de carga estática"
+	L["LightningRushTT"] = "Alternar marcos personalizados creados para auras de carga estática que son utilizadas por la habilidad Algarian Stormrider Lightning Rush."
 
 return end
 
@@ -209,6 +213,8 @@ if LOCALE == "deDE" then
 	L["ShowVigorTooltipTT"] = "Schaltet den Tooltip um, der auf der Kraftleiste angezeigt wird."
 	L["FadeVigor"] = "Fade Vigor"
 	L["FadeVigorTT"] = "Ausblenden der Kraftleiste ein-/ausschalten, wenn nicht gleitend und bei voller Kraft."
+	L["LightningRush"] = "Statische Ladungskugeln"
+	L["LightningRushTT"] = "Schalten Sie die benutzerdefinierten Rahmen um, die für statische Ladungsauren erstellt wurden, die von der Algarian Stormrider Lightning Rush-Fähigkeit verwendet werden."
 
 return end
 
@@ -276,6 +282,8 @@ if LOCALE == "frFR" then
 	L["ShowVigorTooltipTT"] = "Basculez l'info-bulle qui s'affiche sur la barre Vigor."
 	L["FadeVigor"] = "Fade Vigor"
 	L["FadeVigorTT"] = "Activer l'effacement de la barre Vigor lorsque vous ne glissez pas et lorsque vous êtes au maximum de Vigor."
+	L["LightningRush"] = "Orbes de charge statique"
+	L["LightningRushTT"] = "Activez les cadres personnalisés conçus pour les auras de charge statique qui sont utilisées par la capacité Algarian Stormrider Lightning Rush."
 
 return end
 
@@ -343,6 +351,8 @@ if LOCALE == "itIT" then
 	L["ShowVigorTooltipTT"] = "Attiva/disattiva la descrizione comando visualizzata sulla barra del vigore."
 	L["FadeVigor"] = "Vigore della dissolvenza"
 	L["FadeVigorTT"] = "Attiva/disattiva la dissolvenza della barra del vigore quando non si plana e mentre si è al massimo del vigore."
+	L["LightningRush"] = "Sfere di carica statica"
+	L["LightningRushTT"] = "Attiva/disattiva i frame personalizzati realizzati per le aure di carica statica utilizzate dall'abilità Algarian Stormrider Lightning Rush."
 
 return end
 
@@ -410,6 +420,8 @@ if LOCALE == "ptBR" then
 	L["ShowVigorTooltipTT"] = "Alternar a dica de ferramenta exibida na barra de Vigor."
 	L["FadeVigor"] = "Fade Vigor"
 	L["FadeVigorTT"] = "Alternar o desvanecimento da barra de Vigor quando não estiver planando e enquanto estiver com Vigor total."
+	L["LightningRush"] = "Orbes de carga estática"
+	L["LightningRushTT"] = "Alternar molduras personalizadas feitas para auras Static Charge que são usadas pela habilidade Algarian Stormrider Lightning Rush."
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -479,6 +491,8 @@ if LOCALE == "ruRU" then
 	L["ShowVigorTooltipTT"] = "Переключить всплывающую подсказку, отображаемую на шкале энергии."
 	L["FadeVigor"] = "Угасание энергии"
 	L["FadeVigorTT"] = "Переключить затухание шкалы Энергии, когда она не скользит и при полной Энергии."
+	L["LightningRush"] = "Сферы статического заряда"
+	L["LightningRushTT"] = "Переключить пользовательские рамки, созданные для аур статического заряда, которые используются способностью Молниеносный рывок Алгарского всадника бури."
 
 return end
 
@@ -546,6 +560,8 @@ if LOCALE == "koKR" then
 	L["ShowVigorTooltipTT"] = "활력 막대에 표시되는 도구 설명을 전환합니다."
 	L["FadeVigor"] = "활력이 희미해짐"
 	L["FadeVigorTT"] = "활공하지 않을 때와 활력이 최대일 때 활력 바 페이드를 전환합니다."
+	L["LightningRush"] = "정전기 충전 오브"
+	L["LightningRushTT"] = "Algarian Stormrider Lightning Rush 능력에 사용되는 정전기 충전 오라용으로 제작된 사용자 정의 프레임을 전환합니다."
 
 return end
 
@@ -613,6 +629,8 @@ if LOCALE == "zhCN" then
 	L["ShowVigorTooltipTT"] = "切换活力条上显示的工具提示。"
 	L["FadeVigor"] = "褪色活力"
 	L["FadeVigorTT"] = "在不滑翔和充满活力时切换活力条的淡出。"
+	L["LightningRush"] = "静电荷球"
+	L["LightningRushTT"] = "切换为阿尔加里亚风暴骑士闪电冲锋能力使用的静电光环制作的自定义框架。"
 
 return end
 
@@ -680,5 +698,7 @@ if LOCALE == "zhTW" then
 	L["ShowVigorTooltipTT"] = "切換活力條上顯示的工具提示。"
 	L["FadeVigor"] = "褪色活力"
 	L["FadeVigorTT"] = "在不滑翔和充滿活力時切換活力條的淡出。"
+	L["LightningRush"] = "靜電荷球"
+	L["LightningRushTT"] = "切換為阿爾加里亞風暴騎士閃電衝鋒能力所使用的靜電光環製作的自訂框架。"
 
 return end
