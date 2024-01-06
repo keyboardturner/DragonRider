@@ -1,3 +1,7 @@
+# 0.1.4
+
+Quick fix to Vigor Fade
+
 # 0.1.3
 
 Added new frames for the Algarian Stormrider's Static Charges.
