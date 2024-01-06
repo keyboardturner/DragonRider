@@ -1,3 +1,7 @@
+# 0.1.3
+
+Added new frames for the Algarian Stormrider's Static Charges.
+
 # 0.1.2
 
 Added new options to fade the vigor bar and speedometer, an option to toggle the tooltip on the vigor bar that occurs during mouseover, and a fix to the double vigor bar Blizzard bug.
