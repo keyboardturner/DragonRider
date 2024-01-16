@@ -484,32 +484,32 @@ function DR.updateSpeed()
 	if NotDragonIsles then
 		DR.statusbar:SetMinMaxValues(0, 85)
 		if forwardSpeed > 85*.65 then
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.over)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice purple?) -
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.over))
 		elseif forwardSpeed >= 85*.60 and forwardSpeed <= 85*.65 then
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.vigor.g, DragonRider_DB.speedTextColor.vigor.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.vigor)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice blue?) - 
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.vigor))
 		else
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.slow)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- fff2a305 (nice yellow?) - 
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.slow))
 		end
 	else
 		DR.statusbar:SetMinMaxValues(0, 100)
 		if forwardSpeed > 65 then
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.over)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice purple?) -
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.over))
 		elseif forwardSpeed >= 60 and forwardSpeed <= 65 then
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.vigor.g, DragonRider_DB.speedTextColor.vigor.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.vigor)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- ff71d5ff (nice blue?) - 
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.vigor))
 		else
-			local textColor = CreateColor(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b):GenerateHexColor()
+			local textColor = CreateColor(ColorMixin.GetRGB(DragonRider_DB.speedTextColor.slow)):GenerateHexColor()
 			DR.glide:SetText(format("|c" .. textColor .. "%.1f" .. DR.useUnits() .. "|r", DR:convertUnits(forwardSpeed))) -- fff2a305 (nice yellow?) - 
-			DR.statusbar:SetStatusBarColor(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a)
+			DR.statusbar:SetStatusBarColor(ColorMixin.GetRGBA(DragonRider_DB.speedBarColor.slow))
 		end
 	end
 	if DragonRider_DB.speedValUnits == 6 then
