@@ -1,3 +1,7 @@
+# 0.1.5
+
+Code cleanup, color picker updates
+
 # 0.1.4
 
 Quick fix to Vigor Fade
