@@ -1,3 +1,7 @@
+# 0.1.6
+
+Experimental fix to the widget frames, hopefully this will make sure only dragonriding widgets will be hidden
+
 # 0.1.5
 
 Code cleanup, color picker updates
