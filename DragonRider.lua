@@ -733,6 +733,12 @@ end
 
 
 function DR.setPositions()
+	if DragonRider_DB.DynamicFOV == true then
+		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 1)
+	elseif DragonRider_DB.DynamicFOV == false then
+		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 0)
+	end
+
 	local ParentFrame = UIWidgetPowerBarContainerFrame
 	for k, v in pairs(DR.WidgetFrameIDs) do
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
@@ -938,6 +944,13 @@ function DR:toggleEvent(event, arg1)
 		if DragonRider_DB.lightningRush == nil then
 			DragonRider_DB.lightningRush = true
 		end
+		if DragonRider_DB.DynamicFOV == nil then
+			if C_CVar.GetCVar("AdvFlyingDynamicFOVEnabled") == "1" then
+				DragonRider_DB.DynamicFOV = true
+			elseif C_CVar.GetCVar("AdvFlyingDynamicFOVEnabled") == "0" then
+				DragonRider_DB.DynamicFOV = false
+			end
+		end
 
 
 		---------------------------------------------------------------------------------------------------------------------------------
@@ -1141,6 +1154,19 @@ function DR:toggleEvent(event, arg1)
 			local name = L["LightningRush"]
 			local tooltip = L["LightningRushTT"]
 			local defaultValue = true
+
+			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
+			Settings.CreateCheckBox(category, setting, tooltip)
+			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
+			setting:SetValue(DragonRider_DB[variable])
+		end
+
+		do
+			local variable = "DynamicFOV"
+			local name = L["DynamicFOV"]
+			local tooltip = L["DynamicFOVTT"]
+			local defaultValue = true
+			
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
 			Settings.CreateCheckBox(category, setting, tooltip)

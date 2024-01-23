@@ -1,3 +1,7 @@
+# 0.1.7
+
+Added option for adjustment of camera field of view based on gliding speed
+
 # 0.1.6
 
 Experimental fix to the widget frames, hopefully this will make sure only dragonriding widgets will be hidden
