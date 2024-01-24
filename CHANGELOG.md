@@ -1,3 +1,7 @@
+# 0.1.8
+
+Removed fading vigor functionality and option.
+
 # 0.1.7
 
 Added option for adjustment of camera field of view based on gliding speed
