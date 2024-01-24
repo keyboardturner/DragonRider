@@ -1,3 +1,7 @@
+# 0.1.9
+
+Code cleanup from fade vigor functions
+
 # 0.1.8
 
 Removed fading vigor functionality and option.
