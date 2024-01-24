@@ -684,49 +684,6 @@ function DR.DoWidgetThings()
 				end
 			end
 
-			if not DR.fadeOutWidgetGroup then
-
-				DR.fadeOutWidgetGroup = UIWidgetPowerBarContainerFrame:CreateAnimationGroup()
-
-				-- Set scripts for when animations start and finish
-				DR.fadeOutWidgetGroup:SetScript("OnFinished", function()
-					if UIWidgetPowerBarContainerFrame == nil then
-						return
-					else
-						UIWidgetPowerBarContainerFrame:SetAlpha(0);
-						UIWidgetPowerBarContainerFrame:Hide();
-						--DR.statusbar:Hide() -- Hide the frame when the fade out animation is finished
-					end
-				end)
-
-				-- Function to hide the frame with a fade out animation
-				function DR.HideWithFadeWidget()
-					if DragonRider_DB.fadeVigor == true then
-						DR.fadeOutWidgetGroup:Stop(); -- Stop any ongoing animations
-						DR.fadeOutWidgetGroup:Play(); -- Play the fade out animation
-					else
-						UIWidgetPowerBarContainerFrame:SetAlpha(1);
-						UIWidgetPowerBarContainerFrame:Show();
-					end
-				end
-				-- Create a fade out animation
-				DR.fadeOutWidget = DR.fadeOutWidgetGroup:CreateAnimation("Alpha")
-				DR.fadeOutWidget:SetFromAlpha(DR.GetWidgetAlpha())
-				DR.fadeOutWidget:SetToAlpha(0)
-				DR.fadeOutWidget:SetDuration(.9) -- Duration of the fade out animation
-				
-			end
-
-			if canGlide then
-				if fillCurrent >= fillMax and isGliding == false then
-					DR.HideWithFadeWidget();
-				else
-					UIWidgetPowerBarContainerFrame:Show();
-					UIWidgetPowerBarContainerFrame:SetAlpha(1);
-				end
-			else
-				DR.HideWithFadeWidget();
-			end
 		end
 	end
 end
@@ -936,7 +893,7 @@ function DR:toggleEvent(event, arg1)
 			DragonRider_DB.showtooltip = true
 		end
 		if DragonRider_DB.fadeVigor == nil then
-			DragonRider_DB.fadeVigor = true
+			DragonRider_DB.fadeVigor = false
 		end
 		if DragonRider_DB.fadeSpeed == nil then
 			DragonRider_DB.fadeSpeed = true
@@ -1126,18 +1083,6 @@ function DR:toggleEvent(event, arg1)
 			local variable = "showtooltip"
 			local name = L["ShowVigorTooltip"]
 			local tooltip = L["ShowVigorTooltipTT"]
-			local defaultValue = true
-
-			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
-		end
-
-		do
-			local variable = "fadeVigor"
-			local name = L["FadeVigor"]
-			local tooltip = L["FadeVigorTT"]
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
