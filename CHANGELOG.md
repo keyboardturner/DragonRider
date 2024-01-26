@@ -1,3 +1,7 @@
+# 0.2.0
+
+Added zhCN translations - [枫聖御雷](https://legacy.curseforge.com/wow/addons/dragon-rider#c33)
+
 # 0.1.9
 
 Code cleanup from fade vigor functions
