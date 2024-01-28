@@ -596,6 +596,8 @@ DR:RegisterEvent("LEARNED_SPELL_IN_TAB")
 DR:RegisterEvent("PLAYER_CAN_GLIDE_CHANGED")
 DR:RegisterEvent("COMPANION_UPDATE")
 DR:RegisterEvent("PLAYER_LOGIN")
+DR:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
+
 
 
 function DR.GetWidgetAlpha()
@@ -855,8 +857,162 @@ end
 
 DR.clearPositions();
 
+DR.DragonRaceCurrencies = {
+-- Waking Shores
+	2042, 2044, 2154, 2421, 2422, 2664,
+	2048, 2049, 2176, 2423, 2424,
+	2052, 2053, 2177, 2425, 2426,
+	2054, 2055, 2178, 2427, 2428,
+	2056, 2057, 2179, 2429, 2430,
+	2058, 2059, 2180, 2431, 2432,
+	2046, 2047, 2181, 2433, 2434,
+	2050, 2051, 2182, 2435, 2436,
+
+-- Ohn'ahran Plains
+	2060, 2061, 2183, 2437, 2439,
+	2062, 2063, 2184, 2440, 2441, 2665,
+	2064, 2065, 2185, 2442, 2443,
+	2066, 2067, 2186, 2444, 2445,
+	2069,		2446,
+	2070,		2447,
+	2119, 2120, 2187, 2448, 2449,
+
+-- Azure Span
+	2074, 2075, 2188, 2450, 2451,
+	2076, 2077, 2189, 2452, 2453,
+	2078, 2079, 2190, 2454, 2455, 2666,
+	2083, 2084, 2191, 2456, 2457,
+	2085, 2086, 2192, 2458, 2459,
+	2089, 2090, 2193, 2460, 2461,
+
+-- Thaldraszus
+	2080, 2081, 2194, 2462, 2463,
+	2092, 2093, 2195, 2464, 2465, 2667,
+	2096, 2097, 2196, 2466, 2467,
+	2098, 2099, 2197, 2468, 2469,
+	2101, 2102, 2198, 2470, 2471,
+	2103, 2104, 2199, 2472, 2473,
+
+-- Forbidden Reach
+	2201, 2207, 2213, 2474, 2475, 2668,
+	2202, 2208, 2214, 2476, 2477,
+	2203, 2209, 2215, 2478, 2479,
+	2204, 2210, 2216, 2480, 2481,
+	2205, 2211, 2217, 2482, 2483,
+	2206, 2212, 2218, 2484, 2485,
+
+-- Zaralek Cverns
+	2246, 2252, 2258, 2486, 2487, 2669,
+	2247, 2253, 2259, 2488, 2489,
+	2248, 2254, 2260, 2490, 2491,
+	2249, 2255, 2261, 2492, 2493,
+	2250, 2256, 2262, 2494, 2495,
+	2251, 2257, 2263, 2496, 2497,
+
+-- Emerald Dream
+	2676, 2682, 2688, 2694, 2695,
+	2677, 2683, 2689, 2696, 2697,
+	2678, 2684, 2690, 2698, 2699,
+	2679, 2685, 2691, 2700, 2701,
+	2680, 2686, 2692, 2702, 2703,
+	2681, 2687, 2693, 2704, 2705,
+
+-- Kalimdor Cup
+	2312, 2342, 2372, 2498, 2499,
+	2313, 2343, 2373, 2500, 2501,
+	2314, 2344, 2374, 2502, 2503,
+	2315, 2345, 2375, 2504, 2505,
+	2316, 2346, 2376, 2506, 2507,
+	2317, 2347, 2377, 2508, 2509,
+	2318, 2348, 2378, 2510, 2511,
+	2319, 2349, 2379, 2512, 2513,
+	2320, 2350, 2380, 2514, 2515,
+	2321, 2351, 2381, 2516, 2517,
+	2322, 2352, 2382, 2518, 2519,
+	2323, 2353, 2383, 2520, 2521,
+	2324, 2354, 2384, 2522, 2523,
+	2325, 2355, 2385, 2524, 2525,
+	2326, 2356, 2386, 2526, 2527,
+	2327, 2357, 2387, 2528, 2529,
+
+-- Eastern Kingdoms Cup
+	2536, 2552, 2568,
+	2537, 2553, 2569,
+	2538, 2554, 2570,
+	2539, 2555, 2571,
+	2540, 2556, 2572,
+	2541, 2557, 2573,
+	2542, 2558, 2574,
+	2543, 2559, 2575,
+	2544, 2560, 2576,
+	2545, 2561, 2577,
+	2546, 2562, 2578,
+	2547, 2563, 2579,
+	2548, 2564, 2580,
+	2549, 2565, 2581,
+
+-- Outland Cup
+	2600, 2615, 2630,
+	2601, 2616, 2631,
+	2602, 2617, 2632,
+	2603, 2618, 2633,
+	2604, 2619, 2634,
+	2605, 2620, 2635,
+	2606, 2621, 2636,
+	2607, 2622, 2637,
+	2608, 2623, 2638,
+	2609, 2624, 2639,
+	2610, 2625, 2640,
+	2611, 2626, 2641,
+	2612, 2627, 2642,
+
+-- Northrend Cup
+	2720, 2738, 2756,
+	2721, 2739, 2757,
+	2722, 2740, 2758,
+	2723, 2741, 2759,
+	2724, 2742, 2760,
+	2725, 2743, 2761,
+	2726, 2744, 2762,
+	2727, 2745, 2763,
+	2728, 2746, 2764,
+	2729, 2747, 2765,
+	2730, 2748, 2766,
+	2731, 2749, 2767,
+};
+
+local goldTime
+local silverTime
+local currentRace
 
 function DR:toggleEvent(event, arg1)
+	if event == "CURRENCY_DISPLAY_UPDATE" and DragonRider_DB.debug == true then
+		--print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
+		--print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity)
+		if arg1 == 2019 then
+			silverTime = C_CurrencyInfo.GetCurrencyInfo(arg1).quantity;
+		end
+		if arg1 == 2020 then
+			goldTime = C_CurrencyInfo.GetCurrencyInfo(arg1).quantity;
+		end
+		for k, v in pairs(DR.DragonRaceCurrencies) do
+			if arg1 == v then
+				currentRace = arg1
+				if DragonRider_DB.raceData == nil then
+					DragonRider_DB.raceData = {};
+				end
+				if DragonRider_DB.raceData then
+					if DragonRider_DB.raceData[currentRace] == nil then
+						DragonRider_DB.raceData[currentRace] = {goldTime=goldTime, silverTime=silverTime};
+						print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
+						print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity/1000)
+						print(currentRace .. ": " .. "gold: " .. goldTime .. ", silver: " .. silverTime);
+					end
+				end
+			end
+		end
+	end
+
 	if event == "ADDON_LOADED" and arg1 == "DragonRider" then
 		
 		if DragonRider_DB == nil then
