@@ -33,4 +33,6 @@
 ## SavedVariables: DragonRider_DB
 
 Localization.lua
+DRRaceData.lua
+DRJournal.lua
 DragonRider.lua
