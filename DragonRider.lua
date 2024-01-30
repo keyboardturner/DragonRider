@@ -888,6 +888,10 @@ function DR:toggleEvent(event, arg1)
 		end
 	end
 
+	if event == "PLAYER_LOGIN" then
+		DR.mainFrame.DoPopulationStuff()
+	end
+
 	if event == "ADDON_LOADED" and arg1 == "DragonRider" then
 		
 		if DragonRider_DB == nil then
