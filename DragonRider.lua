@@ -604,14 +604,24 @@ function DR.GetWidgetAlpha()
 	end
 end
 
-function DR.WidgetTooltipFallback_OnEnter(frame, tooltip)
-	GameTooltip_SetDefaultAnchor(GameTooltip, frame);
+local function getAnchors(frame)
+	local x, y = frame:GetCenter()
+	if not x or not y then return "CENTER" end
+	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
+end
+
+function DR.tooltip_OnEnter(frame, tooltip)
+	GameTooltip:SetOwner(frame, "ANCHOR_NONE")
+	GameTooltip:SetPoint(getAnchors(frame))
+	--GameTooltip_SetDefaultAnchor(GameTooltip, frame);
 	--GameTooltip_SetTitle(GameTooltip);
 	GameTooltip_AddNormalLine(GameTooltip, tooltip);
 	GameTooltip:Show();
 end
 
-function DR.WidgetTooltipFallback_OnLeave()
+function DR.tooltip_OnLeave()
 	GameTooltip:Hide();
 end
 
@@ -665,8 +675,8 @@ function DR.DoWidgetThings()
 				if DragonRider_DB.showtooltip == false then
 					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", nil)
 				else
-					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() if UIWidgetPowerBarContainerFrame.widgetFrames[v] then DR.WidgetTooltipFallback_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end end )
-					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.WidgetTooltipFallback_OnLeave(); end )
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnEnter", function() if UIWidgetPowerBarContainerFrame.widgetFrames[v] then DR.tooltip_OnEnter(UIWidgetPowerBarContainerFrame.widgetFrames[v], UIWidgetPowerBarContainerFrame.widgetFrames[v].tooltip); end end )
+					UIWidgetPowerBarContainerFrame.widgetFrames[v]:SetScript("OnLeave", function() DR.tooltip_OnLeave(); end )
 				end
 			end
 
@@ -856,6 +866,71 @@ end
 DR.clearPositions();
 
 
+local function Print(...)
+	local prefix = string.format("[PH] Dragon Rider" .. ":");
+	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
+end
+
+DR.commands = {
+	["journal"] = function()
+		DR.mainFrame:Show();
+	end,
+
+	["test"] = function()
+		Print("[PH] Test.");
+	end,
+
+	["hello"] = function(subCommand)
+		if not subCommand or subCommand == "" then
+			Print("[PH] No Command");
+		elseif subCommand == "world" then
+			Print("[PH] Specified Command");
+		else
+			Print("[PH] Invalid Sub-Command");
+		end
+	end,
+
+	["help"] = function()
+		Print("[PH] Help!")
+	end
+};
+
+local function HandleSlashCommands(str)
+	if (#str == 0) then
+		DR.commands.help();
+		return;
+		end
+
+		local args = {};
+		for _dummy, arg in ipairs({ string.split(' ', str) }) do
+		if (#arg > 0) then
+			table.insert(args, arg);
+			end
+			end
+
+			local path = DR.commands; -- required for updating found table.
+
+			for id, arg in ipairs(args) do
+
+			if (#arg > 0) then --if string length is greater than 0
+			arg = arg:lower();          
+			if (path[arg]) then
+				if (type(path[arg]) == "function") then
+					-- all remaining args passed to our function!
+					path[arg](select(id + 1, unpack(args))); 
+					return;                 
+				elseif (type(path[arg]) == "table") then
+					path = path[arg]; -- another sub-table found!
+				end
+				else
+					DR.commands.help();
+				return;
+			end
+		end
+	end
+end
+
+
 local goldTime
 local silverTime
 local currentRace
@@ -893,6 +968,9 @@ function DR:toggleEvent(event, arg1)
 	end
 
 	if event == "ADDON_LOADED" and arg1 == "DragonRider" then
+
+		SLASH_DRAGONRIDER1 = "/dragonrider"
+		SlashCmdList.DRAGONRIDER = HandleSlashCommands;
 		
 		if DragonRider_DB == nil then
 			DragonRider_DB = CopyTable(defaultsTable)
@@ -928,6 +1006,15 @@ function DR:toggleEvent(event, arg1)
 			elseif C_CVar.GetCVar("AdvFlyingDynamicFOVEnabled") == "0" then
 				DragonRider_DB.DynamicFOV = false
 			end
+		end
+		if DragonRider_DB.mainFrameSize == nil then
+			DragonRider_DB.mainFrameSize = {
+				width = 550,
+				height = 525,
+			};
+		end
+		if DragonRider_DB.mainFrameSize ~= nil then
+			DR.mainFrame:SetSize(DragonRider_DB.mainFrameSize.width, DragonRider_DB.mainFrameSize.height);
 		end
 
 
@@ -1253,6 +1340,24 @@ function DR:toggleEvent(event, arg1)
 		end
 
 		Settings.RegisterAddOnCategory(category)
+
+
+
+		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
+			if buttonName == "RightButton" then
+				Settings.OpenToCategory(category.ID);
+			else
+				DR.mainFrame:Show();
+			end
+		end
+
+		function DragonRider_OnAddonCompartmentEnter(addonName, menuButtonFrame)
+			DR.tooltip_OnEnter(menuButtonFrame, "[PH] Dragon Rider\nRight-Click: Open Settings\nLeft-Click: Open Journal");
+		end
+
+		function DragonRider_OnAddonCompartmentLeave(addonName, menuButtonFrame)
+			DR.tooltip_OnLeave();
+		end
 
 
 

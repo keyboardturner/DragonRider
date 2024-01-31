@@ -79,6 +79,12 @@ if LOCALE == "enUS" then
 	L["LightningRushTT"] = "Toggle custom frames made for Static Charge auras which are used by the Algarian Stormrider's Lightning Rush ability."
 	L["DynamicFOV"] = "Dynamic FOV"
 	L["DynamicFOVTT"] = "Enables adjustment of camera field of view based on gliding speed."
+	L["Normal"] = "Normal"
+	L["Advanced"] = "Advanced"
+	L["Reverse"] = "Reverse"
+	L["Challenge"] = "Challenge"
+	L["ReverseChallenge"] = "Reverse Challenge"
+	L["Storm"] = "Storm"
 
 return end
 
@@ -150,6 +156,12 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["LightningRushTT"] = "Alternar marcos personalizados creados para auras de carga estática que son utilizadas por la habilidad Algarian Stormrider Lightning Rush."
 	L["DynamicFOV"] = "Campo de visión dinámico"
 	L["DynamicFOVTT"] = "Permite ajustar el campo de visión de la cámara según la velocidad de deslizamiento."
+	L["Normal"] = "Normal"
+	L["Advanced"] = "Avanzada"
+	L["Reverse"] = "Inversa"
+	L["Challenge"] = "Desafío"
+	L["ReverseChallenge"] = "Desafío Inverso"
+	L["Storm"] = "Tormenta"
 
 return end
 
@@ -221,6 +233,11 @@ if LOCALE == "deDE" then
 	L["LightningRushTT"] = "Schalten Sie die benutzerdefinierten Rahmen um, die für statische Ladungsauren erstellt wurden, die von der Algarian Stormrider Lightning Rush-Fähigkeit verwendet werden."
 	L["DynamicFOV"] = "Dynamisches Sichtfeld"
 	L["DynamicFOVTT"] = "Ermöglicht die Anpassung des Kamerasichtfelds basierend auf der Gleitgeschwindigkeit."
+	L["Normal"] = "Normal"
+	L["Advanced"] = "Fortgeschritten"
+	L["Reverse"] = "Umgekehrt"
+	L["Challenge"] = "Herausforderung"
+	L["ReverseChallenge"] = "Umgekehrte Herausforderung"
 
 return end
 
@@ -292,6 +309,11 @@ if LOCALE == "frFR" then
 	L["LightningRushTT"] = "Activez les cadres personnalisés conçus pour les auras de charge statique qui sont utilisées par la capacité Algarian Stormrider Lightning Rush."
 	L["DynamicFOV"] = "Champ de vision dynamique"
 	L["DynamicFOVTT"] = "Permet d'ajuster le champ de vision de la caméra en fonction de la vitesse de glisse."
+	L["Normal"] = "Normale"
+	L["Advanced"] = "Avancée"
+	L["Reverse"] = "Inversée"
+	L["Challenge"] = "Défi"
+	L["ReverseChallenge"] = "Défi Inversé"
 
 return end
 
@@ -363,6 +385,11 @@ if LOCALE == "itIT" then
 	L["LightningRushTT"] = "Attiva/disattiva i frame personalizzati realizzati per le aure di carica statica utilizzate dall'abilità Algarian Stormrider Lightning Rush."
 	L["DynamicFOV"] = "FOV dinamico"
 	L["DynamicFOVTT"] = "Consente la regolazione del campo visivo della telecamera in base alla velocità di planata."
+	L["Normal"] = "Normale"
+	L["Advanced"] = "Avanzate"
+	L["Reverse"] = "Inverso"
+	L["Challenge"] = "Sfida"
+	L["ReverseChallenge"] = "Sfida Inversa"
 
 return end
 
@@ -434,6 +461,11 @@ if LOCALE == "ptBR" then
 	L["LightningRushTT"] = "Alternar molduras personalizadas feitas para auras Static Charge que são usadas pela habilidade Algarian Stormrider Lightning Rush."
 	L["DynamicFOV"] = "Campo de visão dinâmico"
 	L["DynamicFOVTT"] = "Permite o ajuste do campo de visão da câmera com base na velocidade de planeio."
+	L["Normal"] = "Normal"
+	L["Advanced"] = "Avançada"
+	L["Reverse"] = "Invertida"
+	L["Challenge"] = "Desafio"
+	L["ReverseChallenge"] = "Desafio Invertida"
 
 -- Note that the EU Portuguese WoW client also
 -- uses the Brazilian Portuguese locale code.
@@ -507,6 +539,11 @@ if LOCALE == "ruRU" then
 	L["LightningRushTT"] = "Переключить пользовательские рамки, созданные для аур статического заряда, которые используются способностью Молниеносный рывок Алгарского всадника бури."
 	L["DynamicFOV"] = "Динамический угол обзора"
 	L["DynamicFOVTT"] = "Позволяет регулировать поле зрения камеры в зависимости от скорости планирования."
+	L["Normal"] = "Нормальный"
+	L["Advanced"] = "высокая сложность"
+	L["Reverse"] = "обратный маршрут"
+	L["Challenge"] = "испытание"
+	L["ReverseChallenge"] = "обратный маршрут"
 
 return end
 
@@ -578,6 +615,11 @@ if LOCALE == "koKR" then
 	L["LightningRushTT"] = "Algarian Stormrider Lightning Rush 능력에 사용되는 정전기 충전 오라용으로 제작된 사용자 정의 프레임을 전환합니다."
 	L["DynamicFOV"] = "동적 시야"
 	L["DynamicFOVTT"] = "글라이딩 속도에 따라 카메라 시야를 조정할 수 있습니다."
+	L["Normal"] = "정상"
+	L["Advanced"] = "고급의"
+	L["Reverse"] = "뒤집다"
+	L["Challenge"] = "도전"
+	L["ReverseChallenge"] = "역방향 도전"
 
 return end
 
@@ -650,6 +692,12 @@ if LOCALE == "zhCN" then
 	L["LightningRushTT"] = "切换为阿加驭雷者“奔雷疾冲”技能使用的静电光环制作的自定义框架。"
 	L["DynamicFOV"] = "动态视野"
 	L["DynamicFOVTT"] = "能够根据飞行速度调整镜头视野。"
+	--non-official translations
+	L["Normal"] = "普通的"
+	L["Advanced"] = "先进的"
+	L["Reverse"] = "撤销"
+	L["Challenge"] = "挑战"
+	L["ReverseChallenge"] = "反向挑战"
 
 return end
 
@@ -721,5 +769,10 @@ if LOCALE == "zhTW" then
 	L["LightningRushTT"] = "切換為阿爾加里亞風暴騎士閃電衝鋒能力所使用的靜電光環製作的自訂框架。"
 	L["DynamicFOV"] = "動態視野"
 	L["DynamicFOVTT"] = "能夠根據滑翔速度調整相機視野。"
+	L["Normal"] = "普通的"
+	L["Advanced"] = "先進的"
+	L["Reverse"] = "反向"
+	L["Challenge"] = "挑戰"
+	L["ReverseChallenge"] = "反向挑戰"
 
 return end
