@@ -1,6 +1,24 @@
 local DragonRider, DR = ...
 local _, L = ...
 
+local function Print(...)
+	local prefix = string.format("[PH] Dragon Rider" .. ":");
+	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
+end
+
+function DR.tooltip_OnEnter(frame, tooltip)
+	GameTooltip:SetOwner(frame, "ANCHOR_NONE")
+	GameTooltip:SetPoint(getAnchors(frame))
+	--GameTooltip_SetDefaultAnchor(GameTooltip, frame);
+	--GameTooltip_SetTitle(GameTooltip);
+	GameTooltip_AddNormalLine(GameTooltip, tooltip);
+	GameTooltip:Show();
+end
+
+function DR.tooltip_OnLeave()
+	GameTooltip:Hide();
+end
+
 DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitFrameTemplateMinimizable")
 tinsert(UISpecialFrames, DR.mainFrame:GetName())
 DR.mainFrame:SetPortraitTextureRaw("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
@@ -120,7 +138,51 @@ end
 
 local content1, content2, content3 = DR.mainFrame.SetTabs(DR.mainFrame, 3, "[PH] Score", "[PH] Guide", "[PH] Settings")
 
+DragonRiderMainFrameTab2:SetEnabled(false)
+DragonRiderMainFrameTab3:SetEnabled(false)
 
+DragonRiderMainFrameTab2.Text:SetTextColor(.5,.5,.5)
+DragonRiderMainFrameTab3.Text:SetTextColor(.5,.5,.5)
+
+DragonRiderMainFrameTab2:SetScript("OnEnter", function(self)
+	DR.tooltip_OnEnter(self, "[PH] Coming Soon")
+end);
+DragonRiderMainFrameTab2:SetScript("OnLeave", DR.tooltip_OnLeave);
+
+DragonRiderMainFrameTab3:SetScript("OnEnter", function(self)
+	DR.tooltip_OnEnter(self, "[PH] Coming Soon")
+end);
+DragonRiderMainFrameTab3:SetScript("OnLeave", DR.tooltip_OnLeave);
+
+function DR.mainFrame.UpdatePopulation()
+	for k, v in ipairs(DR.DragonRaceZones) do
+		DR.mainFrame.PopulationData(k);
+	end
+end
+
+DR.mainFrame.accountAll = CreateFrame("CheckButton", nil, content1, "UICheckButtonTemplate");
+DR.mainFrame.accountAll:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -15, -15);
+DR.mainFrame.accountAll:SetScript("OnClick", function(self)
+	if self:GetChecked() then
+		Print("[PH] On");
+		PlaySound(856);
+		DragonRider_DB.useAccountData = true;
+		DR.mainFrame.UpdatePopulation()
+	else
+		Print("[PH] Off");
+		PlaySound(857);
+		DragonRider_DB.useAccountData = false;
+		DR.mainFrame.UpdatePopulation()
+	end
+end);
+DR.mainFrame.accountAll.text = DR.mainFrame.accountAll:CreateFontString()
+DR.mainFrame.accountAll.text:SetFont(STANDARD_TEXT_FONT, 11)
+DR.mainFrame.accountAll.text:SetPoint("RIGHT", DR.mainFrame.accountAll, "LEFT", -5, 0)
+DR.mainFrame.accountAll.text:SetText("[PH] Use Account Settings")
+DR.mainFrame.accountAll:SetScript("OnEnter", function(self)
+	DR.tooltip_OnEnter(self, "[PH] Tooltip Description")
+end);
+DR.mainFrame.accountAll:SetScript("OnLeave", DR.tooltip_OnLeave);
 
 DR.mainFrame.backgroundTex = DR.mainFrame.ScrollFrame:CreateTexture()
 DR.mainFrame.backgroundTex:SetAllPoints(DR.mainFrame.ScrollFrame)
@@ -153,36 +215,199 @@ DR.QuestTitleFromID = setmetatable({}, { __index = function(t, id)
 	end
 end })
 
+DR.mainFrame.isPopulated = false;
+
 function DR.mainFrame.PopulationData(continent)
 	local placeValueX = 1
 	local placeValueY = 1
-	for k, v in ipairs(DR.RaceData[continent]) do
+	local realmKey = GetRealmName()
+	local charKey = UnitName("player") .. " - " .. realmKey
 
+	if DR.mainFrame.isPopulated == true then
+		--The same as below, but stripped of creating frames. This should only be used to update existing data.
+		for k, v in ipairs(DR.RaceData[continent]) do
+			local questName = DR.QuestTitleFromID[DR.RaceData[continent][k]["questID"]]
+			local silverTime = DR.RaceData[continent][k]["silverTime"]
+			local goldTime = DR.RaceData[continent][k]["goldTime"]
+			local medalBronze = "|A:challenges-medal-small-bronze:15:15|a"
+			local medalSilver = "|A:challenges-medal-small-silver:15:15|a"
+			local medalGold = "|A:challenges-medal-small-gold:15:15|a"
+			local medalValue = ""
+			if placeValueX == 1 and placeValueY == 1 then
+				if DragonRider_DB.useAccountData == true then
+					DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+				else
+					DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+				end
+			end
+			if placeValueX > 6 then
+				placeValueX = 1
+				placeValueY = placeValueY+1
+				if DragonRider_DB.useAccountData == true then
+					DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+				else
+					DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+				end
+			end
+			local scoreValue
+			local scoreValueF
+			if v.currencyID ~= nil then
+				scoreValue = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000
+				if scoreValue == 0 then
+					scoreValue = nil
+				end
+				if DragonRider_DB.raceData == nil then
+					DragonRider_DB.raceData[charKey] = {};
+				end
+				if DragonRider_DB.raceData[charKey] == nil then
+					DragonRider_DB.raceData[charKey] = {};
+				end
+				if DragonRider_DB.raceData["Account"] == nil then
+					DragonRider_DB.raceData["Account"] = {};
+				end
+				if DragonRider_DB.raceData ~= nil and scoreValue ~= 0 and scoreValue ~= nil then
+					DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
+					if DragonRider_DB.raceData["Account"][v.currencyID] == nil then
+						DragonRider_DB.raceData["Account"][v.currencyID] = {
+							score = scoreValue,
+							character = charKey
+						};
+					end
+					if DragonRider_DB.raceData["Account"][v.currencyID] ~= nil then
+						if  scoreValue < DragonRider_DB.raceData["Account"][v.currencyID]["score"] then
+							DragonRider_DB.raceData["Account"][v.currencyID]["score"] = scoreValue;
+							DragonRider_DB.raceData["Account"][v.currencyID]["character"] = charKey;
+						end
+					end
+				end
+				if scoreValue and goldTime then
+					if scoreValue < goldTime then
+						medalValue = medalGold
+					end
+					if scoreValue < silverTime and scoreValue > goldTime then
+						medalValue = medalSilver
+					end
+					if scoreValue > silverTime then
+						medalValue = medalBronze
+					end
+				end
+
+				if DragonRider_DB.useAccountData == true then
+					if DragonRider_DB.raceData["Account"][v.currencyID] ~= nil then
+						scoreValue = DragonRider_DB.raceData["Account"][v.currencyID]["score"]
+					end
+				end
+				if scoreValue then
+					scoreValueF = string.format("%.3f", scoreValue)
+				else
+					scoreValueF = "0.000"
+				end
+
+			end
+
+			if scoreValueF == "0.000" then
+				scoreValueF = "--"
+			elseif medalValue ~= "" then
+				scoreValueF = medalValue..scoreValueF
+				if DragonRider_DB.useAccountData == true then
+					if DragonRider_DB.raceData["Account"][v.currencyID]["character"] ~= charKey then
+						scoreValueF = scoreValueF .. "*"
+					end
+				end
+			end
+
+			--Scores
+			DR.mainFrame["backFrame"..continent][k]:SetText(scoreValueF);
+			placeValueX = placeValueX+1
+		end
+		return
+	end
+
+	for k, v in ipairs(DR.RaceData[continent]) do
+		--Establishing data / frames to be changed later. This should only be completed once upon login.
 		local questName = DR.QuestTitleFromID[DR.RaceData[continent][k]["questID"]]
+		local silverTime = DR.RaceData[continent][k]["silverTime"]
+		local goldTime = DR.RaceData[continent][k]["goldTime"]
+		local medalBronze = "|A:challenges-medal-small-bronze:15:15|a"
+		local medalSilver = "|A:challenges-medal-small-silver:15:15|a"
+		local medalGold = "|A:challenges-medal-small-gold:15:15|a"
+		local medalValue = ""
 		if placeValueX == 1 and placeValueY == 1 then
-			DR.mainFrame["Course"..continent] = content1:CreateFontString();
-			DR.mainFrame["Course"..continent]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..continent], "TOPLEFT", 10, -15*placeValueY-20);
-			DR.mainFrame["Course"..continent]:SetFont(STANDARD_TEXT_FONT, 11);
-			DR.mainFrame["Course"..continent]:SetText(questName);
-			DR.mainFrame["Course"..continent]:SetParent(DR.mainFrame["backFrame"..continent]);
+			DR.mainFrame["Course"..continent.."_"..placeValueY] = content1:CreateFontString();
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..continent], "TOPLEFT", 10, -15*placeValueY-20);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetFont(STANDARD_TEXT_FONT, 11);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetParent(DR.mainFrame["backFrame"..continent]);
 		end
 		if placeValueX > 6 then
 			placeValueX = 1
 			placeValueY = placeValueY+1
 			DR.mainFrame["backFrame"..continent]:SetHeight(DR.mainFrame["backFrame"..continent]:GetHeight()+15)
 
-			DR.mainFrame["Course"..continent] = content1:CreateFontString();
-			DR.mainFrame["Course"..continent]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..continent], "TOPLEFT", 10, -15*placeValueY-20);
-			DR.mainFrame["Course"..continent]:SetFont(STANDARD_TEXT_FONT, 11);
-			DR.mainFrame["Course"..continent]:SetText(questName);
-			DR.mainFrame["Course"..continent]:SetParent(DR.mainFrame["backFrame"..continent]);
+			DR.mainFrame["Course"..continent.."_"..placeValueY] = content1:CreateFontString();
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..continent], "TOPLEFT", 10, -15*placeValueY-20);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetFont(STANDARD_TEXT_FONT, 11);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
+			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetParent(DR.mainFrame["backFrame"..continent]);
 		end
 		local scoreValue
 		local scoreValueF
 		if v.currencyID ~= nil then
 			scoreValue = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000
-			scoreValueF = string.format("%.3f", scoreValue)
+			if scoreValue == 0 then
+				scoreValue = nil
+			end
+			if DragonRider_DB.raceData == nil then
+				DragonRider_DB.raceData[charKey] = {};
+			end
+			if DragonRider_DB.raceData[charKey] == nil then
+				DragonRider_DB.raceData[charKey] = {};
+			end
+			if DragonRider_DB.raceData["Account"] == nil then
+				DragonRider_DB.raceData["Account"] = {};
+			end
+			if DragonRider_DB.raceData ~= nil and scoreValue ~= 0 and scoreValue ~= nil then
+				DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
+				if DragonRider_DB.raceData["Account"][v.currencyID] == nil then
+					DragonRider_DB.raceData["Account"][v.currencyID] = {
+						score = scoreValue,
+						character = charKey
+					};
+				end
+				if DragonRider_DB.raceData["Account"][v.currencyID] ~= nil then
+					if  scoreValue < DragonRider_DB.raceData["Account"][v.currencyID]["score"] then
+						DragonRider_DB.raceData["Account"][v.currencyID]["score"] = scoreValue;
+						DragonRider_DB.raceData["Account"][v.currencyID]["character"] = charKey;
+					end
+				end
+			end
+			if scoreValue and goldTime then
+				if scoreValue < goldTime then
+					medalValue = medalGold
+				end
+				if scoreValue < silverTime and scoreValue > goldTime then
+					medalValue = medalSilver
+				end
+				if scoreValue > silverTime then
+					medalValue = medalBronze
+				end
+			end
+
+			if scoreValue then
+				scoreValueF = string.format("%.3f", scoreValue)
+			else
+				scoreValueF = "0.000"
+			end
+
 		end
+
+		if scoreValueF == "0.000" then
+			scoreValueF = "--"
+		elseif medalValue ~= "" then
+			scoreValueF = medalValue..scoreValueF
+		end
+
+		--Scores
 		DR.mainFrame["backFrame"..continent][k] = content1:CreateFontString();
 		DR.mainFrame["backFrame"..continent][k]:SetFont(STANDARD_TEXT_FONT, 11);
 		DR.mainFrame["backFrame"..continent][k]:SetPoint("TOPLEFT", DR.mainFrame.resizeFrames["middleFrame_"..placeValueX..continent], "TOPLEFT", 0, -15*placeValueY-20);
@@ -356,6 +581,7 @@ function DR.mainFrame.DoPopulationStuff()
 		DR.mainFrame.PopulationData(k)
 
 	end
+	DR.mainFrame.isPopulated = true;
 
 end
 
@@ -370,6 +596,7 @@ end
 function DR.mainFrame.Script_OnShow()
 	PlaySound(74421);
 	DR.mainFrame.Script_OnSizeChanged()
+	DR.mainFrame.UpdatePopulation()
 	if DragonRider_DB.mainFrameSize ~= nil then
 		DR.mainFrame:SetSize(DragonRider_DB.mainFrameSize.width, DragonRider_DB.mainFrameSize.height);
 	end

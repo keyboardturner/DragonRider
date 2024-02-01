@@ -1878,14 +1878,43 @@ DR.RaceData = {
 
 -- Kalimdor Cup
 	[8] = {
+	 -- Felwood Flyover
 		[1] = {
+			["currencyID"] = 2312,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 75277,
+		},
+		[2] = {
+			["currencyID"] = 2342,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 75277,
+		},
+		[3] = {
+			["currencyID"] = 2372,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 75277,
+		},
+		[4] = {
+			["currencyID"] = nil, -- 2498 UNUSED
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[5] = {
+			["currencyID"] = nil, -- 2499 UNUSED
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[6] = {
 			["currencyID"] = nil,
 			["silverTime"] = nil,
 			["goldTime"] = nil,
 			["questID"] = nil,
 		},
-	};
-	 -- Felwood Flyover
 	
 	 -- Winter Wander
 	
@@ -1916,19 +1945,50 @@ DR.RaceData = {
 	 -- Uldum Tour
 	
 	 -- Un'Goro Crater Circuit
+	};
 
 
 
 -- Eastern Kingdoms Cup
 	[9] = {
+	 -- Gilneas Gambit
 		[1] = {
+			["currencyID"] = 2536,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 76309,
+		},
+		[2] = {
+			["currencyID"] = 2552,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 76309,
+		},
+		[3] = {
+			["currencyID"] = 2568,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 76309,
+		},
+		[4] = {
 			["currencyID"] = nil,
 			["silverTime"] = nil,
 			["goldTime"] = nil,
 			["questID"] = nil,
 		},
-	};
-	 -- Gilneas Gambit
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+	
 	
 	 -- Loch Modan Loop
 	
@@ -1955,6 +2015,7 @@ DR.RaceData = {
 	 -- Krazzworks Klash
 	
 	 -- Redridge Rally
+	};
 
 
 
@@ -2458,14 +2519,43 @@ DR.RaceData = {
 
 -- Northrend Cup
 	[11] = {
+	 -- Scalawag Slither
 		[1] = {
+			["currencyID"] = 2720,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78301,
+		},
+		[2] = {
+			["currencyID"] = 2738,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78301,
+		},
+		[3] = {
+			["currencyID"] = 2756,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78301,
+		},
+		[4] = {
 			["currencyID"] = nil,
 			["silverTime"] = nil,
 			["goldTime"] = nil,
 			["questID"] = nil,
 		},
-	};
-	 -- Scalawag Slither
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Daggercap Dart
 	
@@ -2488,6 +2578,8 @@ DR.RaceData = {
 	 -- Gundrak Fast Track
 	
 	 -- Coldarra Climb
+
+	};
 
 
 };

@@ -948,16 +948,27 @@ function DR:toggleEvent(event, arg1)
 		for k, v in pairs(DR.DragonRaceCurrencies) do
 			if arg1 == v then
 				currentRace = arg1
-				if DragonRider_DB.raceData == nil then
-					DragonRider_DB.raceData = {};
+				if DragonRider_DB.raceDataCollector == nil then
+					DragonRider_DB.raceDataCollector = {};
 				end
-				if DragonRider_DB.raceData then
-					if DragonRider_DB.raceData[currentRace] == nil then
-						DragonRider_DB.raceData[currentRace] = {goldTime=goldTime, silverTime=silverTime};
+				if DragonRider_DB.raceDataCollector then
+					if DragonRider_DB.raceDataCollector[currentRace] == nil then
+						DragonRider_DB.raceDataCollector[currentRace] = {goldTime=goldTime, silverTime=silverTime};
 						print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
 						print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity/1000)
 						print(currentRace .. ": " .. "gold: " .. goldTime .. ", silver: " .. silverTime);
 					end
+				end
+			end
+		end
+	end
+
+	if event == "CURRENCY_DISPLAY_UPDATE" then
+		for k, v in pairs(DR.DragonRaceCurrencies) do
+			if arg1 == v then
+				DR.mainFrame.UpdatePopulation()
+				if DragonRider_DB.debug == true then
+					Print("Updating Currency!")
 				end
 			end
 		end
@@ -968,6 +979,8 @@ function DR:toggleEvent(event, arg1)
 	end
 
 	if event == "ADDON_LOADED" and arg1 == "DragonRider" then
+		local realmKey = GetRealmName()
+		local charKey = UnitName("player") .. " - " .. realmKey
 
 		SLASH_DRAGONRIDER1 = "/dragonrider"
 		SlashCmdList.DRAGONRIDER = HandleSlashCommands;
@@ -1015,6 +1028,10 @@ function DR:toggleEvent(event, arg1)
 		end
 		if DragonRider_DB.mainFrameSize ~= nil then
 			DR.mainFrame:SetSize(DragonRider_DB.mainFrameSize.width, DragonRider_DB.mainFrameSize.height);
+		end
+		if DragonRider_DB.raceData == nil then
+			DragonRider_DB.raceData = {};
+			DragonRider_DB.raceData[charKey] = {};
 		end
 
 
