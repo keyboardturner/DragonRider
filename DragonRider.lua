@@ -930,15 +930,13 @@ local function HandleSlashCommands(str)
 	end
 end
 
-
 local goldTime
 local silverTime
 local currentRace
 
 function DR:toggleEvent(event, arg1)
-	if event == "CURRENCY_DISPLAY_UPDATE" and DragonRider_DB.debug == true then
-		--print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
-		--print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity)
+
+	if event == "CURRENCY_DISPLAY_UPDATE" then
 		if arg1 == 2019 then
 			silverTime = C_CurrencyInfo.GetCurrencyInfo(arg1).quantity;
 		end
@@ -951,24 +949,25 @@ function DR:toggleEvent(event, arg1)
 				if DragonRider_DB.raceDataCollector == nil then
 					DragonRider_DB.raceDataCollector = {};
 				end
-				if DragonRider_DB.raceDataCollector then
-					if DragonRider_DB.raceDataCollector[currentRace] == nil then
-						DragonRider_DB.raceDataCollector[currentRace] = {goldTime=goldTime, silverTime=silverTime};
-						print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
-						print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity/1000)
-						print(currentRace .. ": " .. "gold: " .. goldTime .. ", silver: " .. silverTime);
+				for a, b in pairs(DR.RaceData) do
+					for c, d in pairs(b) do
+						if d["currencyID"] == currentRace then
+							if d["goldTime"] == nil or d["silverTime"] == nil then
+								if DragonRider_DB.raceDataCollector[currentRace] == nil then
+									DragonRider_DB.raceDataCollector[currentRace] = {currencyID = currentRace,goldTime=goldTime, silverTime=silverTime};
+									if DragonRider_DB.debug == true then
+										Print("Saving Temp Race Data")
+									end
+								end
+							end
+						end
 					end
 				end
-			end
-		end
-	end
-
-	if event == "CURRENCY_DISPLAY_UPDATE" then
-		for k, v in pairs(DR.DragonRaceCurrencies) do
-			if arg1 == v then
 				DR.mainFrame.UpdatePopulation()
 				if DragonRider_DB.debug == true then
-					Print("Updating Currency!")
+					Print(arg1 .. ": " .. C_CurrencyInfo.GetCurrencyInfo(arg1).name)
+					Print(C_CurrencyInfo.GetCurrencyInfo(arg1).quantity/1000)
+					Print(currentRace .. ": " .. "gold: " .. goldTime .. ", silver: " .. silverTime);
 				end
 			end
 		end
@@ -1028,6 +1027,11 @@ function DR:toggleEvent(event, arg1)
 		end
 		if DragonRider_DB.mainFrameSize ~= nil then
 			DR.mainFrame:SetSize(DragonRider_DB.mainFrameSize.width, DragonRider_DB.mainFrameSize.height);
+		end
+		if DragonRider_DB.useAccountData == nil then
+			DragonRider_DB.useAccountData = false;
+		else
+			DR.mainFrame.accountAll_Checkbox:SetChecked(DragonRider_DB.useAccountData)
 		end
 		if DragonRider_DB.raceData == nil then
 			DragonRider_DB.raceData = {};

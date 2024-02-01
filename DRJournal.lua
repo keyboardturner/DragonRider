@@ -160,9 +160,9 @@ function DR.mainFrame.UpdatePopulation()
 	end
 end
 
-DR.mainFrame.accountAll = CreateFrame("CheckButton", nil, content1, "UICheckButtonTemplate");
-DR.mainFrame.accountAll:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -15, -15);
-DR.mainFrame.accountAll:SetScript("OnClick", function(self)
+DR.mainFrame.accountAll_Checkbox = CreateFrame("CheckButton", nil, content1, "UICheckButtonTemplate");
+DR.mainFrame.accountAll_Checkbox:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -15, -15);
+DR.mainFrame.accountAll_Checkbox:SetScript("OnClick", function(self)
 	if self:GetChecked() then
 		Print("[PH] On");
 		PlaySound(856);
@@ -175,14 +175,14 @@ DR.mainFrame.accountAll:SetScript("OnClick", function(self)
 		DR.mainFrame.UpdatePopulation()
 	end
 end);
-DR.mainFrame.accountAll.text = DR.mainFrame.accountAll:CreateFontString()
-DR.mainFrame.accountAll.text:SetFont(STANDARD_TEXT_FONT, 11)
-DR.mainFrame.accountAll.text:SetPoint("RIGHT", DR.mainFrame.accountAll, "LEFT", -5, 0)
-DR.mainFrame.accountAll.text:SetText("[PH] Use Account Settings")
-DR.mainFrame.accountAll:SetScript("OnEnter", function(self)
+DR.mainFrame.accountAll_Checkbox.text = DR.mainFrame.accountAll_Checkbox:CreateFontString()
+DR.mainFrame.accountAll_Checkbox.text:SetFont(STANDARD_TEXT_FONT, 11)
+DR.mainFrame.accountAll_Checkbox.text:SetPoint("RIGHT", DR.mainFrame.accountAll_Checkbox, "LEFT", -5, 0)
+DR.mainFrame.accountAll_Checkbox.text:SetText("[PH] Use Account Settings")
+DR.mainFrame.accountAll_Checkbox:SetScript("OnEnter", function(self)
 	DR.tooltip_OnEnter(self, "[PH] Tooltip Description")
 end);
-DR.mainFrame.accountAll:SetScript("OnLeave", DR.tooltip_OnLeave);
+DR.mainFrame.accountAll_Checkbox:SetScript("OnLeave", DR.tooltip_OnLeave);
 
 DR.mainFrame.backgroundTex = DR.mainFrame.ScrollFrame:CreateTexture()
 DR.mainFrame.backgroundTex:SetAllPoints(DR.mainFrame.ScrollFrame)
@@ -251,22 +251,35 @@ function DR.mainFrame.PopulationData(continent)
 			end
 			local scoreValue
 			local scoreValueF
+			local scorePersonal
+
 			if v.currencyID ~= nil then
-				scoreValue = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000
+				if DragonRider_DB.raceDataCollector == nil then
+					DragonRider_DB.raceDataCollector = {};
+				end
+				if DragonRider_DB.raceDataCollector[v.currencyID] then
+					if v.currencyID == DragonRider_DB.raceDataCollector[v.currencyID]["currencyID"] and (goldTime == nil or silverTime == nil) then
+						goldTime = DragonRider_DB.raceDataCollector[v.currencyID]["goldTime"];
+						silverTime = DragonRider_DB.raceDataCollector[v.currencyID]["silverTime"];
+					end
+				end
+				scoreValue = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000;
+				scorePersonal = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000;
 				if scoreValue == 0 then
-					scoreValue = nil
+					scoreValue = nil;
 				end
-				if DragonRider_DB.raceData == nil then
-					DragonRider_DB.raceData[charKey] = {};
-				end
-				if DragonRider_DB.raceData[charKey] == nil then
-					DragonRider_DB.raceData[charKey] = {};
-				end
+
+				--if DragonRider_DB.raceData == nil then
+					--DragonRider_DB.raceData[charKey] = {};
+				--end
+				--if DragonRider_DB.raceData[charKey] == nil then
+					--DragonRider_DB.raceData[charKey] = {};
+				--end
 				if DragonRider_DB.raceData["Account"] == nil then
 					DragonRider_DB.raceData["Account"] = {};
 				end
 				if DragonRider_DB.raceData ~= nil and scoreValue ~= 0 and scoreValue ~= nil then
-					DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
+					--DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
 					if DragonRider_DB.raceData["Account"][v.currencyID] == nil then
 						DragonRider_DB.raceData["Account"][v.currencyID] = {
 							score = scoreValue,
@@ -280,10 +293,18 @@ function DR.mainFrame.PopulationData(continent)
 						end
 					end
 				end
+
+				if DragonRider_DB.useAccountData == true then
+					if DragonRider_DB.raceData["Account"][v.currencyID] ~= nil then
+						scoreValue = DragonRider_DB.raceData["Account"][v.currencyID]["score"]
+					end
+				end
 				if scoreValue and goldTime then
 					if scoreValue < goldTime then
 						medalValue = medalGold
 					end
+				end
+				if scoreValue and silverTime then
 					if scoreValue < silverTime and scoreValue > goldTime then
 						medalValue = medalSilver
 					end
@@ -292,11 +313,6 @@ function DR.mainFrame.PopulationData(continent)
 					end
 				end
 
-				if DragonRider_DB.useAccountData == true then
-					if DragonRider_DB.raceData["Account"][v.currencyID] ~= nil then
-						scoreValue = DragonRider_DB.raceData["Account"][v.currencyID]["score"]
-					end
-				end
 				if scoreValue then
 					scoreValueF = string.format("%.3f", scoreValue)
 				else
@@ -318,6 +334,59 @@ function DR.mainFrame.PopulationData(continent)
 
 			--Scores
 			DR.mainFrame["backFrame"..continent][k]:SetText(scoreValueF);
+
+			local accountBestScore
+			local accountBestChar
+			if DragonRider_DB.raceData["Account"] then
+				if DragonRider_DB.raceData["Account"][v.currencyID] then
+					if DragonRider_DB.raceData["Account"][v.currencyID]["character"] then
+						accountBestChar = DragonRider_DB.raceData["Account"][v.currencyID]["character"]
+					end
+					if DragonRider_DB.raceData["Account"][v.currencyID]["score"] then
+						accountBestScore = DragonRider_DB.raceData["Account"][v.currencyID]["score"] 
+					end
+				end
+			end
+
+
+			if goldTime and scorePersonal then
+				if scorePersonal > goldTime then
+					scorePersonal = tostring(scorePersonal)
+					scorePersonal = RED_FONT_COLOR:WrapTextInColorCode(scorePersonal);
+				end
+			end
+			if goldTime and accountBestScore then
+				if accountBestScore > goldTime then
+					accountBestScore = tostring(accountBestScore)
+					accountBestScore = RED_FONT_COLOR:WrapTextInColorCode(accountBestScore);
+				end
+			end
+
+			if scoreValueF == nil then
+				scoreValueF = "--"
+			end
+			if scorePersonal == nil or scorePersonal == 0 then
+				scorePersonal = "--"
+			end
+			if goldTime == nil then
+				goldTime = "--"
+			end
+			if silverTime == nil then
+				silverTime = "--"
+			end
+			if accountBestScore == nil then
+				accountBestScore = "--"
+			end
+			if accountBestChar == nil then
+				accountBestChar = "--"
+			end
+			local tooltipData = "[PH] Personal Best: "..scorePersonal.."\n".."[PH] Account Best: "..accountBestScore.."\n".."[PH] Best Character: "..accountBestChar.."\n".."[PH] Gold Time: "..goldTime.."\n".."[PH] Silver Time: "..silverTime
+
+			DR.mainFrame["backFrame"..continent][k]:SetScript("OnEnter", function(self)
+				DR.tooltip_OnEnter(self, tooltipData)
+			end);
+			DR.mainFrame["backFrame"..continent][k]:SetScript("OnLeave", DR.tooltip_OnLeave);
+
 			placeValueX = placeValueX+1
 		end
 		return
@@ -352,22 +421,23 @@ function DR.mainFrame.PopulationData(continent)
 		end
 		local scoreValue
 		local scoreValueF
+
 		if v.currencyID ~= nil then
 			scoreValue = C_CurrencyInfo.GetCurrencyInfo(v.currencyID).quantity/1000
 			if scoreValue == 0 then
 				scoreValue = nil
 			end
-			if DragonRider_DB.raceData == nil then
-				DragonRider_DB.raceData[charKey] = {};
-			end
-			if DragonRider_DB.raceData[charKey] == nil then
-				DragonRider_DB.raceData[charKey] = {};
-			end
+			--if DragonRider_DB.raceData == nil then
+				--DragonRider_DB.raceData[charKey] = {};
+			--end
+			--if DragonRider_DB.raceData[charKey] == nil then
+				--DragonRider_DB.raceData[charKey] = {};
+			--end
 			if DragonRider_DB.raceData["Account"] == nil then
 				DragonRider_DB.raceData["Account"] = {};
 			end
 			if DragonRider_DB.raceData ~= nil and scoreValue ~= 0 and scoreValue ~= nil then
-				DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
+				--DragonRider_DB.raceData[charKey][v.currencyID] = scoreValue;
 				if DragonRider_DB.raceData["Account"][v.currencyID] == nil then
 					DragonRider_DB.raceData["Account"][v.currencyID] = {
 						score = scoreValue,
@@ -385,6 +455,8 @@ function DR.mainFrame.PopulationData(continent)
 				if scoreValue < goldTime then
 					medalValue = medalGold
 				end
+			end
+			if scoreValue and silverTime then
 				if scoreValue < silverTime and scoreValue > goldTime then
 					medalValue = medalSilver
 				end
@@ -401,7 +473,7 @@ function DR.mainFrame.PopulationData(continent)
 
 		end
 
-		if scoreValueF == "0.000" then
+		if scoreValueF == "0.000" or scoreValueF == nil then
 			scoreValueF = "--"
 		elseif medalValue ~= "" then
 			scoreValueF = medalValue..scoreValueF
@@ -413,6 +485,7 @@ function DR.mainFrame.PopulationData(continent)
 		DR.mainFrame["backFrame"..continent][k]:SetPoint("TOPLEFT", DR.mainFrame.resizeFrames["middleFrame_"..placeValueX..continent], "TOPLEFT", 0, -15*placeValueY-20);
 		DR.mainFrame["backFrame"..continent][k]:SetText(scoreValueF);
 		DR.mainFrame["backFrame"..continent][k]:SetParent(DR.mainFrame["backFrame"..continent]);
+
 		placeValueX = placeValueX+1
 	end
 end
@@ -430,14 +503,14 @@ function DR.mainFrame.DoPopulationStuff()
 			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", content1, "TOPLEFT", 0, -65);
 			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -18, -65);
 			DR.mainFrame["titleText"..k] = content1:CreateFontString();
-			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 0, 15);
+			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 10, -5);
 			DR.mainFrame["titleText"..k]:SetParent(DR.mainFrame["backFrame"..k])
 		else
 			DR.mainFrame["backFrame"..k] = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..oneLess], "BackdropTemplate");
 			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..oneLess], "BOTTOMLEFT", 0, -35);
 			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame["backFrame"..oneLess], "BOTTOMRIGHT", 0, -35);
 			DR.mainFrame["titleText"..k] = content1:CreateFontString();
-			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 0, 15);
+			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 10, -5);
 			DR.mainFrame["titleText"..k]:SetParent(DR.mainFrame["backFrame"..k])
 		end
 
@@ -447,6 +520,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		DR.mainFrame["titleText"..k]:SetFont(STANDARD_TEXT_FONT, 11);
 		DR.mainFrame["titleText"..k]:SetText(MapName);
+		DR.mainFrame["titleText"..k]:SetTextColor(YELLOW_FONT_COLOR:GetRGBA());
 
 		local leftFrame = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		leftFrame:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 0, -1);
@@ -454,7 +528,7 @@ function DR.mainFrame.DoPopulationStuff()
 		leftFrame:SetHeight(15);
 		leftFrame.tex = leftFrame:CreateTexture()
 		leftFrame.tex:SetAllPoints(leftFrame)
-		leftFrame.tex:SetColorTexture(1,1,1,.2)
+		--leftFrame.tex:SetColorTexture(1,1,1,.2)
 
 		local middleFrame_1 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_1:SetPoint("TOP", DR.mainFrame["backFrame"..k], "TOP", -85, 0);
@@ -462,7 +536,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_1:SetHeight(15)
 		middleFrame_1.tex = middleFrame_1:CreateTexture()
 		middleFrame_1.tex:SetAllPoints(middleFrame_1)
-		middleFrame_1.tex:SetColorTexture(1,0,0,.2)
+		--middleFrame_1.tex:SetColorTexture(1,0,0,.2)
 
 		local middleFrame_2 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_2:SetPoint("TOP", DR.mainFrame["backFrame"..k], "TOP", 0, 0);
@@ -470,7 +544,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_2:SetHeight(15)
 		middleFrame_2.tex = middleFrame_2:CreateTexture()
 		middleFrame_2.tex:SetAllPoints(middleFrame_2)
-		middleFrame_2.tex:SetColorTexture(1,0,1,.2)
+		--middleFrame_2.tex:SetColorTexture(1,0,1,.2)
 
 		local middleFrame_3 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_3:SetPoint("TOP", DR.mainFrame["backFrame"..k], "TOP", 0, 0);
@@ -478,7 +552,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_3:SetHeight(15)
 		middleFrame_3.tex = middleFrame_3:CreateTexture()
 		middleFrame_3.tex:SetAllPoints(middleFrame_3)
-		middleFrame_3.tex:SetColorTexture(0,0,1,.2)
+		--middleFrame_3.tex:SetColorTexture(0,0,1,.2)
 
 		local middleFrame_4 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_4:SetPoint("TOP", DR.mainFrame["backFrame"..k], "TOP", 0, 0);
@@ -486,7 +560,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_4:SetHeight(15)
 		middleFrame_4.tex = middleFrame_4:CreateTexture()
 		middleFrame_4.tex:SetAllPoints(middleFrame_4)
-		middleFrame_4.tex:SetColorTexture(0,1,1,.2)
+		--middleFrame_4.tex:SetColorTexture(0,1,1,.2)
 
 		local middleFrame_5 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_5:SetPoint("TOP", DR.mainFrame["backFrame"..k], "TOP", 0, 0);
@@ -494,7 +568,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_5:SetHeight(15)
 		middleFrame_5.tex = middleFrame_5:CreateTexture()
 		middleFrame_5.tex:SetAllPoints(middleFrame_5)
-		middleFrame_5.tex:SetColorTexture(0,0,0,.2)
+		--middleFrame_5.tex:SetColorTexture(0,0,0,.2)
 
 		local middleFrame_6 = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..k] )
 		middleFrame_6:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOP", 0, -1);
@@ -502,7 +576,7 @@ function DR.mainFrame.DoPopulationStuff()
 		middleFrame_6:SetHeight(15);
 		middleFrame_6.tex = middleFrame_6:CreateTexture()
 		middleFrame_6.tex:SetAllPoints(middleFrame_6)
-		middleFrame_6.tex:SetColorTexture(1,1,0,.2)
+		--middleFrame_6.tex:SetColorTexture(1,1,0,.2)
 
 
 		leftFrame:SetPoint("TOPRIGHT", middleFrame_1, "TOPLEFT", 0, 0);
@@ -525,7 +599,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local normalText = content1:CreateFontString();
 		normalText:SetFont(STANDARD_TEXT_FONT, 11);
-		normalText:SetPoint("TOPLEFT", middleFrame_1, "TOPLEFT", 0, -1);
+		normalText:SetPoint("TOPLEFT", middleFrame_1, "TOPLEFT", 0, -5);
 		normalText:SetText(L["Normal"]);
 		normalText:SetParent(DR.mainFrame["backFrame"..k]);
 		normalText:SetSize(65,30)
@@ -534,7 +608,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local advancedText = content1:CreateFontString();
 		advancedText:SetFont(STANDARD_TEXT_FONT, 11);
-		advancedText:SetPoint("TOPLEFT", middleFrame_2, "TOPLEFT", 0, -1);
+		advancedText:SetPoint("TOPLEFT", middleFrame_2, "TOPLEFT", 0, -5);
 		advancedText:SetText(L["Advanced"]);
 		advancedText:SetParent(DR.mainFrame["backFrame"..k]);
 		advancedText:SetSize(65,30)
@@ -543,7 +617,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local reverseText = content1:CreateFontString();
 		reverseText:SetFont(STANDARD_TEXT_FONT, 11);
-		reverseText:SetPoint("TOPLEFT", middleFrame_3, "TOPLEFT", 0, -1);
+		reverseText:SetPoint("TOPLEFT", middleFrame_3, "TOPLEFT", 0, -5);
 		reverseText:SetText(L["Reverse"]);
 		reverseText:SetParent(DR.mainFrame["backFrame"..k]);
 		reverseText:SetSize(65,30)
@@ -552,7 +626,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local challengeText = content1:CreateFontString();
 		challengeText:SetFont(STANDARD_TEXT_FONT, 11);
-		challengeText:SetPoint("TOPLEFT", middleFrame_4, "TOPLEFT", 0, -1);
+		challengeText:SetPoint("TOPLEFT", middleFrame_4, "TOPLEFT", 0, -5);
 		challengeText:SetText(L["Challenge"]);
 		challengeText:SetParent(DR.mainFrame["backFrame"..k]);
 		challengeText:SetSize(65,30)
@@ -561,7 +635,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local reverseChallText = content1:CreateFontString();
 		reverseChallText:SetFont(STANDARD_TEXT_FONT, 11);
-		reverseChallText:SetPoint("TOPLEFT", middleFrame_5, "TOPLEFT", 0, -1);
+		reverseChallText:SetPoint("TOPLEFT", middleFrame_5, "TOPLEFT", 0, -5);
 		reverseChallText:SetText(L["ReverseChallenge"]);
 		reverseChallText:SetParent(DR.mainFrame["backFrame"..k]);
 		reverseChallText:SetSize(65,30)
@@ -570,7 +644,7 @@ function DR.mainFrame.DoPopulationStuff()
 
 		local stormText = content1:CreateFontString();
 		stormText:SetFont(STANDARD_TEXT_FONT, 11);
-		stormText:SetPoint("TOPLEFT", middleFrame_6, "TOPLEFT", 0, -1);
+		stormText:SetPoint("TOPLEFT", middleFrame_6, "TOPLEFT", 0, -5);
 		stormText:SetText(L["Storm"]);
 		stormText:SetParent(DR.mainFrame["backFrame"..k]);
 		stormText:SetSize(65,30)

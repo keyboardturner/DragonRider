@@ -148,8 +148,8 @@ DR.RaceData = {
 	[1] = {
 		[1] = {
 			["currencyID"] = 2042,
-			["silverTime"] = 56,
-			["goldTime"] = 53,
+			["silverTime"] = 56, --56
+			["goldTime"] = 56, -- 53
 			["questID"] = 66679,
 		},
 		[2] = {
@@ -1881,20 +1881,20 @@ DR.RaceData = {
 	 -- Felwood Flyover
 		[1] = {
 			["currencyID"] = 2312,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
 			["questID"] = 75277,
 		},
 		[2] = {
 			["currencyID"] = 2342,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
 			["questID"] = 75277,
 		},
 		[3] = {
 			["currencyID"] = 2372,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 62,
 			["questID"] = 75277,
 		},
 		[4] = {
@@ -1917,34 +1917,574 @@ DR.RaceData = {
 		},
 	
 	 -- Winter Wander
+		[7] = {
+			["currencyID"] = 2313,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 80,
+			["questID"] = 75310,
+		},
+		[8] = {
+			["currencyID"] = 2343,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 73,
+			["questID"] = 75310,
+		},
+		[9] = {
+			["currencyID"] = 2373,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
+			["questID"] = 75310,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Nordrassil Spiral
+		[13] = {
+			["currencyID"] = 2314,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 45,
+			["questID"] = 75317,
+		},
+		[14] = {
+			["currencyID"] = 2344,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 41,
+			["questID"] = 75317,
+		},
+		[15] = {
+			["currencyID"] = 2374,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 41,
+			["questID"] = 75317,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Hyjal Hotfoot
+		[19] = {
+			["currencyID"] = 2315,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
+			["questID"] = 75330,
+		},
+		[20] = {
+			["currencyID"] = 2345,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 69,
+			["questID"] = 75330,
+		},
+		[21] = {
+			["currencyID"] = 2375,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 67,
+			["questID"] = 75330,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Rocketway Ride
+		[25] = {
+			["currencyID"] = 2316,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 101,
+			["questID"] = 75347,
+		},
+		[26] = {
+			["currencyID"] = 2346,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 94,
+			["questID"] = 75347,
+		},
+		[27] = {
+			["currencyID"] = 2376,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 94,
+			["questID"] = 75347,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Ashenvale Ambit
+		[31] = {
+			["currencyID"] = 2317,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 64,
+			["questID"] = 75378,
+		},
+		[32] = {
+			["currencyID"] = 2347,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 59,
+			["questID"] = 75378,
+		},
+		[33] = {
+			["currencyID"] = 2377,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 59,
+			["questID"] = 75378,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Durotar Tour
+		[37] = {
+			["currencyID"] = 2318,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 82,
+			["questID"] = 75385,
+		},
+		[38] = {
+			["currencyID"] = 2348,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 75,
+			["questID"] = 75385,
+		},
+		[39] = {
+			["currencyID"] = 2378,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 75,
+			["questID"] = 75385,
+		},
+		[40] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[41] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[42] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Webwinder Weave
+		[43] = {
+			["currencyID"] = 2319,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 80,
+			["questID"] = 75394,
+		},
+		[44] = {
+			["currencyID"] = 2349,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 73,
+			["questID"] = 75394,
+		},
+		[45] = {
+			["currencyID"] = 2379,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
+			["questID"] = 75394,
+		},
+		[46] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[47] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[48] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Desolace Drift
+		[49] = {
+			["currencyID"] = 2320,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 78,
+			["questID"] = 75409,
+		},
+		[50] = {
+			["currencyID"] = 2350,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
+			["questID"] = 75409,
+		},
+		[51] = {
+			["currencyID"] = 2380,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 71,
+			["questID"] = 75409,
+		},
+		[52] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[53] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[54] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Great Divide Dive
+		[55] = {
+			["currencyID"] = 2321,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 48,
+			["questID"] = 75412,
+		},
+		[56] = {
+			["currencyID"] = 2351,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 43,
+			["questID"] = 75412,
+		},
+		[57] = {
+			["currencyID"] = 2381,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 44,
+			["questID"] = 75412,
+		},
+		[58] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[59] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[60] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Razorfen Roundabout
+		[61] = {
+			["currencyID"] = 2322,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 53,
+			["questID"] = 75437,
+		},
+		[62] = {
+			["currencyID"] = 2352,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 47,
+			["questID"] = 75437,
+		},
+		[63] = {
+			["currencyID"] = 2382,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 48,
+			["questID"] = 75437,
+		},
+		[64] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[65] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[66] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Thousand Needles Thread
+		[67] = {
+			["currencyID"] = 2323,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 87,
+			["questID"] = 75463,
+		},
+		[68] = {
+			["currencyID"] = 2353,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 77,
+			["questID"] = 75463,
+		},
+		[69] = {
+			["currencyID"] = 2383,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 77,
+			["questID"] = 75463,
+		},
+		[70] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[71] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[72] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Feralas Ruins Ramble
+		[73] = {
+			["currencyID"] = 2324,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 89,
+			["questID"] = 75468,
+		},
+		[74] = {
+			["currencyID"] = 2354,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 84,
+			["questID"] = 75468,
+		},
+		[75] = {
+			["currencyID"] = 2384,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 84,
+			["questID"] = 75468,
+		},
+		[76] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[77] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[78] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Ahn'Qiraj Circuit
+		[79] = {
+			["currencyID"] = 2325,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 77,
+			["questID"] = 75472,
+		},
+		[80] = {
+			["currencyID"] = 2355,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 68,
+			["questID"] = 75472,
+		},
+		[81] = {
+			["currencyID"] = 2385,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 69,
+			["questID"] = 75472,
+		},
+		[82] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[83] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[84] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Uldum Tour
+		[85] = {
+			["currencyID"] = 2326,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 84,
+			["questID"] = 75481,
+		},
+		[86] = {
+			["currencyID"] = 2356,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 76,
+			["questID"] = 75481,
+		},
+		[87] = {
+			["currencyID"] = 2386,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 76,
+			["questID"] = 75481,
+		},
+		[88] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[89] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[90] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Un'Goro Crater Circuit
+		[91] = {
+			["currencyID"] = 2327,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 100,
+			["questID"] = 75485,
+		},
+		[92] = {
+			["currencyID"] = 2357,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 90,
+			["questID"] = 75485,
+		},
+		[93] = {
+			["currencyID"] = 2387,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 92,
+			["questID"] = 75485,
+		},
+		[94] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[95] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[96] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	};
 
 
@@ -1954,20 +2494,20 @@ DR.RaceData = {
 	 -- Gilneas Gambit
 		[1] = {
 			["currencyID"] = 2536,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 78,
 			["questID"] = 76309,
 		},
 		[2] = {
 			["currencyID"] = 2552,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 74,
 			["questID"] = 76309,
 		},
 		[3] = {
 			["currencyID"] = 2568,
-			["silverTime"] = nil,
-			["goldTime"] = nil,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 74,
 			["questID"] = 76309,
 		},
 		[4] = {
@@ -1991,30 +2531,498 @@ DR.RaceData = {
 	
 	
 	 -- Loch Modan Loop
+		[7] = {
+			["currencyID"] = 2537,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
+			["questID"] = 76339,
+		},
+		[8] = {
+			["currencyID"] = 2553,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 61,
+			["questID"] = 76339,
+		},
+		[9] = {
+			["currencyID"] = 2569,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
+			["questID"] = 76339,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Searing Slalom
+		[13] = {
+			["currencyID"] = 2538,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 52,
+			["questID"] = 76357,
+		},
+		[14] = {
+			["currencyID"] = 2554,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 46,
+			["questID"] = 76357,
+		},
+		[15] = {
+			["currencyID"] = 2570,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 43,
+			["questID"] = 76357,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Twilight Terror
+		[19] = {
+			["currencyID"] = 2539,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 73,
+			["questID"] = 76364,
+		},
+		[20] = {
+			["currencyID"] = 2555,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 68,
+			["questID"] = 76364,
+		},
+		[21] = {
+			["currencyID"] = 2571,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 66,
+			["questID"] = 76364,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Deadwind Derby
+		[25] = {
+			["currencyID"] = 2540,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 60,
+			["questID"] = 76380,
+		},
+		[26] = {
+			["currencyID"] = 2556,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 59,
+			["questID"] = 76380,
+		},
+		[27] = {
+			["currencyID"] = 2572,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 59,
+			["questID"] = 76380,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Elwynn Forest Flash
+		[31] = {
+			["currencyID"] = 2541,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 73,
+			["questID"] = 76397,
+		},
+		[32] = {
+			["currencyID"] = 2557,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 66,
+			["questID"] = 76397,
+		},
+		[33] = {
+			["currencyID"] = 2573,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
+			["questID"] = 76397,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Gurubashi Gala
+		[37] = {
+			["currencyID"] = 2542,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 56,
+			["questID"] = 76438,
+		},
+		[38] = {
+			["currencyID"] = 2558,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 49,
+			["questID"] = 76438,
+		},
+		[39] = {
+			["currencyID"] = 2574,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 50,
+			["questID"] = 76438,
+		},
+		[40] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[41] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[42] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Ironforge Interceptor
+		[43] = {
+			["currencyID"] = 2543,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 70,
+			["questID"] = 76445,
+		},
+		[44] = {
+			["currencyID"] = 2559,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 64,
+			["questID"] = 76445,
+		},
+		[45] = {
+			["currencyID"] = 2575,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 60,
+			["questID"] = 76445,
+		},
+		[46] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[47] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[48] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Blasted Lands Bolt
+		[49] = {
+			["currencyID"] = 2544,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 69,
+			["questID"] = 76469,
+		},
+		[50] = {
+			["currencyID"] = 2560,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 62,
+			["questID"] = 76469,
+		},
+		[51] = {
+			["currencyID"] = 2576,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 64,
+			["questID"] = 76469,
+		},
+		[52] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[53] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[54] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Plaguelands Plunge
+		[55] = {
+			["currencyID"] = 2545,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
+			["questID"] = 76510,
+		},
+		[56] = {
+			["currencyID"] = 2561,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 53,
+			["questID"] = 76510,
+		},
+		[57] = {
+			["currencyID"] = 2577,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 58,
+			["questID"] = 76510,
+		},
+		[58] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[59] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[60] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Booty Bay Blast
+		[61] = {
+			["currencyID"] = 2546,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 63,
+			["questID"] = 76515,
+		},
+		[62] = {
+			["currencyID"] = 2562,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 57,
+			["questID"] = 76515,
+		},
+		[63] = {
+			["currencyID"] = 2578,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 56,
+			["questID"] = 76515,
+		},
+		[64] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[65] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[66] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Fuselight Night Flight
+		[67] = {
+			["currencyID"] = 2547,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 64,
+			["questID"] = 76523,
+		},
+		[68] = {
+			["currencyID"] = 2563,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 58,
+			["questID"] = 76523,
+		},
+		[69] = {
+			["currencyID"] = 2579,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 58,
+			["questID"] = 76523,
+		},
+		[70] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[71] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[72] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Krazzworks Klash
+		[73] = {
+			["currencyID"] = 2548,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 71,
+			["questID"] = 76527,
+		},
+		[74] = {
+			["currencyID"] = 2564,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 64,
+			["questID"] = 76527,
+		},
+		[75] = {
+			["currencyID"] = 2580,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 62,
+			["questID"] = 76527,
+		},
+		[76] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[77] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[78] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Redridge Rally
+		[79] = {
+			["currencyID"] = 2549,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 57,
+			["questID"] = 76536,
+		},
+		[80] = {
+			["currencyID"] = 2565,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 52,
+			["questID"] = 76536,
+		},
+		[81] = {
+			["currencyID"] = 2581,
+			["silverTime"] = nil, -- MISSING
+			["goldTime"] = 52,
+			["questID"] = 76536,
+		},
+		[82] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[83] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[84] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	};
 
 
@@ -2558,26 +3566,422 @@ DR.RaceData = {
 		},
 	
 	 -- Daggercap Dart
+		[7] = {
+			["currencyID"] = 2721,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78325,
+		},
+		[8] = {
+			["currencyID"] = 2739,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78325,
+		},
+		[9] = {
+			["currencyID"] = 2757,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78325,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Blackriver Burble
+		[13] = {
+			["currencyID"] = 2722,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78334,
+		},
+		[14] = {
+			["currencyID"] = 2740,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78334,
+		},
+		[15] = {
+			["currencyID"] = 2758,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78334,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Zul'Drak Zephyr
+		[19] = {
+			["currencyID"] = 2723,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78346,
+		},
+		[20] = {
+			["currencyID"] = 2741,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78346,
+		},
+		[21] = {
+			["currencyID"] = 2759,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78346,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Makers' Marathon
+		[25] = {
+			["currencyID"] = 2724,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78389,
+		},
+		[26] = {
+			["currencyID"] = 2742,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78389,
+		},
+		[27] = {
+			["currencyID"] = 2760,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78389,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Crystalsong Crisis
+		[31] = {
+			["currencyID"] = 2725,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78441,
+		},
+		[32] = {
+			["currencyID"] = 2743,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78441,
+		},
+		[33] = {
+			["currencyID"] = 2761,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78441,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Dragonblight Dragon Flight
+		[37] = {
+			["currencyID"] = 2726,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78454,
+		},
+		[38] = {
+			["currencyID"] = 2744,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78454,
+		},
+		[39] = {
+			["currencyID"] = 2762,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78454,
+		},
+		[40] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[41] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[42] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Citadel Sortie
+		[43] = {
+			["currencyID"] = 2727,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78499,
+		},
+		[44] = {
+			["currencyID"] = 2745,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78499,
+		},
+		[45] = {
+			["currencyID"] = 2763,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78499,
+		},
+		[46] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[47] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[48] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Sholazar Spree
+		[49] = {
+			["currencyID"] = 2728,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78558,
+		},
+		[50] = {
+			["currencyID"] = 2746,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78558,
+		},
+		[51] = {
+			["currencyID"] = 2764,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78558,
+		},
+		[52] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[53] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[54] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Geothermal Jaunt
+		[55] = {
+			["currencyID"] = 2729,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78608,
+		},
+		[56] = {
+			["currencyID"] = 2747,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78608,
+		},
+		[57] = {
+			["currencyID"] = 2765,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 78608,
+		},
+		[58] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[59] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[60] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Gundrak Fast Track
+		[61] = {
+			["currencyID"] = 2730,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79268,
+		},
+		[62] = {
+			["currencyID"] = 2748,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79268,
+		},
+		[63] = {
+			["currencyID"] = 2766,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79268,
+		},
+		[64] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[65] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[66] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 	
 	 -- Coldarra Climb
+		[67] = {
+			["currencyID"] = 2731,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79272,
+		},
+		[68] = {
+			["currencyID"] = 2749,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79272,
+		},
+		[69] = {
+			["currencyID"] = 2767,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 79272,
+		},
+		[70] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[71] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
+		[72] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+		},
 
 	};
 
