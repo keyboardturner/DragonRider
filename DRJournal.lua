@@ -23,7 +23,7 @@ DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitF
 tinsert(UISpecialFrames, DR.mainFrame:GetName())
 DR.mainFrame:SetPortraitTextureRaw("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
 --DR.mainFrame.PortraitContainer.portrait:SetTexture("Interface\\AddOns\\Languages\\Languages_Icon_Small")
-DR.mainFrame:SetTitle("[PH] Dragon Rider")
+DR.mainFrame:SetTitle(L["DragonRider"])
 DR.mainFrame:SetSize(550,525)
 DR.mainFrame:SetPoint("CENTER", UIParent, "CENTER")
 DR.mainFrame:SetMovable(true)
@@ -136,7 +136,7 @@ function DR.mainFrame.SetTabs(frame,numTabs, ...)
 
 end
 
-local content1, content2, content3 = DR.mainFrame.SetTabs(DR.mainFrame, 3, "[PH] Score", "[PH] Guide", "[PH] Settings")
+local content1, content2, content3 = DR.mainFrame.SetTabs(DR.mainFrame, 3, L["Score"], L["Guide"], L["Settings"])
 
 DragonRiderMainFrameTab2:SetEnabled(false)
 DragonRiderMainFrameTab3:SetEnabled(false)
@@ -145,12 +145,12 @@ DragonRiderMainFrameTab2.Text:SetTextColor(.5,.5,.5)
 DragonRiderMainFrameTab3.Text:SetTextColor(.5,.5,.5)
 
 DragonRiderMainFrameTab2:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, "[PH] Coming Soon")
+	DR.tooltip_OnEnter(self, L["ComingSoon"])
 end);
 DragonRiderMainFrameTab2:SetScript("OnLeave", DR.tooltip_OnLeave);
 
 DragonRiderMainFrameTab3:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, "[PH] Coming Soon")
+	DR.tooltip_OnEnter(self, L["ComingSoon"])
 end);
 DragonRiderMainFrameTab3:SetScript("OnLeave", DR.tooltip_OnLeave);
 
@@ -161,15 +161,13 @@ function DR.mainFrame.UpdatePopulation()
 end
 
 DR.mainFrame.accountAll_Checkbox = CreateFrame("CheckButton", nil, content1, "UICheckButtonTemplate");
-DR.mainFrame.accountAll_Checkbox:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -15, -15);
+DR.mainFrame.accountAll_Checkbox:SetPoint("TOPLEFT", content1, "TOPLEFT", 55, -15);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnClick", function(self)
 	if self:GetChecked() then
-		Print("[PH] On");
 		PlaySound(856);
 		DragonRider_DB.useAccountData = true;
 		DR.mainFrame.UpdatePopulation()
 	else
-		Print("[PH] Off");
 		PlaySound(857);
 		DragonRider_DB.useAccountData = false;
 		DR.mainFrame.UpdatePopulation()
@@ -177,10 +175,14 @@ DR.mainFrame.accountAll_Checkbox:SetScript("OnClick", function(self)
 end);
 DR.mainFrame.accountAll_Checkbox.text = DR.mainFrame.accountAll_Checkbox:CreateFontString()
 DR.mainFrame.accountAll_Checkbox.text:SetFont(STANDARD_TEXT_FONT, 11)
-DR.mainFrame.accountAll_Checkbox.text:SetPoint("RIGHT", DR.mainFrame.accountAll_Checkbox, "LEFT", -5, 0)
-DR.mainFrame.accountAll_Checkbox.text:SetText("[PH] Use Account Settings")
+DR.mainFrame.accountAll_Checkbox.text:SetPoint("LEFT", DR.mainFrame.accountAll_Checkbox, "RIGHT", -5, 0)
+DR.mainFrame.accountAll_Checkbox.text:SetText(L["UseAccountSettings"])
+DR.mainFrame.accountAll_Checkbox.text:SetScript("OnEnter", function(self)
+	DR.tooltip_OnEnter(self, L["UseAccountSettingsTT"])
+end);
+DR.mainFrame.accountAll_Checkbox.text:SetScript("OnLeave", DR.tooltip_OnLeave);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, "[PH] Tooltip Description")
+	DR.tooltip_OnEnter(self, L["UseAccountSettingsTT"])
 end);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnLeave", DR.tooltip_OnLeave);
 
@@ -380,7 +382,7 @@ function DR.mainFrame.PopulationData(continent)
 			if accountBestChar == nil then
 				accountBestChar = "--"
 			end
-			local tooltipData = "[PH] Personal Best: "..scorePersonal.."\n".."[PH] Account Best: "..accountBestScore.."\n".."[PH] Best Character: "..accountBestChar.."\n".."[PH] Gold Time: "..goldTime.."\n".."[PH] Silver Time: "..silverTime
+			local tooltipData = L["PersonalBest"]..scorePersonal.."\n"..L["AccountBest"]..accountBestScore.."\n"..L["BestCharacter"]..accountBestChar.."\n"..L["GoldTime"]..goldTime.."\n"..L["SilverTime"]..silverTime
 
 			DR.mainFrame["backFrame"..continent][k]:SetScript("OnEnter", function(self)
 				DR.tooltip_OnEnter(self, tooltipData)

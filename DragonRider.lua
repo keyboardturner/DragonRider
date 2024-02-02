@@ -867,37 +867,48 @@ DR.clearPositions();
 
 
 local function Print(...)
-	local prefix = string.format("[PH] Dragon Rider" .. ":");
+	local prefix = string.format(L["DragonRider"] .. ":");
 	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
 DR.commands = {
-	["journal"] = function()
+	[L["COMMAND_journal"]] = function()
 		DR.mainFrame:Show();
 	end,
 
+	--[[
 	["test"] = function()
-		Print("[PH] Test.");
+		Print("Test.");
 	end,
 
 	["hello"] = function(subCommand)
 		if not subCommand or subCommand == "" then
-			Print("[PH] No Command");
+			Print("No Command");
 		elseif subCommand == "world" then
-			Print("[PH] Specified Command");
+			Print("Specified Command");
 		else
-			Print("[PH] Invalid Sub-Command");
+			Print("Invalid Sub-Command");
 		end
 	end,
+	]]
 
-	["help"] = function()
-		Print("[PH] Help!")
+	[L["COMMAND_help"]] = function() --because there's not a lot of commands, don't use this yet.
+		local concatenatedString
+		for k, v in pairs(DR.commands) do
+			if concatenatedString == nil then
+				concatenatedString = k
+			else
+				concatenatedString = concatenatedString .. ", ".. k
+			end
+			
+		end
+		Print(L["COMMAND_listcommands"] .. concatenatedString)
 	end
 };
 
 local function HandleSlashCommands(str)
 	if (#str == 0) then
-		DR.commands.help();
+		DR.commands[L["COMMAND_journal"]]();
 		return;
 		end
 
@@ -923,7 +934,7 @@ local function HandleSlashCommands(str)
 					path = path[arg]; -- another sub-table found!
 				end
 				else
-					DR.commands.help();
+					DR.commands[L["COMMAND_journal"]]();
 				return;
 			end
 		end
@@ -981,7 +992,7 @@ function DR:toggleEvent(event, arg1)
 		local realmKey = GetRealmName()
 		local charKey = UnitName("player") .. " - " .. realmKey
 
-		SLASH_DRAGONRIDER1 = "/dragonrider"
+		SLASH_DRAGONRIDER1 = "/"..L["COMMAND_dragonrider"]
 		SlashCmdList.DRAGONRIDER = HandleSlashCommands;
 		
 		if DragonRider_DB == nil then
@@ -1373,7 +1384,22 @@ function DR:toggleEvent(event, arg1)
 		end
 
 		function DragonRider_OnAddonCompartmentEnter(addonName, menuButtonFrame)
-			DR.tooltip_OnEnter(menuButtonFrame, "[PH] Dragon Rider\nRight-Click: Open Settings\nLeft-Click: Open Journal");
+			local tooltipData = {
+				[1] = L["DragonRider"],
+				[2] = L["RightClick_TT_Line"],
+				[3] = L["LeftClick_TT_Line"],
+				[4] = L["SlashCommands_TT_Line"]
+			}
+			local concatenatedString
+			for k, v in ipairs(tooltipData) do
+				if concatenatedString == nil then
+					concatenatedString = v
+				else
+					concatenatedString = concatenatedString .. "\n".. v
+				end
+				
+			end
+			DR.tooltip_OnEnter(menuButtonFrame, concatenatedString);
 		end
 
 		function DragonRider_OnAddonCompartmentLeave(addonName, menuButtonFrame)
