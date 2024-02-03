@@ -176,13 +176,13 @@ end);
 DR.mainFrame.accountAll_Checkbox.text = DR.mainFrame.accountAll_Checkbox:CreateFontString()
 DR.mainFrame.accountAll_Checkbox.text:SetFont(STANDARD_TEXT_FONT, 11)
 DR.mainFrame.accountAll_Checkbox.text:SetPoint("LEFT", DR.mainFrame.accountAll_Checkbox, "RIGHT", -5, 0)
-DR.mainFrame.accountAll_Checkbox.text:SetText(L["UseAccountSettings"])
+DR.mainFrame.accountAll_Checkbox.text:SetText(L["UseAccountScores"])
 DR.mainFrame.accountAll_Checkbox.text:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, L["UseAccountSettingsTT"])
+	DR.tooltip_OnEnter(self, L["UseAccountScoresTT"])
 end);
 DR.mainFrame.accountAll_Checkbox.text:SetScript("OnLeave", DR.tooltip_OnLeave);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, L["UseAccountSettingsTT"])
+	DR.tooltip_OnEnter(self, L["UseAccountScoresTT"])
 end);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnLeave", DR.tooltip_OnLeave);
 
@@ -324,7 +324,7 @@ function DR.mainFrame.PopulationData(continent)
 			end
 
 			if scoreValueF == "0.000" then
-				scoreValueF = "--"
+				scoreValueF = "------"
 			elseif medalValue ~= "" then
 				scoreValueF = medalValue..scoreValueF
 				if DragonRider_DB.useAccountData == true then
@@ -365,22 +365,22 @@ function DR.mainFrame.PopulationData(continent)
 			end
 
 			if scoreValueF == nil then
-				scoreValueF = "--"
+				scoreValueF = "------"
 			end
 			if scorePersonal == nil or scorePersonal == 0 then
-				scorePersonal = "--"
+				scorePersonal = "------"
 			end
 			if goldTime == nil then
-				goldTime = "--"
+				goldTime = "------"
 			end
 			if silverTime == nil then
-				silverTime = "--"
+				silverTime = "------"
 			end
 			if accountBestScore == nil then
-				accountBestScore = "--"
+				accountBestScore = "------"
 			end
 			if accountBestChar == nil then
-				accountBestChar = "--"
+				accountBestChar = "------"
 			end
 			local tooltipData = L["PersonalBest"]..scorePersonal.."\n"..L["AccountBest"]..accountBestScore.."\n"..L["BestCharacter"]..accountBestChar.."\n"..L["GoldTime"]..goldTime.."\n"..L["SilverTime"]..silverTime
 
@@ -421,6 +421,21 @@ function DR.mainFrame.PopulationData(continent)
 			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetText(questName);
 			DR.mainFrame["Course"..continent.."_"..placeValueY]:SetParent(DR.mainFrame["backFrame"..continent]);
 		end
+
+		---future hyperlink waypoint feature
+		--[[
+		DR.mainFrame["Course"..continent.."_"..placeValueY]:SetScript("OnEnter", function(self)
+			DR.tooltip_OnEnter(self, MAP_PIN_HYPERLINK.."\n"..VOICE_CHAT_CHANNEL_INACTIVE_TOOLTIP_INSTRUCTIONS)
+		end);
+		DR.mainFrame["Course"..continent.."_"..placeValueY]:SetScript("OnLeave", DR.tooltip_OnLeave);
+		DR.mainFrame["Course"..continent.."_"..placeValueY]:SetScript("OnHyperlinkClick", function(self)
+			WorldMapFrame:Show()
+			C_Map.SetUserWaypoint(UiMapPoint.CreateFromVector2D(2022,CreateVector2D(.6330,.7090)))
+			C_SuperTrack.SetSuperTrackedUserWaypoint(true)
+			PlaySound(170270)
+		end);
+		]]
+
 		local scoreValue
 		local scoreValueF
 
@@ -476,7 +491,7 @@ function DR.mainFrame.PopulationData(continent)
 		end
 
 		if scoreValueF == "0.000" or scoreValueF == nil then
-			scoreValueF = "--"
+			scoreValueF = "------"
 		elseif medalValue ~= "" then
 			scoreValueF = medalValue..scoreValueF
 		end
@@ -493,6 +508,46 @@ function DR.mainFrame.PopulationData(continent)
 end
 
 DR.mainFrame.resizeFrames = {}
+
+local function disp_time(seconds)
+
+	local seconds = tonumber(seconds)
+
+	if seconds <= 0 then
+		return "00:00:00";
+	else
+		hours = string.format("%02.f", math.floor(seconds/3600));
+		mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
+		secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
+		return hours..":"..mins..":"..secs
+	end
+end
+
+function DR.mainFrame.multiplayerRace_TT()
+	local zonesPOICombo = {
+		[2022] = 7261, -- Waking Shores
+		[2023] = 7262, -- Ohn'ahran Plains
+		[2024] = 7263, -- Azure Span
+		[2025] = 7264, -- Thaldraszus
+	};
+	local tooltipInfo;
+	local activeMapID;
+	local activePOI;
+	local activePOI_X;
+	local activePOI_Y;
+	for k, v in pairs(zonesPOICombo) do
+		if C_AreaPoiInfo.GetAreaPOIInfo(k, v) ~= nil then
+			activeMapID = k;
+			activePOI = v;
+			activePOI_X = C_AreaPoiInfo.GetAreaPOIInfo(k, v).position.x
+			activePOI_Y = C_AreaPoiInfo.GetAreaPOIInfo(k, v).position.y
+			local timeConverted = disp_time(C_AreaPoiInfo.GetAreaPOISecondsLeft(v));
+			tooltipInfo = C_AreaPoiInfo.GetAreaPOIInfo(k, v).name;
+			tooltipInfo = tooltipInfo .. "\n" ..C_AreaPoiInfo.GetAreaPOIInfo(k, v).description .. "\n" .. timeConverted;
+		end
+	end
+	return activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo;
+end
 
 function DR.mainFrame.DoPopulationStuff()
 
@@ -652,6 +707,29 @@ function DR.mainFrame.DoPopulationStuff()
 		stormText:SetSize(65,30)
 		stormText:SetJustifyH("LEFT")
 		stormText:SetJustifyV("TOP")
+
+		DR.mainFrame.multiplayerRace = CreateFrame("Frame", nil, content1)
+		DR.mainFrame.multiplayerRace:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -25, -15);
+		DR.mainFrame.multiplayerRace:SetParent(content1)
+		DR.mainFrame.multiplayerRace:SetSize(35,35)
+		DR.mainFrame.multiplayerRace.tex = DR.mainFrame.multiplayerRace:CreateTexture()
+		DR.mainFrame.multiplayerRace.tex:SetAllPoints(DR.mainFrame.multiplayerRace)
+		DR.mainFrame.multiplayerRace.tex:SetAtlas("racing")
+
+		DR.mainFrame.multiplayerRace:SetScript("OnEnter", function(self)
+			local activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo = DR.mainFrame.multiplayerRace_TT()
+			DR.tooltip_OnEnter(self, tooltipInfo)
+
+			DR.mainFrame.multiplayerRace:SetScript("OnUpdate", function(self)
+				local activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo = DR.mainFrame.multiplayerRace_TT()
+				DR.tooltip_OnEnter(self, tooltipInfo)
+			end);
+
+		end);
+		DR.mainFrame.multiplayerRace:SetScript("OnLeave", function(self)
+			DR.tooltip_OnLeave();
+			DR.mainFrame.multiplayerRace:SetScript("OnUpdate", nil)
+		end);
 
 
 		DR.mainFrame.PopulationData(k)

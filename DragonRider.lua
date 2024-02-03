@@ -714,7 +714,9 @@ function DR.setPositions()
 		DR.statusbar:SetPoint("LEFT", ParentFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
 	end
 
-	DR.charge[1]:SetPoint("CENTER", ParentFrame, -61,15)
+	DR.charge[1]:SetPoint("TOPLEFT", ParentFrame, "TOPLEFT", 45,8)
+	DR.charge[1]:SetParent(ParentFrame)
+	DR.charge[1]:SetScale(1.5625)
 	for i = 1, 10 do
 		if C_UnitAuras.GetPlayerAuraBySpellID(417888) and DragonRider_DB.lightningRush == true then
 			DR.charge[i]:Show();
@@ -754,24 +756,30 @@ function DR.setPositions()
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -175+(i*spacing), 14);
 			end
 		elseif IsPlayerSpell(377921) == true then -- 5 vigor
-			for i = 1,5 do 
+			for i = 1,5 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -150+(i*spacing), 14);
 			end
 			for i = 6,6,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		elseif IsPlayerSpell(377920) == true then -- 4 vigor
-			for i = 1,4 do 
+			for i = 1,4 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -125+(i*spacing), 14);
 			end
 			for i = 6,5,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		else
-			for i = 1,3 do 
+			for i = 1,3 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -100+(i*spacing), 14);
 			end
 			for i = 6,4,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		end
@@ -784,28 +792,35 @@ function DR.setPositions()
 		end
 		--dragonriding is a spacing diff of 42
 		if IsPlayerSpell(377922) == true then -- 6 vigor
-			for i = 1,6 do 
+			for i = 1,6 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -147+(i*spacing), 14);
 			end
 		elseif IsPlayerSpell(377921) == true then -- 5 vigor
-			for i = 1,5 do 
+			for i = 1,5 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -126+(i*spacing), 14);
 			end
 			for i = 6,6,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		elseif IsPlayerSpell(377920) == true then -- 4 vigor
 			for i = 1,4 do 
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -105+(i*spacing), 14);
 			end
 			for i = 6,5,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		else
-			for i = 1,3 do 
+			for i = 1,3 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -84+(i*spacing), 14);
 			end
 			for i = 6,4,-1 do
+				DR.modelScene[i]:SetParent(ParentFrame)
 				DR.modelScene[i]:Hide()
 			end
 		end
@@ -867,7 +882,7 @@ DR.clearPositions();
 
 
 local function Print(...)
-	local prefix = string.format(L["DragonRider"] .. ":");
+	local prefix = string.format("|cFFFFF569"..L["DragonRider"] .. "|r:");
 	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
@@ -896,13 +911,13 @@ DR.commands = {
 		local concatenatedString
 		for k, v in pairs(DR.commands) do
 			if concatenatedString == nil then
-				concatenatedString = k
+				concatenatedString = "|cFF00D1FF"..k.."|r"
 			else
-				concatenatedString = concatenatedString .. ", ".. k
+				concatenatedString = concatenatedString .. ", ".. "|cFF00D1FF"..k.."|r"
 			end
 			
 		end
-		Print(L["COMMAND_listcommands"] .. concatenatedString)
+		Print(L["COMMAND_listcommands"] .. " " .. concatenatedString)
 	end
 };
 
