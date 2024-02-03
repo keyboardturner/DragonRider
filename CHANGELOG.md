@@ -1,3 +1,7 @@
+# 0.2.1
+
+Added a Dragonriding Journal feature, displaying all character scores in a journal accessible with the command /dragonrider, or by using the Addon Compartment Frame on the minimap.
+
 # 0.2.0
 
 Added zhCN translations - [枫聖御雷](https://legacy.curseforge.com/wow/addons/dragon-rider#c33)
