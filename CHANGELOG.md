@@ -1,3 +1,7 @@
+# 0.2.3
+
+Dragonriding World Quest tracking can now be found in the journal. Various localizations for "Storm" were missing and now added. [Updates to zhCN](https://legacy.curseforge.com/wow/addons/dragon-rider#c43)
+
 # 0.2.2
 
 Quick fix to "attempt ot compare nil with number" error
