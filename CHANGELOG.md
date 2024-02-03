@@ -1,3 +1,7 @@
+# 0.2.2
+
+Quick fix to "attempt ot compare nil with number" error
+
 # 0.2.1
 
 Added a Dragonriding Journal feature, displaying all character scores in a journal accessible with the command /dragonrider, or by using the Addon Compartment Frame on the minimap.
