@@ -1,3 +1,7 @@
+# 0.2.5
+
+toc bump to 10.2.6
+
 # 0.2.4
 
 Added some extra translations for [zhCN](https://legacy.curseforge.com/wow/addons/dragon-rider#c48)
