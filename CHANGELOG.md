@@ -1,3 +1,11 @@
+# 0.2.6
+
+Added option to mute the vigor sound when gaining vigor naturally.
+
+Future-proof the Lightning Rush / charges ability to no long require the Algarian Stormrider, instead only displaying charges when at least 1 buff stack is present.
+
+(This version should technically be compatible with The War Within Alpha)
+
 # 0.2.5
 
 toc bump to 10.2.6
