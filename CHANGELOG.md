@@ -1,3 +1,7 @@
+# 0.2.8
+
+nil check for journal, toc bump to 10.2.7
+
 # 0.2.7
 
 added Northrend silver/gold times, handle cleanup of SVs that are temp data when duplicate DRRaceData.lua already exists, updated zhCN locale entries for MuteVigorSound_Settings + TT
