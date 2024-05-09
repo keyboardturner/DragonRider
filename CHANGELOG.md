@@ -1,3 +1,7 @@
+# 0.2.9
+
+fix Forbidden Reach Rush normal score placement in journal
+
 # 0.2.8
 
 nil check for journal, toc bump to 10.2.7
