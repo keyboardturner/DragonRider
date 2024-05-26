@@ -1,6 +1,13 @@
+# 0.3.1
+
+Fixed swirly smoke effects on the vigor bubbles appearing after collecting bronze orbs in the timeless isle / isle of thunder which additionally restore vigor
+
 # 0.3.0
 
 Adjustments for checking dragonriding speed cap based upon map ID / dragon race buff rather than Riding Abroad, as that buff is now gone in The War Within.
+
+<details>
+<summary> ► Older Updates</summary>
 
 # 0.2.9
 
@@ -114,3 +121,6 @@ Packager Testing
 Added option to toggle the side art "wings" attached to the Vigor.
 
 Minor localization fixes.
+
+</details>
+
