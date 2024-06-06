@@ -243,11 +243,9 @@ DR.DragonRidingZoneIDs = {
 function DR.DragonRidingZoneCheck()
 	for k, v in pairs(DR.DragonRidingZoneIDs) do
 		if GetInstanceInfo() then
-			local _, _, _, _, _, _, _, instanceID, _, _ = GetInstanceInfo()
+			local instanceID = select(8, GetInstanceInfo())
 			if instanceID == v then
 				return true;
-			else
-				return false;
 			end
 		end
 	end
