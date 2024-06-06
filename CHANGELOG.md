@@ -1,3 +1,7 @@
+# 0.3.3
+
+Fix to zone check function
+
 # 0.3.2
 
 Fixes for Options Menu API changes in The War Within Beta
