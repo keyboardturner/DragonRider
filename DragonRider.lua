@@ -619,10 +619,7 @@ function DR.vigorCounter()
 	local frameLevelThing = UIWidgetPowerBarContainerFrame:GetFrameLevel()+15
 	for i = 1,6 do
 		if vigorCurrent >= i then
-			local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
-			if canGlide == true then
-				DR.modelScene[i]:Show()
-			end
+			DR.modelScene[i]:Show()
 		else
 			DR.modelScene[i]:Hide()
 		end
@@ -1149,6 +1146,9 @@ function DR:toggleEvent(event, arg1)
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["ProgressBar"]));
 
+		local CreateDropdown = Settings.CreateDropdown or Settings.CreateDropDown
+		local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox
+
 		do
 			local variable = "speedometerPosPoint"
 			local defaultValue = 1  -- Corresponds to "Option 1" below.
@@ -1165,7 +1165,7 @@ function DR:toggleEvent(event, arg1)
 			end
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+			CreateDropdown(category, setting, GetOptions, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1239,7 +1239,7 @@ function DR:toggleEvent(event, arg1)
 			end
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateDropDown(category, setting, GetOptions, tooltip)
+			CreateDropdown(category, setting, GetOptions, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1268,7 +1268,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1283,7 +1283,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1295,7 +1295,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1307,7 +1307,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1319,7 +1319,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = false
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1334,7 +1334,7 @@ function DR:toggleEvent(event, arg1)
 			local defaultValue = true
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
@@ -1347,7 +1347,7 @@ function DR:toggleEvent(event, arg1)
 			
 
 			local setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			Settings.CreateCheckBox(category, setting, tooltip)
+			CreateCheckbox(category, setting, tooltip)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end

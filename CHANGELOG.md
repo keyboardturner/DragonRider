@@ -1,3 +1,7 @@
+# 0.3.2
+
+Fixes for Options Menu API changes in The War Within Beta
+
 # 0.3.1
 
 Fixed swirly smoke effects on the vigor bubbles appearing after collecting bronze orbs in the timeless isle / isle of thunder which additionally restore vigor
