@@ -1,3 +1,7 @@
+# 0.3.4
+
+Updates to zhCN locale
+
 # 0.3.3
 
 Fix to zone check function
