@@ -682,33 +682,42 @@ end
 
 function DR.FixBlizzFrames()
 	for k, v in pairs(DR.WidgetFrameIDs) do
-
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
 			DR.EventsList:SetScript("OnUpdate", function()
-				if UIWidgetPowerBarContainerFrame.numWidgetsShowing > 1 then
-						if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+				local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
+				if canGlide == false then
+					if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+						if UIWidgetPowerBarContainerFrame.widgetFrames[v]:IsShown() then
 							UIWidgetPowerBarContainerFrame.widgetFrames[v]:Hide();
-							UIWidgetPowerBarContainerFrame.widgetFrames[v] = nil;
 							UIWidgetPowerBarContainerFrame:UpdateWidgetLayout();
 							if DragonRider_DB.debug == true then
-								print("bingus")
+								print("Fixing a Blizzard bug where widgets persisted.")
 							end
 						end
-					if DragonRider_DB.debug == true then
-						print("Fixing a Blizzard bug. You would have otherwise seen 2 or more vigor bars.")
 					end
-					return
+					if DragonRider_DB.sideArt == true then
+						local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
+						if PowerBarChildren[3] ~= nil and PowerBarChildren[3]:IsShown() then
+							for _, child in ipairs({PowerBarChildren[3]:GetRegions()}) do
+								child:SetAlpha(0)
+							end
+							if DragonRider_DB.debug == true then
+								print("Hiding wings asset.")
+							end
+						end
+					end
 				end
+				return
 			end)
 		end
 	end
 end
+DR.FixBlizzFrames()
 
 
 function DR.DoWidgetThings()
 	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 	local fillCurrent, fillMax = DR.GetVigorValueExact()
-	DR.FixBlizzFrames()
 	for k, v in pairs(DR.WidgetFrameIDs) do
 		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
 			

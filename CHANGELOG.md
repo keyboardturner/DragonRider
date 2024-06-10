@@ -1,5 +1,7 @@
 # 0.3.4
 
+Attempts to once again fix persistent Blizzard dragon riding frame
+
 Updates to zhCN locale
 
 # 0.3.3
