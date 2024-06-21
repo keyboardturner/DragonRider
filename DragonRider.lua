@@ -238,6 +238,7 @@ DR.DragonRidingZoneIDs = {
 	2454, -- Zaralek Cavern
 	2548, -- Emerald Dream
 	2549, -- Amirdrassil Raid
+	2516, -- The Nokhud Offensive
 };
 
 function DR.DragonRidingZoneCheck()
