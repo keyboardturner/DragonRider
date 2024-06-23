@@ -682,9 +682,9 @@ function DR.GetVigorValueExact()
 end
 
 function DR.FixBlizzFrames()
-	for k, v in pairs(DR.WidgetFrameIDs) do
-		if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
-			DR.EventsList:SetScript("OnUpdate", function()
+	DR.EventsList:SetScript("OnUpdate", function()
+		for k, v in pairs(DR.WidgetFrameIDs) do
+			if UIWidgetPowerBarContainerFrame.widgetFrames[v] ~= nil then
 				local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
 				if canGlide == false then
 					if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
@@ -709,9 +709,9 @@ function DR.FixBlizzFrames()
 					end
 				end
 				return
-			end)
+			end
 		end
-	end
+	end)
 end
 DR.FixBlizzFrames()
 

@@ -1,3 +1,7 @@
+# 0.3.6
+
+Minor logic fix to function that "fixes" persistent blizz dragon riding frame
+
 # 0.3.5
 
 Added Nokhud Offensive to properly display 100 yd/s speed cap (was 80)
