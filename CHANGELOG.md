@@ -1,3 +1,7 @@
+# 0.3.7
+
+War Within TOC update
+
 # 0.3.6
 
 Minor logic fix to function that "fixes" persistent blizz dragon riding frame
