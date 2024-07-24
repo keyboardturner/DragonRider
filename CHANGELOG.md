@@ -1,6 +1,6 @@
 # 0.3.8
 
-Updated Simplified Chinese zhCN localizations
+Updated Simplified Chinese zhCN localizations (https://github.com/nanjuekaien1/DragonRider-zhCN/blob/main/zhCN.lua)
 
 # 0.3.7
 
