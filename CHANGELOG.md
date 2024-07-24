@@ -1,3 +1,7 @@
+# 0.3.8
+
+Updated Simplified Chinese zhCN localizations
+
 # 0.3.7
 
 War Within TOC update, Added in new themes for the speedometer: Algari, Minimalist, Alliance, Horde.
