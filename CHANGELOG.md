@@ -1,3 +1,7 @@
+# 0.3.9
+
+beta bild 55824 compatibility
+
 # 0.3.8
 
 Updated Simplified Chinese zhCN localizations (https://github.com/nanjuekaien1/DragonRider-zhCN/blob/main/zhCN.lua)
