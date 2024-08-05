@@ -1,3 +1,7 @@
+# 0.4.0
+
+Fixes to journal if all race data is nil, fixes for 11.0.2 (beta)
+
 # 0.3.9
 
 beta bild 55824 compatibility
