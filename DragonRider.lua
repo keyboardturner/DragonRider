@@ -1,8 +1,6 @@
 local DragonRider, DR = ...
 local _, L = ...
 
-
-
 local defaultsTable = {
 	toggleModels = true,
 	speedometerPosPoint = 1,
@@ -78,7 +76,9 @@ function DR:ShowColorPicker(configTable)
 	local r, g, b, a = configTable.r, configTable.g, configTable.b, configTable.a;
 
 	local function OnColorChanged()
-		configTable.r, configTable.g, configTable.b, configTable.a = ColorPickerFrame:GetColorRGB(), ColorPickerFrame:GetColorAlpha();
+		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
+		local newA = ColorPickerFrame:GetColorAlpha();
+		configTable.r, configTable.g, configTable.b, configTable.a = newR, newG, newB, newA;
 	end
 
 	local function OnCancel()
@@ -1336,9 +1336,20 @@ function DR:toggleEvent(event, arg1)
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
 
+		local version, bild = GetBuildInfo(); -- temp fix for beta
+		local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
+
 		local function OnSettingChanged(_, setting, value)
 			local variable = setting:GetVariable()
-			DragonRider_DB[variable] = value
+
+			if strsub(variable, 1, 3) == "DR_" then
+				variable = strsub(variable, 4); -- remove our prefix so it matches existing savedvar keys
+			end
+
+			if not IS_FUTURE then
+				-- the settings UI does this for us in the future
+				DragonRider_DB[variable] = value;
+			end
 			DR.vigorCounter()
 			DR.setPositions()
 			DR.DoWidgetThings()
@@ -1355,8 +1366,21 @@ function DR:toggleEvent(event, arg1)
 		local CreateDropdown = Settings.CreateDropdown or Settings.CreateDropDown
 		local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox
 
-		local version, bild = GetBuildInfo(); -- temp fix for beta
-		local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
+		local function RegisterSetting(variableKey, defaultValue, name)
+			local uniqueVariable = "DR_" .. variableKey; -- these have to be unique or calamity ensues, savedvars will be unaffected
+
+			local setting;
+			if IS_FUTURE then
+				setting = Settings.RegisterAddOnSetting(category, uniqueVariable, variableKey, DragonRider_DB, type(defaultValue), name, defaultValue);
+			else
+				setting = Settings.RegisterAddOnSetting(category, name, uniqueVariable, type(defaultValue), defaultValue);
+			end
+
+			Settings.SetOnValueChangedCallback(uniqueVariable, OnSettingChanged);
+			setting:SetValue(DragonRider_DB[variableKey]);
+
+			return setting;
+		end
 
 		do
 			local variable = "themeSpeed"
@@ -1374,15 +1398,8 @@ function DR:toggleEvent(event, arg1)
 				return container:GetData()
 			end
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateDropdown(category, setting, GetOptions, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1400,15 +1417,8 @@ function DR:toggleEvent(event, arg1)
 				return container:GetData()
 			end
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
-			CreateDropdown(category, setting, GetOptions, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(category, setting, GetOptions, tooltip);
 		end
 
 		do
@@ -1420,17 +1430,10 @@ function DR:toggleEvent(event, arg1)
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(category, setting, options, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
+			Settings.CreateSlider(category, setting, options, tooltip);
 		end
 
 		do
@@ -1442,17 +1445,10 @@ function DR:toggleEvent(event, arg1)
 			local maxValue = Round(GetScreenHeight())
 			local step = 1
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
 			Settings.CreateSlider(category, setting, options, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1464,17 +1460,10 @@ function DR:toggleEvent(event, arg1)
 			local maxValue = 4
 			local step = .1
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
 			Settings.CreateSlider(category, setting, options, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1494,15 +1483,8 @@ function DR:toggleEvent(event, arg1)
 				return container:GetData()
 			end
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateDropdown(category, setting, GetOptions, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1514,17 +1496,10 @@ function DR:toggleEvent(event, arg1)
 			local maxValue = 30
 			local step = .5
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
 			Settings.CreateSlider(category, setting, options, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1533,15 +1508,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["FadeSpeedometerTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"]));
@@ -1552,15 +1520,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["ToggleModelsTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1569,15 +1530,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["SideArtTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1586,15 +1540,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["ShowVigorTooltipTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1603,15 +1550,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["MuteVigorSound_SettingsTT"]
 			local defaultValue = false
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
@@ -1622,15 +1562,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["LightningRushTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		do
@@ -1639,15 +1572,8 @@ function DR:toggleEvent(event, arg1)
 			local tooltip = L["DynamicFOVTT"]
 			local defaultValue = true
 
-			local setting
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, variable, variable, DragonRider_DB, type(defaultValue), name, defaultValue)
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, variable, type(defaultValue), defaultValue)
-			end
+			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
-			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
-			setting:SetValue(DragonRider_DB[variable])
 		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["DragonridingTalents"]));
