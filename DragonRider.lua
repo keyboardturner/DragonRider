@@ -73,6 +73,7 @@ local defaultsTable = {
 
 };
 
+-- here, we just pass in the table containing our saved color config
 function DR:ShowColorPicker(configTable)
 	local r, g, b, a = configTable.r, configTable.g, configTable.b, configTable.a;
 
@@ -1331,7 +1332,6 @@ function DR:toggleEvent(event, arg1)
 			DragonRider_DB.themeSpeed = 1
 		end
 
-
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
@@ -1544,7 +1544,6 @@ function DR:toggleEvent(event, arg1)
 			setting:SetValue(DragonRider_DB[variable])
 		end
 
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"]));
 
 		do
@@ -1615,7 +1614,6 @@ function DR:toggleEvent(event, arg1)
 			setting:SetValue(DragonRider_DB[variable])
 		end
 
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
 
 		do
@@ -1640,7 +1638,6 @@ function DR:toggleEvent(event, arg1)
 			local name = L["DynamicFOV"]
 			local tooltip = L["DynamicFOVTT"]
 			local defaultValue = true
-			
 
 			local setting
 			if IS_FUTURE then
@@ -1652,7 +1649,6 @@ function DR:toggleEvent(event, arg1)
 			Settings.SetOnValueChangedCallback(variable, OnSettingChanged)
 			setting:SetValue(DragonRider_DB[variable])
 		end
-
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["DragonridingTalents"]));
 
@@ -1666,7 +1662,6 @@ function DR:toggleEvent(event, arg1)
 			layout:AddInitializer(initializer);
 		end
 
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
 
 		do -- color picker - low progress bar color
@@ -1678,7 +1673,6 @@ function DR:toggleEvent(event, arg1)
 			layout:AddInitializer(initializer);
 		end
 
-
 		do -- color picker - mid progress bar color
 			local function OnButtonClick()
 				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor);
@@ -1687,7 +1681,6 @@ function DR:toggleEvent(event, arg1)
 			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
 			layout:AddInitializer(initializer);
 		end
-
 
 		do -- color picker - high progress bar color
 			local function OnButtonClick()
@@ -1698,7 +1691,6 @@ function DR:toggleEvent(event, arg1)
 			layout:AddInitializer(initializer);
 		end
 
-
 		do -- color picker - low speed text color
 			local function OnButtonClick()
 				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.slow);
@@ -1707,7 +1699,6 @@ function DR:toggleEvent(event, arg1)
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
 			layout:AddInitializer(initializer);
 		end
-
 
 		do -- color picker - mid speed text color
 			local function OnButtonClick()
@@ -1718,7 +1709,6 @@ function DR:toggleEvent(event, arg1)
 			layout:AddInitializer(initializer);
 		end
 
-
 		do -- color picker - high speed text color
 			local function OnButtonClick()
 				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.over);
@@ -1728,17 +1718,6 @@ function DR:toggleEvent(event, arg1)
 			layout:AddInitializer(initializer);
 		end
 
-
-
-
-
-
-
-
-
-
-
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(RESET));
 
 		StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
@@ -1746,7 +1725,6 @@ function DR:toggleEvent(event, arg1)
 			button1 = "Yes",
 			button2 = "No",
 			OnAccept = function()
-				DragonRider_DB = nil;
 				DragonRider_DB = CopyTable(defaultsTable);
 				DR.vigorCounter();
 				DR.setPositions();
@@ -1767,8 +1745,6 @@ function DR:toggleEvent(event, arg1)
 		end
 
 		Settings.RegisterAddOnCategory(category)
-
-
 
 		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
 			if buttonName == "RightButton" then
@@ -1792,7 +1768,6 @@ function DR:toggleEvent(event, arg1)
 				else
 					concatenatedString = concatenatedString .. "\n".. v
 				end
-				
 			end
 			DR.tooltip_OnEnter(menuButtonFrame, concatenatedString);
 		end
