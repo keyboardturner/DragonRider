@@ -73,156 +73,29 @@ local defaultsTable = {
 
 };
 
-local function ProgBarLowColor(restore)
-	local newR, newG, newB, newA; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-		newA = restore["a"]
-	else
-	 -- Something changed
-		newA, newR, newG, newB = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
+function DR:ShowColorPicker(configTable)
+	local r, g, b, a = configTable.r, configTable.g, configTable.b, configTable.a;
+
+	local function OnColorChanged()
+		configTable.r, configTable.g, configTable.b, configTable.a = ColorPickerFrame:GetColorRGB(), ColorPickerFrame:GetColorAlpha();
 	end
-	 -- Update our internal storage.
-	r, g, b, a = newR, newG, newB, newA
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a = newR, newG, newB, newA;
-end
 
-local function ProgBarMidColor(restore)
-	local newR, newG, newB, newA; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-		newA = restore["a"]
-	else
-	 -- Something changed
-		newA, newR, newG, newB = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
+	local function OnCancel()
+		configTable.r, configTable.g, configTable.b, configTable.a = r, g, b, a;
 	end
-	 -- Update our internal storage.
-	r, g, b, a = newR, newG, newB, newA
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a = newR, newG, newB, newA;
-end
 
-local function ProgBarHighColor(restore)
-	local newR, newG, newB, newA; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-		newA = restore["a"]
-	else
-	 -- Something changed
-		newA, newR, newG, newB = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
-	end
-	 -- Update our internal storage.
-	r, g, b, a = newR, newG, newB, newA
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a = newR, newG, newB, newA;
-end
+	local options = {
+		swatchFunc = OnColorChanged,
+		opacityFunc = OnColorChanged,
+		cancelFunc = OnCancel,
+		hasOpacity = a ~= nil,
+		opacity = a,
+		r = r,
+		g = g,
+		b = b,
+	};
 
-local function TextLowColor(restore)
-	local newR, newG, newB; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-	else
-	 -- Something changed
-		newR, newG, newB = ColorPickerFrame:GetColorRGB();
-	end
-	 -- Update our internal storage.
-	r, g, b = newR, newG, newB
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b = newR, newG, newB;
-end
-
-local function TextMidColor(restore)
-	local newR, newG, newB; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-	else
-	 -- Something changed
-		newR, newG, newB = ColorPickerFrame:GetColorRGB();
-	end
-	 -- Update our internal storage.
-	r, g, b = newR, newG, newB
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.vigor.g, DragonRider_DB.speedTextColor.vigor.b, DragonRider_DB.speedTextColor.vigor.a = newR, newG, newB;
-end
-
-local function TextHighColor(restore)
-	local newR, newG, newB; -- I forgot what to do with the alpha value but it's needed to not swap RGB values
-	if restore then
-	 -- The user bailed, we extract the old color from the table created by ShowColorPicker.
-		newR = restore["r"]
-		newG = restore["g"]
-		newB = restore["b"]
-	else
-	 -- Something changed
-		newR, newG, newB = ColorPickerFrame:GetColorRGB();
-	end
-	 -- Update our internal storage.
-	r, g, b = newR, newG, newB
-	 -- And update any UI elements that use this color...
-	DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b = newR, newG, newB;
-end
-
-function DR:ShowColorPicker(r, g, b, a, callbackFunc)
-	if ColorPickerFrame.SetupColorPickerAndShow then
-		local options = {
-			swatchFunc = callbackFunc,
-			opacityFunc = callbackFunc,
-			cancelFunc = callbackFunc,
-			hasOpacity = true,
-			r = r,
-			g = g,
-			b = b,
-			opacity = a,
-		};
-
-		ColorPickerFrame:SetupColorPickerAndShow(options);
-	else
-		ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = true, a;
-		ColorPickerFrame.previousValues = {r,g,b,a};
-		ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callbackFunc, callbackFunc, callbackFunc;
-		ColorPickerFrame:SetColorRGB(r,g,b,a);
-		ColorPickerFrame:Hide();
-		ColorPickerFrame:Show();
-	end
-end
-
-function DR:ShowColorPickerText(r, g, b, callbackFunc)
-	if ColorPickerFrame.SetupColorPickerAndShow then
-		local options = {
-			swatchFunc = callbackFunc,
-			opacityFunc = callbackFunc,
-			cancelFunc = callbackFunc,
-			hasOpacity = false,
-			r = r,
-			g = g,
-			b = b,
-		};
-
-		ColorPickerFrame:SetupColorPickerAndShow(options);
-	else
-		ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = false, a;
-		ColorPickerFrame.previousValues = {r,g,b};
-		ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callbackFunc, callbackFunc, callbackFunc;
-		ColorPickerFrame:SetColorRGB(r,g,b);
-		ColorPickerFrame:Hide();
-		ColorPickerFrame:Show();
-	end
+	ColorPickerFrame:SetupColorPickerAndShow(options);
 end
 
 DR.WidgetFrameIDs = {
@@ -1798,7 +1671,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - low progress bar color
 			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.slow.r, DragonRider_DB.speedBarColor.slow.g, DragonRider_DB.speedBarColor.slow.b, DragonRider_DB.speedBarColor.slow.a, ProgBarLowColor);
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.slow);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
@@ -1808,7 +1681,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - mid progress bar color
 			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor.r, DragonRider_DB.speedBarColor.vigor.g, DragonRider_DB.speedBarColor.vigor.b, DragonRider_DB.speedBarColor.vigor.a, ProgBarMidColor);
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
@@ -1818,7 +1691,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - high progress bar color
 			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.over.r, DragonRider_DB.speedBarColor.over.g, DragonRider_DB.speedBarColor.over.b, DragonRider_DB.speedBarColor.over.a, ProgBarHighColor);
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.over);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
@@ -1828,7 +1701,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - low speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.slow.r, DragonRider_DB.speedTextColor.slow.g, DragonRider_DB.speedTextColor.slow.b, TextLowColor);
+				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.slow);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
@@ -1838,7 +1711,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - mid speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.vigor.r, DragonRider_DB.speedTextColor.vigor.g, DragonRider_DB.speedTextColor.vigor.b, TextMidColor);
+				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.vigor);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
@@ -1848,7 +1721,7 @@ function DR:toggleEvent(event, arg1)
 
 		do -- color picker - high speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.over.r, DragonRider_DB.speedTextColor.over.g, DragonRider_DB.speedTextColor.over.b, TextHighColor);
+				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.over);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
