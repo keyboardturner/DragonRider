@@ -1270,7 +1270,7 @@ function DR:toggleEvent(event, arg1)
 
 		SLASH_DRAGONRIDER1 = "/"..L["COMMAND_dragonrider"]
 		SlashCmdList.DRAGONRIDER = HandleSlashCommands;
-		
+
 		if DragonRider_DB == nil then
 			DragonRider_DB = CopyTable(defaultsTable)
 		end
@@ -1776,14 +1776,11 @@ function DR:toggleEvent(event, arg1)
 			DR.tooltip_OnLeave();
 		end
 
-
-
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
 
 		DR.vigorCounter()
-
 
 		function DR.RepeatChecker()
 			local curentVigor, maxVigor = DR.GetVigorValueExact()
@@ -1819,8 +1816,6 @@ function DR:toggleEvent(event, arg1)
 
 		C_Timer.NewTicker(1, DR.RepeatChecker)
 	end
-
-	
 end
 
 
