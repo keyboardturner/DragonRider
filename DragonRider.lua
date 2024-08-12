@@ -414,6 +414,16 @@ function DR:convertUnits(forwardSpeed)
 	end
 end
 
+function DR.tooltip_OnEnter(frame, tooltip)
+	GameTooltip:SetOwner(frame, "ANCHOR_TOP")
+	GameTooltip_AddNormalLine(GameTooltip, tooltip);
+	GameTooltip:Show();
+end
+
+function DR.tooltip_OnLeave()
+	GameTooltip:Hide();
+end
+
 local DRAGON_RACE_AURA_ID = 369968;
 
 function DR.updateSpeed()
@@ -518,14 +528,6 @@ function DR.GetWidgetAlpha()
 	if UIWidgetPowerBarContainerFrame then
 		return UIWidgetPowerBarContainerFrame:GetAlpha()
 	end
-end
-
-local function getAnchors(frame)
-	local x, y = frame:GetCenter()
-	if not x or not y then return "CENTER" end
-	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
-	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
-	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
 end
 
 function DR.GetVigorValueExact()
@@ -930,8 +932,8 @@ function DR.setPositions()
 		DR.modelScene[i]:SetParent(ParentFrame)
 		DR.modelScene[i]:ClearAllPoints();
 	end
-	
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then 
+
+	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
 		local spacing = 50
 		if DR.model[1]:GetModelFileID() == 1100194 then
 			for i = 1,6 do
