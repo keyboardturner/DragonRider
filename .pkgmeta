@@ -4,11 +4,21 @@ enable-nolib-creation: yes
 license-output: LICENSE
 
 externals:
+  Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  Libs/LibAdvFlight-1.0: https://github.com/Ghostopheles/LibAdvFlight
 
 ignore:
+  - Libs/*/*.rockspec
+  - Libs/*/*.toc
+  - Libs/*/changelog.*
+  - Libs/*/CHANGELOG.*
+  - Libs/*/docs
+  - Libs/*/examples
+  - Libs/*/README.*
+  - Libs/*/tests
+  - Libs/*/.pkgmeta
   - CHANGELOG.md
   - README.md
-
 
 manual-changelog:
   filename: CHANGELOG.md

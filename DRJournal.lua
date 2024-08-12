@@ -7,10 +7,7 @@ local function Print(...)
 end
 
 function DR.tooltip_OnEnter(frame, tooltip)
-	GameTooltip:SetOwner(frame, "ANCHOR_NONE")
-	GameTooltip:SetPoint(getAnchors(frame))
-	--GameTooltip_SetDefaultAnchor(GameTooltip, frame);
-	--GameTooltip_SetTitle(GameTooltip);
+	GameTooltip:SetOwner(frame, "ANCHOR_TOP")
 	GameTooltip_AddNormalLine(GameTooltip, tooltip);
 	GameTooltip:Show();
 end
