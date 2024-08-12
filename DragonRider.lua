@@ -350,10 +350,12 @@ function DR.toggleCharges(self, event, arg1)
 					DR.charge[i].texFill:Hide();
 				end
 			end
+			DR.setPositions();
 		else
 			for i = 1,10 do
 				DR.charge[i].texFill:Hide();
 			end
+			DR.setPositions();
 		end
 	end
 	if event == "SPELL_UPDATE_COOLDOWN" then
