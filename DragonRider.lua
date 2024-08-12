@@ -1559,7 +1559,7 @@ function DR.OnAddonLoaded()
 
 		do -- color picker - low speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.slow);
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.slow);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
@@ -1568,7 +1568,7 @@ function DR.OnAddonLoaded()
 
 		do -- color picker - mid speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.vigor);
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.vigor);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
@@ -1577,7 +1577,7 @@ function DR.OnAddonLoaded()
 
 		do -- color picker - high speed text color
 			local function OnButtonClick()
-				DR:ShowColorPickerText(DragonRider_DB.speedTextColor.over);
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.over);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
