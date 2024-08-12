@@ -6,6 +6,16 @@ local function Print(...)
 	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
+function DR.tooltip_OnEnter(frame, tooltip)
+	GameTooltip:SetOwner(frame, "ANCHOR_TOP")
+	GameTooltip_AddNormalLine(GameTooltip, tooltip);
+	GameTooltip:Show();
+end
+
+function DR.tooltip_OnLeave()
+	GameTooltip:Hide();
+end
+
 DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitFrameTemplateMinimizable")
 tinsert(UISpecialFrames, DR.mainFrame:GetName())
 DR.mainFrame:SetPortraitTextureRaw("Interface\\ICONS\\Ability_DragonRiding_Glyph01")

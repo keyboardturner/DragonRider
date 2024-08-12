@@ -414,16 +414,6 @@ function DR:convertUnits(forwardSpeed)
 	end
 end
 
-function DR.tooltip_OnEnter(frame, tooltip)
-	GameTooltip:SetOwner(frame, "ANCHOR_TOP")
-	GameTooltip_AddNormalLine(GameTooltip, tooltip);
-	GameTooltip:Show();
-end
-
-function DR.tooltip_OnLeave()
-	GameTooltip:Hide();
-end
-
 local DRAGON_RACE_AURA_ID = 369968;
 
 function DR.updateSpeed()
