@@ -3,20 +3,37 @@ local _, DR = ...
 local PLACEHOLDER = "[PH]"
 
 DR.DragonRaceZones = {
-	[1] = 2022,
-	[2] = 2023,
-	[3] = 2024,
-	[4] = 2025,
-	[5] = 2151,
-	[6] = 2133,
-	[7] = 2200,
-	[8] = 12,
-	[9] = 13,
-	[10] = 101,
-	[11] = 113,
+	-- The War Within
+	[1] = 2248, -- Isle of Dorn
+	[2] = 2214, -- The Ringing Deeps
+	[3] = 2215, --  Hallowfall
+	[4] = 2255, -- Azj-Kahet
+
+	-- Dragonflight
+	[5] = 2022, -- Waking Shores
+	[6] = 2023, -- Ohn'ahran Plains
+	[7] = 2024, -- The Azure Span
+	[8] = 2025, -- Thaldraszus
+	[9] = 2151, -- Forbidden Reach
+	[10] = 2133, -- Zaralek Caverns
+	[11] = 2200, -- Emerald Dream
+
+	-- Cup
+	[12] = 12,	-- Kalimdor
+	[13] = 13,	-- Eastern Kingdoms
+	[14] = 101,	-- Outland
+	[15] = 113,	-- Northrend
 };
 
+-- icon file IDs for WQ Locations 
 DR.ZoneIcons = {
+	-- The War Within
+	[2248] = 5770811, -- Isle of Dorn
+	[2214] = 5770812, -- The Ringing Deeps
+	[2215] = 5770810, -- Hallowfall
+	[2255] = 5770809, -- Azj-Kahet
+
+	-- Dragonflight
 	[2022] = 4672500, --  Waking Shores
 	[2023] = 4672498, -- Ohn'ahran Plains
 	[2024] = 4672495, -- The Azure Span
@@ -28,6 +45,41 @@ DR.ZoneIcons = {
 };
 
 DR.WorldQuestIDs = {
+--The War Within
+	-- Isle of Dorn
+	81806,
+	81799,
+	81805,
+	81804,
+	81803,
+	81802,
+
+	-- The Ringing Deeps
+	81808,
+	81810,
+	81813,
+	81807,
+	81812,
+	81811,
+
+	-- Hallowfall
+	81815,
+	81822,
+	81819,
+	81818,
+	81816,
+	81823,
+
+	-- Azj-Kahet
+	81827,
+	81825,
+	81831,
+	81824,
+	81829,
+	81828,
+
+
+--Dragonflight
 	-- The Waking Shores
 	70415,
 	70410,
@@ -38,7 +90,7 @@ DR.WorldQuestIDs = {
 	70413,
 	70418,
 
-	--Ohn'ahran Plains
+	-- Ohn'ahran Plains
 	70420,
 	70424,
 	70712,
@@ -47,7 +99,7 @@ DR.WorldQuestIDs = {
 	70422,
 	70419,
 
-	--The Azure Span
+	-- The Azure Span
 	70425,
 	70430,
 	70429,
@@ -55,7 +107,7 @@ DR.WorldQuestIDs = {
 	70426,
 	70428,
 
-	--Thaldraszus
+	-- Thaldraszus
 	70436,
 	70432,
 	70431,
@@ -63,7 +115,7 @@ DR.WorldQuestIDs = {
 	70434,
 	70433,
 
-	--The Forbidden Reach
+	-- The Forbidden Reach
 	73083,
 	73084,
 	73078,
@@ -79,7 +131,7 @@ DR.WorldQuestIDs = {
 	75120,
 	75124,
 
-	--Emerald Dream
+	-- Emerald Dream
 	78434,
 	78438,
 	78435,
@@ -89,6 +141,42 @@ DR.WorldQuestIDs = {
 };
 
 DR.DragonRaceCurrencies = {
+-- The War Within
+-- Isle of Dorn - 2248
+	2923, 2929, 2935,					 -- Dornogal Drift
+	2924, 2930, 2936,					 -- Storm's Watch Survey
+	2925, 2931, 2937,					 -- Basin Bypass
+	2926, 2932, 2938,					 -- The Wold Ways
+	2927, 2933, 2939,					 -- Thunderhead Trail
+	2928, 2934, 2940,					 -- Orecreg's Doglegs
+
+-- The Ringing Deeps - 2214
+	2941, 2947, 2953,					 -- Earthenworks Weave
+	2942, 2948, 2954,					 -- Ringing Deeps Ramble
+	2943, 2949, 2955,					 -- Chittering Concourse
+	2944, 2950, 2956,					 -- Cataract River Cruise
+	2945, 2951, 2957,					 -- Taelloch Twist
+	2946, 2952, 2958,					 -- Opportunity Point Amble
+
+-- Hallowfall - 2215
+	2959, 2965, 2971,					 -- Dunelle's Detour
+	2960, 2966, 2972,					 -- Tenir's Traversal
+	2961, 2967, 2973,					 -- Light's Redoubt Descent
+	2962, 2968, 2974,					 -- Stillstone Slalom
+	2963, 2969, 2975,					 -- Mereldar Meander
+	2964, 2970, 2976,					 -- Velhan's Venture
+
+-- Azj-Kahet - 2255
+	2977, 2983, 2989,					 -- City of Threads Twist
+	2978, 2984, 2990,					 -- Maddening Deep Dip
+	2979, 2985, 2991,					 -- The Weaver's Wing
+	2980, 2986, 2992,					 -- Rak-Ahat Rush
+	2981, 2987, 2993,					 -- Pit Plunge
+	2982, 2988, 2994,					 -- Siegehold Scuttle
+
+
+
+--Dragonflight
 -- Waking Shores - 2022
 	2042, 2044, 2154, 2421, 2422, 2664,	 -- Ruby Lifeshrine Loop
 	2048, 2049, 2176, 2423, 2424,		 -- Wild Preserve Slalom
@@ -212,12 +300,1097 @@ DR.DragonRaceCurrencies = {
 	2731, 2749, 2767, -- Coldarra Climb
 };
 
+--[[
 
+		[1] = {
+			["currencyID"] = ,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 66679,
+		},
+
+	
+]]
 
 DR.RaceData = {
+-- The War Within
+-- Isle of Dorn
+-- Isle of Dorn
+	[1] = {
+
+	 -- Dornogal Drift
+		[1] = {
+			["currencyID"] = 2923,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80219,
+			["mapPOI"] = 7793,
+		},
+		[2] = {
+			["currencyID"] = 2929,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80219,
+			["mapPOI"] = 7793,
+		},
+		[3] = {
+			["currencyID"] = 2935,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80219,
+			["mapPOI"] = 7793,
+		},
+		[4] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7793,
+		},
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7793,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7793,
+		},
+	 -- Storm's Watch Survey
+		[7] = {
+			["currencyID"] = 2924,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80220,
+			["mapPOI"] = 7794,
+		},
+		[8] = {
+			["currencyID"] = 2930,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80220,
+			["mapPOI"] = 7794,
+		},
+		[9] = {
+			["currencyID"] = 2936,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80220,
+			["mapPOI"] = 7794,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7794,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7794,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7794,
+		},
+	 -- Basin Bypass
+		[13] = {
+			["currencyID"] = 2925,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80221,
+			["mapPOI"] = 7795,
+		},
+		[14] = {
+			["currencyID"] = 2931,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80221,
+			["mapPOI"] = 7795,
+		},
+		[15] = {
+			["currencyID"] = 2937,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80221,
+			["mapPOI"] = 7795,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7795,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7795,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7795,
+		},
+	-- The Wold Ways
+		[19] = {
+			["currencyID"] = 2926,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80222,
+			["mapPOI"] = 7796,
+		},
+		[20] = {
+			["currencyID"] = 2932,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80222,
+			["mapPOI"] = 7796,
+		},
+		[21] = {
+			["currencyID"] = 2938,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80222,
+			["mapPOI"] = 7796,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7796,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7796,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7796,
+		},
+	 -- Thunderhead Trail
+		[25] = {
+			["currencyID"] = 2927,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80223,
+			["mapPOI"] = 7797,
+		},
+		[26] = {
+			["currencyID"] = 2933,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80223,
+			["mapPOI"] = 7797,
+		},
+		[27] = {
+			["currencyID"] = 2939,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80223,
+			["mapPOI"] = 7797,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7797,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7797,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7797,
+		},
+	 -- Orecreg's Doglegs
+		[31] = {
+			["currencyID"] = 2928,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80224,
+			["mapPOI"] = 7798,
+		},
+		[32] = {
+			["currencyID"] = 2934,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80224,
+			["mapPOI"] = 7798,
+		},
+		[33] = {
+			["currencyID"] = 2940,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80224,
+			["mapPOI"] = 7798,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7798,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7798,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7798,
+		},
+	},
+
+	-- The Ringing Deeps
+ 	-- Earthenworks Weave
+	[2] = {
+		[1] = {
+			["currencyID"] = 2941,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80237,
+			["mapPOI"] = 7799,
+		},
+
+		[2] = {
+			["currencyID"] = 2947,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80237,
+			["mapPOI"] = 7799,
+		},
+
+		[3] = {
+			["currencyID"] = 2953,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80237,
+			["mapPOI"] = 7799,
+		},
+		[4] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7799,
+		},
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7799,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7799,
+		},
+	 -- Ringing Deeps Ramble
+	
+		[7] = {
+			["currencyID"] = 2942,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80238,
+			["mapPOI"] = 7800,
+		},
+		[8] = {
+			["currencyID"] = 2948,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80238,
+			["mapPOI"] = 7800,
+		},
+		[9] = {
+			["currencyID"] = 2954,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80238,
+			["mapPOI"] = 7800,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7800,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7800,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7800,
+		},
+
+	 -- Chittering Concourse
+		[13] = {
+			["currencyID"] = 2943,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80239,
+			["mapPOI"] = 7801,
+		},
+		[14] = {
+			["currencyID"] = 2949,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80239,
+			["mapPOI"] = 7801,
+		},
+		[15] = {
+			["currencyID"] = 2955,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80239,
+			["mapPOI"] = 7801,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7801,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7801,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7801,
+		},
+
+	 -- Cataract River Cruise
+		[19] = {
+			["currencyID"] = 2944,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80240,
+			["mapPOI"] = 7802,
+		},
+		[20] = {
+			["currencyID"] = 2950,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80240,
+			["mapPOI"] = 7802,
+		},
+		[21] = {
+			["currencyID"] = 2956,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80240,
+			["mapPOI"] = 7802,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7802,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7802,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7802,
+		},
+
+	 -- Taelloch Twist
+		[25] = {
+			["currencyID"] = 2945,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80242,
+			["mapPOI"] = 7803,
+		},
+		[26] = {
+			["currencyID"] = 2951,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80242,
+			["mapPOI"] = 7803,
+		},
+		[27] = {
+			["currencyID"] = 2957,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80242,
+			["mapPOI"] = 7803,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7803,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7803,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7803,
+		},
+
+	 -- Opportunity Point Amble
+		[31] = {
+			["currencyID"] = 2946,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80243,
+			["mapPOI"] = 7804,
+		},
+		[32] = {
+			["currencyID"] = 2952,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80243,
+			["mapPOI"] = 7804,
+		},
+		[33] = {
+			["currencyID"] = 2958,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80243,
+			["mapPOI"] = 7804,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7804,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7804,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7804,
+		},
+	},
+
+
+-- Hallowfall
+
+	[3] = {
+	 -- Dunelle's Detour
+		[1] = {
+			["currencyID"] = 2959,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80256,
+			["mapPOI"] = 7805,
+		},
+		[2] = {
+			["currencyID"] = 2965,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80256,
+			["mapPOI"] = 7805,
+		},
+		[3] = {
+			["currencyID"] = 2971,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80256,
+			["mapPOI"] = 7805,
+		},
+		[4] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7805,
+		},
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7805,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7805,
+		},
+	 -- Tenir's Traversal
+		[7] = {
+			["currencyID"] = 2960,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80257,
+			["mapPOI"] = 7806,
+		},
+		[8] = {
+			["currencyID"] = 2966,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80257,
+			["mapPOI"] = 7806,
+		},
+		[9] = {
+			["currencyID"] = 2972,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80257,
+			["mapPOI"] = 7806,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7806,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7806,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7806,
+		},
+
+	 -- Light's Redoubt Descent
+		[13] = {
+			["currencyID"] = 2961,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80258,
+			["mapPOI"] = 7807,
+		},
+		[14] = {
+			["currencyID"] = 2967,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80258,
+			["mapPOI"] = 7807,
+		},
+		[15] = {
+			["currencyID"] = 2973,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80258,
+			["mapPOI"] = 7807,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7807,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7807,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7807,
+		},
+
+	-- Stillstone Slalmom
+		[19] = {
+			["currencyID"] = 2962,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80259,
+			["mapPOI"] = 7808,
+		},
+		[20] = {
+			["currencyID"] = 2968,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80259,
+			["mapPOI"] = 7808,
+		},
+		[21] = {
+			["currencyID"] = 2974,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80259,
+			["mapPOI"] = 7808,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7808,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7808,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7808,
+		},
+
+	-- Mereldar Meander 
+		[25] = {
+			["currencyID"] = 2963,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80260,
+			["mapPOI"] = 7809,
+		},
+		[26] = {
+			["currencyID"] = 2969,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80260,
+			["mapPOI"] = 7809,
+		},
+		[27] = {
+			["currencyID"] = 2975,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80260,
+			["mapPOI"] = 7809,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7809,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7809,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7809,
+		},
+
+	 -- Velhan's Venture
+		[31] = {
+			["currencyID"] = 2964,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80261,
+			["mapPOI"] = 7810,
+		},
+		[32] = {
+			["currencyID"] = 2970,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80261,
+			["mapPOI"] = 7810,
+		},
+		[33] = {
+			["currencyID"] = 2976,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80261,
+			["mapPOI"] = 7810,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7810,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7810,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7810,
+		},
+	},
+ 
+-- Azj-Kahet 
+	[4] = {
+	 -- City of Threads Twist
+		[1] = {
+			["currencyID"] = 2977,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80277,
+			["mapPOI"] = 7811,
+		},
+		[2] = {
+			["currencyID"] = 2983,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80277,
+			["mapPOI"] = 7811,
+		},
+		[3] = {
+			["currencyID"] = 2989,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80277,
+			["mapPOI"] = 7811,
+		},
+		[4] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7811,
+		},
+		[5] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7811,
+		},
+		[6] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7811,
+		},
+
+	 -- Maddening Deep Dip
+
+		[7] = {
+			["currencyID"] = 2978,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80278,
+			["mapPOI"] = 7812,
+		},
+		[8] = {
+			["currencyID"] = 2984,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80278,
+			["mapPOI"] = 7812,
+		},
+		[9] = {
+			["currencyID"] = 2990,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80278,
+			["mapPOI"] = 7812,
+		},
+		[10] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7812,
+		},
+		[11] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7812,
+		},
+		[12] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7812,
+		},
+
+	-- the Weaver's Wing
+		[13] = {
+			["currencyID"] = 2979,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80279,
+			["mapPOI"] = 7813,
+		},
+		[14] = {
+			["currencyID"] = 2985,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80279,
+			["mapPOI"] = 7813,
+		},
+		[15] = {
+			["currencyID"] = 2991,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80279,
+			["mapPOI"] = 7813,
+		},
+		[16] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7813,
+		},
+		[17] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7813,
+		},
+		[18] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7813,
+		},
+
+	 -- Rak-Ahat Rush
+		[19] = {
+			["currencyID"] = 2980,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80280,
+			["mapPOI"] = 7814,
+		},
+		[20] = {
+			["currencyID"] = 2986,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80280,
+			["mapPOI"] = 7814,
+		},
+		[21] = {
+			["currencyID"] = 2992,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80280,
+			["mapPOI"] = 7814,
+		},
+		[22] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7814,
+		},
+		[23] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7814,
+		},
+		[24] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7814,
+		},
+
+	 -- Pit Plunge
+		[25] = {
+			["currencyID"] = 2981,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80281,
+			["mapPOI"] = 7815,
+		},
+		[26] = {
+			["currencyID"] = 2987,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80281,
+			["mapPOI"] = 7815,
+		},
+		[27] = {
+			["currencyID"] = 2993,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80281,
+			["mapPOI"] = 7815,
+		},
+		[28] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7815,
+		},
+		[29] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7815,
+		},
+		[30] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7815,
+		},
+
+	 -- Siegehold Scuttle
+		[31] = {
+			["currencyID"] = 2982,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80282,
+			["mapPOI"] = 7816,
+		},
+		[32] = {
+			["currencyID"] = 2988,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80282,
+			["mapPOI"] = 7816,
+		},
+		[33] = {
+			["currencyID"] = 2994,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = 80282,
+			["mapPOI"] = 7816,
+		},
+		[34] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7816,
+		},
+		[35] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7816,
+		},
+		[36] = {
+			["currencyID"] = nil,
+			["silverTime"] = nil,
+			["goldTime"] = nil,
+			["questID"] = nil,
+			["mapPOI"] = 7816,
+		},
+	},
+
+
+
+
+
+-- Dragonflight
 -- Waking Shores
 	--Ruby Lifeshrine Loop
-	[1] = {
+	[5] = {
 		[1] = {
 			["currencyID"] = 2042,
 			["silverTime"] = 56, --56
@@ -526,7 +1699,7 @@ DR.RaceData = {
 
 -- Ohn'ahran Plains
 	-- Sundapple Copse Circuit
-	[2] = {
+	[6] = {
 		[1] = {
 			["currencyID"] = 2060,
 			["silverTime"] = 52,
@@ -796,7 +1969,7 @@ DR.RaceData = {
 
 -- Azure Span
 	 -- The Azure Span Sprint
-	[3] = {
+	[7] = {
 		[1] = {
 			["currencyID"] = 2074,
 			["silverTime"] = 66,
@@ -1027,7 +2200,7 @@ DR.RaceData = {
 
 
 -- Thaldraszus
-	[4] = {
+	[8] = {
 		 -- The Flowing Forest Flight
 		[1] = {
 			["currencyID"] = 2080,
@@ -1259,7 +2432,7 @@ DR.RaceData = {
 
 
 -- Forbidden Reach
-	[5] = {
+	[9] = {
 		 -- Stormsunder Crater Circuit
 		[1] = {
 			["currencyID"] = 2201,
@@ -1491,7 +2664,7 @@ DR.RaceData = {
 
 
 -- Zaralek Caverns
-	[6] = {
+	[10] = {
 		 -- Crystal Circuit
 		[1] = {
 			["currencyID"] = 2246,
@@ -1722,7 +2895,7 @@ DR.RaceData = {
 	},
 
 -- Emerald Dream
-	[7] = {
+	[11] = {
 		 -- Ysera Invitational
 		[1] = {
 			["currencyID"] = 2676,
@@ -1955,7 +3128,7 @@ DR.RaceData = {
 
 
 -- Kalimdor Cup
-	[8] = {
+	[12] = {
 	 -- Felwood Flyover
 		[1] = {
 			["currencyID"] = 2312,
@@ -2568,7 +3741,7 @@ DR.RaceData = {
 
 
 -- Eastern Kingdoms Cup
-	[9] = {
+	[13] = {
 	 -- Gilneas Gambit
 		[1] = {
 			["currencyID"] = 2536,
@@ -3106,7 +4279,7 @@ DR.RaceData = {
 
 
 -- Outland Cup
-	[10] = {
+	[14] = {
 		 -- Hellfire Hustle
 		[1] = {
 			["currencyID"] = 2600,
@@ -3604,7 +4777,7 @@ DR.RaceData = {
 
 
 -- Northrend Cup
-	[11] = {
+	[15] = {
 	 -- Scalawag Slither
 		[1] = {
 			["currencyID"] = 2720,
