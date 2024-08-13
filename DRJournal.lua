@@ -315,7 +315,7 @@ function DR.mainFrame.WorldQuestHandler()
 				end);
 
 				DR.mainFrame["WorldQuestList_"..v]:SetScript("OnClick", function(self)
-					BonusObjectiveTracker_TrackWorldQuest(v, 1)
+					QuestUtil.TrackWorldQuest(v, 1)
 					C_SuperTrack.SetSuperTrackedQuestID(v);
 					PlaySound(170270);
 				end);
