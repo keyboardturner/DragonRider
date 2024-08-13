@@ -1037,6 +1037,9 @@ DR.fadeOutBar:SetDuration(.1) -- Duration of the fade out animation
 
 -- Set scripts for when animations start and finish
 DR.fadeOutBarGroup:SetScript("OnFinished", function()
+	if LibAdvFlight.IsAdvFlying() then
+		return
+	end
 	DR.statusbar:ClearAllPoints();
 	DR.statusbar:Hide(); -- Hide the frame when the fade out animation is finished
 end)
@@ -1651,30 +1654,49 @@ function DR.OnAddonLoaded()
 
 		-- when the player takes off and starts flying
 		local function OnAdvFlyStart()
+			if DragonRider_DB.fadeSpeed then
+				DR.ShowWithFadeBar();
+			else
+				DR.statusbar:SetAlpha(1)
+				DR.statusbar:Show()
+			end
 			DR.setPositions();
-			DR.ShowWithFadeBar();
 		end
 
 		-- when the player mounts but isn't flying yet
 		-- OR when the player lands after flying but is still mounted
 		local function OnAdvFlyEnabled()
 			if DragonRider_DB.fadeSpeed then
-				DR.clearPositions();
+				DR.HideWithFadeBar();
 			else
-				DR.setPositions();
-				DR.ShowWithFadeBar();
+				DR.statusbar:SetAlpha(1)
+				DR.statusbar:Show()
 			end
+			DR.setPositions();
+			DR.FixBlizzFrames()
+		end
+
+		local function OnAdvFlyEnd()
+			if DragonRider_DB.fadeSpeed then
+				DR.HideWithFadeBar();
+			end
+			DR.setPositions();
 			DR.FixBlizzFrames()
 		end
 
 		-- when the player dismounts
 		local function OnAdvFlyDisabled()
+			if DragonRider_DB.fadeSpeed then
+				DR.HideWithFadeBar();
+			else
+				DR.statusbar:SetAlpha(1)
+			end
 			DR.clearPositions();
 			DR.FixBlizzFrames()
 		end
 
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_START, OnAdvFlyStart);
-		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_END, OnAdvFlyEnabled);
+		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_END, OnAdvFlyEnd);
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_ENABLED, OnAdvFlyEnabled);
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_DISABLED, OnAdvFlyDisabled);
 
