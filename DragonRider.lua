@@ -142,7 +142,6 @@ DR.statusbar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
 DR.statusbar:GetStatusBarTexture():SetHorizTile(false)
 DR.statusbar:GetStatusBarTexture():SetVertTile(false)
 DR.statusbar:SetStatusBarColor(.98, .61, .0)
-DR.statusbar:SetMinMaxValues(0, 100)
 Mixin(DR.statusbar, SmoothStatusBarMixin)
 DR.statusbar:SetMinMaxSmoothedValue(0,100)
 
@@ -393,7 +392,7 @@ function DR.useUnits()
 	elseif DragonRider_DB.speedValUnits == 4 then
 		return " " .. L["UnitKilometers"]
 	elseif DragonRider_DB.speedValUnits == 5 then
-		return "%" .. L["UnitPercent"]
+		return "%" --.. L["UnitPercent"]
 	elseif DragonRider_DB.speedValUnits == 6 then
 		return ""
 	else
