@@ -1,3 +1,29 @@
+# 0.4.1
+
+Added Global API (`DragonRider_API`), Fade Journal functionality, Added POI Supertrack to journal, Updated TWW Journal Data, Fix to Percentage speed unit text
+
+Fixes by [Ghost](https://github.com/keyboardturner/DragonRider/pull/1) and implementation of LibAdvFlight
+
+* Clean up color picking
+
+* Whitespace
+
+* More whitespace
+
+* Set deez
+
+* Add LibAdvFlight
+
+nepotism wins again
+
+* fix
+
+* Fix tooltipping
+
+* Move these back because calamity
+
+* Fix lightning rush
+
 # 0.4.0
 
 Fixes to journal if all race data is nil, fixes for 11.0.2 (beta)
@@ -13,6 +39,9 @@ Updated Simplified Chinese zhCN localizations (https://github.com/nanjuekaien1/D
 # 0.3.7
 
 War Within TOC update, Added in new themes for the speedometer: Algari, Minimalist, Alliance, Horde.
+
+<details>
+<summary> ► Older Updates</summary>
 
 # 0.3.6
 
@@ -43,9 +72,6 @@ Fixed swirly smoke effects on the vigor bubbles appearing after collecting bronz
 # 0.3.0
 
 Adjustments for checking dragonriding speed cap based upon map ID / dragon race buff rather than Riding Abroad, as that buff is now gone in The War Within.
-
-<details>
-<summary> ► Older Updates</summary>
 
 # 0.2.9
 
