@@ -1,3 +1,7 @@
+# 0.4.2
+
+German translations thanks to Cirez (this was actually added in 0.4.1 but I forgot to add it until literally right after pushing the update)
+
 # 0.4.1
 
 Added Global API (`DragonRider_API`), Fade Journal functionality, Added POI Supertrack to journal, Updated TWW Journal Data, Fix to Percentage speed unit text
