@@ -1283,7 +1283,7 @@ function DR.OnAddonLoaded()
 		---------------------------------------------------------------------------------------------------------------------------------
 
 		local version, bild = GetBuildInfo(); -- temp fix for beta
-		local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
+		--local IS_FUTURE = (version == "11.0.2") and tonumber(bild) > 55763;
 
 		local function OnSettingChanged(_, setting, value)
 			local variable = setting:GetVariable()
@@ -1292,10 +1292,6 @@ function DR.OnAddonLoaded()
 				variable = strsub(variable, 4); -- remove our prefix so it matches existing savedvar keys
 			end
 
-			if not IS_FUTURE then
-				-- the settings UI does this for us in the future
-				DragonRider_DB[variable] = value;
-			end
 			DR.vigorCounter()
 			DR.setPositions()
 			DR.MuteVigorSound()
@@ -1315,11 +1311,7 @@ function DR.OnAddonLoaded()
 			local uniqueVariable = "DR_" .. variableKey; -- these have to be unique or calamity ensues, savedvars will be unaffected
 
 			local setting;
-			if IS_FUTURE then
-				setting = Settings.RegisterAddOnSetting(category, uniqueVariable, variableKey, DragonRider_DB, type(defaultValue), name, defaultValue);
-			else
-				setting = Settings.RegisterAddOnSetting(category, name, uniqueVariable, type(defaultValue), defaultValue);
-			end
+			setting = Settings.RegisterAddOnSetting(category, uniqueVariable, variableKey, DragonRider_DB, type(defaultValue), name, defaultValue);
 
 			setting:SetValue(DragonRider_DB[variableKey]);
 			Settings.SetOnValueChangedCallback(uniqueVariable, OnSettingChanged);
