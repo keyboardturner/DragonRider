@@ -1,3 +1,11 @@
+# 0.4.3
+
+(Maybe) fixed issue where the vigor bar would move kinda sometimes at "random" (reproducable with the emerald dream portal).
+
+ - this was caused by a function that intended to fix some older blizz bugs where the vigor bar stayed persistent.
+ - if the double vigor bar bug happens again, it's because i removed this function, but idk how to reproduce that bug.
+ - the function would hide the secondary vigor bar and force the widgets to update, clearing out widgets to produce the proper one.
+
 # 0.4.2
 
 German translations thanks to Cirez (this was actually added in 0.4.1 but I forgot to add it until literally right after pushing the update)
