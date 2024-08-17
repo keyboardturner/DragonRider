@@ -533,7 +533,6 @@ function DR.GetVigorValueExact()
 	end
 end
 
--- this runs every frame
 function DR.FixBlizzFrames()
 	for _, v in pairs(DR.WidgetFrameIDs) do
 		local f = UIWidgetPowerBarContainerFrame.widgetFrames[v];
