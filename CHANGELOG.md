@@ -1,3 +1,7 @@
+# 0.4.4
+
+maybe potentially fixed widget being persistent especially after entering a BG who knows the NA realms went down before i could test it so good luck
+
 # 0.4.3
 
 (Maybe) fixed issue where the vigor bar would move kinda sometimes at "random" (reproducable with the emerald dream portal).
