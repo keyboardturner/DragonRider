@@ -1,3 +1,9 @@
+# 0.4.5
+
+Fix to Storm's Watch Survey Reverse gold time, reworked how Charge/Model frames are attached to the vigor bar
+
+ - if you have an addon that rescales the widget manager (encounter bar), particularly in different conditions during dragonriding and solely for the vigor bar, it probably will misalign either the charges/models. i'm not fixing this, an addon shouldn't be doing it like that. Tell Blizzard to add options to scale the encounter bar or overhaul widgets instead or something.
+
 # 0.4.4
 
 maybe potentially fixed widget being persistent especially after entering a BG who knows the NA realms went down before i could test it so good luck
