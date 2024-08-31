@@ -1,3 +1,7 @@
+# 0.4.6
+
+Vigor model fix, Minimap button, Open talents button, (maybe) fix to map pin click in journal (this one is a bit of an anomaly, for some reason it just doesn't set until reload but it's hard to reproduce)
+
 # 0.4.5
 
 Fix to Storm's Watch Survey Reverse gold time, reworked how Charge/Model frames are attached to the vigor bar

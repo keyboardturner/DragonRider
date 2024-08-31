@@ -6,6 +6,8 @@ license-output: LICENSE
 externals:
   Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   Libs/LibAdvFlight-1.0: https://github.com/Ghostopheles/LibAdvFlight
+  Libs/Ace3: https://repos.curseforge.com/wow/ace3/trunk
+  Libs/LibDBIcon-1.0: https://repos.curseforge.com/wow/libdbicon-1-0/trunk
 
 ignore:
   - Libs/*/*.rockspec

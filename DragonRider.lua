@@ -1057,6 +1057,7 @@ function DR.clearPositions()
 	for i = 1, 10 do
 		DR.charge[i]:Hide();
 	end
+	DR.toggleModels()
 end
 
 DR.clearPositions();
@@ -1692,6 +1693,38 @@ function DR.OnAddonLoaded()
 
 		DR.SetupVigorToolip();
 	end
+end
+
+local addon = LibStub("AceAddon-3.0"):NewAddon("DragonRider");
+local DragonRider_DB = LibStub("LibDataBroker-1.1"):NewDataObject("DragonRider", {
+	type = "data source",
+	text = L["DragonRider"],
+	icon = "Interface\\Icons\\ability_dragonriding_glyph01",
+	OnClick = function()
+		if DR.mainFrame:IsShown() then
+			DR.mainFrame:Hide();
+		else
+			DR.mainFrame:Show();
+		end
+	end, 
+	OnTooltipShow = function(tt)
+		tt:SetText("|cFFFFF569"..L["DragonRider"].."|r")
+		tt:AddLine("|cFFFFFFFF"..L["RightClick_TT_Line"].."|r");
+		tt:AddLine("|cFFFFFFFF"..L["LeftClick_TT_Line"].."|r");
+		tt:AddLine("|cFFFFFFFF"..L["SlashCommands_TT_Line"].."|r");
+	end,
+})  
+local icon = LibStub("LibDBIcon-1.0");
+
+function addon:OnInitialize()
+	self.db = LibStub("AceDB-3.0"):New("DragonRider_DB", {
+		profile = {
+			minimap = {
+				hide = false,
+			},
+		},
+	})
+	icon:Register("DragonRider", DragonRider_DB, self.db.profile.minimap);
 end
 
 EventUtil.ContinueOnAddOnLoaded("DragonRider", DR.OnAddonLoaded);
