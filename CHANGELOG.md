@@ -1,6 +1,6 @@
 # 0.4.8
 
-Clean up library fileso
+Clean up library files
 
 # 0.4.7
 
