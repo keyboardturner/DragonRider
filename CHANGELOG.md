@@ -1,3 +1,7 @@
+# 0.4.8
+
+Clean up library fileso
+
 # 0.4.7
 
 Removed minimap button
