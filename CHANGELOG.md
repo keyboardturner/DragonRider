@@ -1,3 +1,7 @@
+# 0.4.9
+
+Avoid map-related taint issue with frame fader (where it said something about "protected function SetPassThroughButtons" etc.)
+
 # 0.4.8
 
 Clean up library files
