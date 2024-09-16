@@ -16,7 +16,25 @@ Displays speed values above the vigor bar and maybe does some other stuff.
 <li>Dragon race statistics tracker (and maybe sharing with other players?)</li>
 <li>Dragon race notification tracker (for multiplayer races and so on)</li>
 </ul>
-<p>&nbsp;</p>
-<p>The project is fairly early in conception. It may take some time to fully flesh out these features - the goal will be to have some of the more basic features implemented for the Kalimdor / Eastern Kingdoms Cups, and to help with the future challenging races.</p>
 
 A link to my discord for addon projects and other things can be found [here](https://discord.gg/tA4rrmjPp8).
+
+Other Language Slash Commands:
+
+🇪🇸🇲🇽: /dragonrider
+
+🇩🇪: /drachenreiter
+
+🇫🇷: /dragonrider
+
+🇮🇹: /dragonrider
+
+🇵🇹🇧🇷: /dragonrider
+
+🇷🇺: /всадникдракона
+
+🇰🇷: /드래곤라이더
+
+🇨🇳: /龙骑士
+
+🇹🇼: /龍騎士
