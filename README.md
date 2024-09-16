@@ -10,7 +10,6 @@ Displays speed values above the vigor bar and maybe does some other stuff.
 </ul>
 <p>Some of the planned features:</p>
 <ul>
-<li>Detection notification for nearby dragon glyphs</li>
 <li>Cooldown timers for each major spell</li>
 <li>More custom art &amp; options to customize the UI</li>
 <li>Dragon race statistics tracker (and maybe sharing with other players?)</li>
