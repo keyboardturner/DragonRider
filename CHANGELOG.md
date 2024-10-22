@@ -1,3 +1,7 @@
+# 0.5.0
+
+11.0.5 toc update
+
 # 0.4.9
 
 Avoid map-related taint issue with frame fader (where it said something about "protected function SetPassThroughButtons" etc.)
