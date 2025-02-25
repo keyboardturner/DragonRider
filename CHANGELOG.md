@@ -1,3 +1,9 @@
+# 0.5.2
+
+11.1.0 toc update
+
+Added (work-in-progress) speedometer for DRIVE system (probably more to come soon-ish)
+
 # 0.5.1
 
 11.0.7 toc update
