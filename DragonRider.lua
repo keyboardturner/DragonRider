@@ -1789,13 +1789,36 @@ function DR.OnAddonLoaded()
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_ENABLED, OnAdvFlyEnabled);
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_DISABLED, OnAdvFlyDisabled);
 
+		local function OnDriveStart()
+			if DriveUtils.IsDriving() then
+				OnAdvFlyStart();
+			end
+		end
+
+		local function OnDriveEnd()
+			if not DriveUtils.IsDriving() then
+				OnAdvFlyEnd();
+			end
+		end
+
+		local f = CreateFrame("Frame");
+		f:SetScript("OnEvent", function(self, event, ...)
+			if event == "PLAYER_GAINS_VEHICLE_DATA" then
+				OnDriveStart();
+			elseif event == "PLAYER_LOSES_VEHICLE_DATA" then
+				OnDriveEnd();
+			end
+		end);
+		f:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA");
+		f:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA");
+
 		-- this will run every frame, forever :)
 		-- put anything that needs to run every frame in here
 		local function OnUpdate()
 			DR.updateSpeed();
 		end
 
-		C_Timer.NewTicker(.1, OnUpdate);
+		C_Timer.NewTicker(0.1, OnUpdate);
 
 		DR.SetupVigorToolip();
 	end
