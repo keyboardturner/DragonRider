@@ -564,6 +564,11 @@ function DR.vigorCounter(vigorCurrent)
 		return;
 	end
 
+	if not LibAdvFlight.IsAdvFlyEnabled() or DriveUtils.IsDriving() then
+		DR.toggleModels()
+		return
+	end
+
 	if not DragonRider_DB.toggleModels then
 		DR.toggleModels()
 		return

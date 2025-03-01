@@ -1,3 +1,7 @@
+# 0.5.3
+
+Fixed issue where vigor swirly models would persist in Undermine for some reason
+
 # 0.5.2
 
 11.1.0 toc update
