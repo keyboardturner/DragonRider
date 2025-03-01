@@ -1,3 +1,7 @@
+# 0.5.4
+
+Added data for Undermine races to the journal.
+
 # 0.5.3
 
 Fixed issue where vigor swirly models would persist in Undermine for some reason
