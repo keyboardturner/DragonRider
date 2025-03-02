@@ -1,3 +1,7 @@
+# 0.5.5
+
+Make frame hide when dismounting from drive vehicle if the option to fade frame isn't chosen
+
 # 0.5.4
 
 Added data for Undermine races to the journal.
