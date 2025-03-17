@@ -3,6 +3,9 @@ enable-nolib-creation: yes
 
 license-output: LICENSE
 
+embedded-libraries:
+  - libadvflight
+
 externals:
   Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   Libs/LibAdvFlight-1.0: https://github.com/Ghostopheles/LibAdvFlight
