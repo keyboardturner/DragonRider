@@ -1,3 +1,7 @@
+# 0.5.6
+
+Temporarily remove option to fade the speedometer as it causes conflicts with the drive system frame
+
 # 0.5.5
 
 Make frame hide when dismounting from drive vehicle if the option to fade frame isn't chosen
