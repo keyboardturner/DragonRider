@@ -1,3 +1,8 @@
+# 0.5.7
+
+11.1.5 toc update & addon category
+
+
 # 0.5.6
 
 Temporarily remove option to fade the speedometer as it causes conflicts with the drive system frame. The speedometer will now always fade when dismounted / landing after dragonriding as it was originally designed to.
