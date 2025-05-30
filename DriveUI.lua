@@ -1,13 +1,14 @@
 local DragonRider, DR = ...
 local _, L = ...
 
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("UNIT_POWER_UPDATE")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:RegisterEvent("SPELLS_CHANGED")
-frame:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA")
-frame:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA")
-frame:RegisterEvent("UPDATE_UI_WIDGET")
+local DriveUI = CreateFrame("Frame")
+DriveUI:RegisterEvent("UNIT_POWER_UPDATE")
+DriveUI:RegisterEvent("PLAYER_ENTERING_WORLD")
+DriveUI:RegisterEvent("SPELLS_CHANGED")
+DriveUI:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA")
+DriveUI:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA")
+DriveUI:RegisterEvent("UPDATE_UI_WIDGET")
+DriveUI:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 
 local TurboSpells = {
 	[20] = 470934,
@@ -15,7 +16,13 @@ local TurboSpells = {
 	[50] = 470935,
 };
 
-local function CheckTraitEngine()
+local TurboVehicleSpells = {
+	1215073,
+	471755,
+	1215074,
+};
+
+function DriveUI.CheckTraitEngine()
 	local TurboVal_Default = 20
 	local TurboVal = TurboVal_Default
 	for k, v in pairs(TurboSpells) do
@@ -34,7 +41,7 @@ local segmentCount = math.floor(maxPower / segmentRange)
 local barWidth = 30
 local spacing = 10
 
-local function CreateBar(index)
+function DriveUI.CreateBar(index)
 	local bar = CreateFrame("StatusBar", "DriveStatusBar"..index, UIParent)
 	bar:SetSize(30, 30)
 	--bar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
@@ -77,8 +84,26 @@ local function CreateBar(index)
 	return bar
 end
 
-local function UpdateBarConfig()
-	segmentRange = CheckTraitEngine()
+function DriveUI.SpellsOnCD()
+	for k, v in pairs(TurboVehicleSpells) do
+		local isEnabled, startTime, modRate, duration
+		if C_Spell.GetSpellCooldown then
+			isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(v).isEnabled, C_Spell.GetSpellCooldown(v).startTime, C_Spell.GetSpellCooldown(v).modRate, C_Spell.GetSpellCooldown(v).duration
+		else
+			isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
+		end
+		if ( startTime > 0 and duration > 0) then
+			local cdLeft = startTime + duration - GetTime()
+			C_Timer.After(cdLeft, DriveUI.UpdateBars)
+			return true
+		else
+			return false
+		end
+	end
+end
+
+function DriveUI.UpdateBarConfig()
+	segmentRange = DriveUI.CheckTraitEngine()
 	segmentCount = math.floor(maxPower / segmentRange)
 
 	local totalWidth = barWidth * segmentCount + spacing * (segmentCount - 1)
@@ -94,7 +119,7 @@ local function UpdateBarConfig()
 
 	for i = 1, segmentCount do
 		if not bars[i] then
-			bars[i] = CreateBar(i)
+			bars[i] = DriveUI.CreateBar(i)
 		end
 		bars[i]:SetMinMaxValues(0, 1)
 		bars[i]:SetValue(0)
@@ -112,7 +137,7 @@ local function UpdateBarConfig()
 	end
 end
 
-local function UpdateBars()
+function DriveUI.UpdateBars()
 	local power = UnitPower("player", Enum.PowerType.Alternate)
 	local activeBarIndex = 0
 
@@ -137,24 +162,32 @@ local function UpdateBars()
 	-- Apply bar colors
 	for i = 1, segmentCount do
 		if bars[i] then
-			if i == activeBarIndex then
-				bars[i]:SetStatusBarColor(1, 1, 1)
+			if DriveUI.SpellsOnCD() then
+				if i == activeBarIndex then
+					bars[i]:SetStatusBarColor(.5, .5, .5)
+				else
+					bars[i]:SetStatusBarColor(.3, .5, .3)
+				end
 			else
-				bars[i]:SetStatusBarColor(.3, 1, .3)
+				if i == activeBarIndex then
+					bars[i]:SetStatusBarColor(1, 1, 1)
+				else
+					bars[i]:SetStatusBarColor(.3, 1, .3)
+				end
 			end
 		end
 	end
 end
 
-frame:SetScript("OnEvent", function(self, event, ...)
+DriveUI:SetScript("OnEvent", function(self, event, ...)
 	if event == "UNIT_POWER_UPDATE" then
 		local unit, powerType = ...
 		if unit == "player" and powerType == "ALTERNATE" then
-			UpdateBars()
+			DriveUI.UpdateBars()
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "SPELLS_CHANGED" then
-		UpdateBarConfig()
-		UpdateBars()
+		DriveUI.UpdateBarConfig()
+		DriveUI.UpdateBars()
 	end
 
 	-- hide widget test
@@ -164,6 +197,11 @@ frame:SetScript("OnEvent", function(self, event, ...)
 				PlayerPowerBarAlt:Hide()
 			end
 		end
+	end
+
+	if event == "SPELL_UPDATE_COOLDOWN" then
+		DriveUI.SpellsOnCD()
+		DriveUI.UpdateBars()
 	end
 
 end)
