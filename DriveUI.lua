@@ -10,6 +10,8 @@ DriveUI:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA")
 DriveUI:RegisterEvent("UPDATE_UI_WIDGET")
 DriveUI:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 
+DragonRider_API.DriveUtils.DriveUI = DriveUI
+
 local TurboSpells = {
 	[20] = 470934,
 	[33] = 470932,
@@ -84,7 +86,7 @@ function DriveUI.CreateBar(index)
 	return bar
 end
 
-function DriveUI.SpellsOnCD()
+function DriveUI.TurboSpellsOnCD()
 	for k, v in pairs(TurboVehicleSpells) do
 		local isEnabled, startTime, modRate, duration
 		if C_Spell.GetSpellCooldown then
@@ -162,7 +164,7 @@ function DriveUI.UpdateBars()
 	-- Apply bar colors
 	for i = 1, segmentCount do
 		if bars[i] then
-			if DriveUI.SpellsOnCD() then
+			if DriveUI.TurboSpellsOnCD() then
 				if i == activeBarIndex then
 					bars[i]:SetStatusBarColor(.5, .5, .5)
 				else
@@ -200,7 +202,7 @@ DriveUI:SetScript("OnEvent", function(self, event, ...)
 	end
 
 	if event == "SPELL_UPDATE_COOLDOWN" then
-		DriveUI.SpellsOnCD()
+		DriveUI.TurboSpellsOnCD()
 		DriveUI.UpdateBars()
 	end
 
