@@ -91,7 +91,6 @@ function DriveUI.TurboSpellsOnCD()
 	for k, v in pairs(TurboVehicleSpells) do
 		local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
 		if k == TurboSpell then
-			print(k, "is", TurboSpell)
 			local isEnabled, startTime, modRate, duration
 			if C_Spell.GetSpellCooldown then
 				isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(v).isEnabled, C_Spell.GetSpellCooldown(v).startTime, C_Spell.GetSpellCooldown(v).modRate, C_Spell.GetSpellCooldown(v).duration
@@ -99,7 +98,6 @@ function DriveUI.TurboSpellsOnCD()
 				isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
 			end
 			if ( startTime > 0 and duration > 0) then
-				print(TurboSpell, "put on CD")
 				local cdLeft = startTime + duration - GetTime()
 				C_Timer.After(cdLeft, DriveUI.UpdateBars)
 				return true
