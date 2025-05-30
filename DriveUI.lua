@@ -13,27 +13,28 @@ DriveUI:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 DragonRider_API.DriveUtils.DriveUI = DriveUI
 
 local TurboSpells = {
-	[20] = 470934,
 	[33] = 470932,
+	[20] = 470934,
 	[50] = 470935,
 };
 
 local TurboVehicleSpells = {
-	1215073,
-	471755,
-	1215074,
+	[470934] = 471755, -- 33
+	[470932] = 1215073, -- 20
+	[470935] = 1215074, -- 50
 };
 
 function DriveUI.CheckTraitEngine()
 	local TurboVal_Default = 20
 	local TurboVal = TurboVal_Default
+	local TurboSpell
 	for k, v in pairs(TurboSpells) do
 		if IsPlayerSpell(v) then
-			TurboVal = k
+			TurboVal, TurboSpell = k, v
 		end
 	end
 
-	return TurboVal
+	return TurboVal, TurboSpell
 end
 
 local bars = {}
@@ -88,18 +89,23 @@ end
 
 function DriveUI.TurboSpellsOnCD()
 	for k, v in pairs(TurboVehicleSpells) do
-		local isEnabled, startTime, modRate, duration
-		if C_Spell.GetSpellCooldown then
-			isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(v).isEnabled, C_Spell.GetSpellCooldown(v).startTime, C_Spell.GetSpellCooldown(v).modRate, C_Spell.GetSpellCooldown(v).duration
-		else
-			isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
-		end
-		if ( startTime > 0 and duration > 0) then
-			local cdLeft = startTime + duration - GetTime()
-			C_Timer.After(cdLeft, DriveUI.UpdateBars)
-			return true
-		else
-			return false
+		local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
+		if k == TurboSpell then
+			print(k, "is", TurboSpell)
+			local isEnabled, startTime, modRate, duration
+			if C_Spell.GetSpellCooldown then
+				isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(v).isEnabled, C_Spell.GetSpellCooldown(v).startTime, C_Spell.GetSpellCooldown(v).modRate, C_Spell.GetSpellCooldown(v).duration
+			else
+				isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
+			end
+			if ( startTime > 0 and duration > 0) then
+				print(TurboSpell, "put on CD")
+				local cdLeft = startTime + duration - GetTime()
+				C_Timer.After(cdLeft, DriveUI.UpdateBars)
+				return true
+			else
+				return false
+			end
 		end
 	end
 end
