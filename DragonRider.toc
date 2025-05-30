@@ -54,3 +54,4 @@ Localization.lua
 DRRaceData.lua
 DRJournal.lua
 DragonRider.lua
+DriveUI.lua

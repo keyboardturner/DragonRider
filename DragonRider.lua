@@ -142,6 +142,8 @@ local DRIVE_LAST_TIME;
 local DRIVE_LAST_POS;
 local DriveUtils = {};
 
+DragonRider_API.DriveUtils = DriveUtils
+
 function DriveUtils.GetPosition()
     local map = C_Map.GetBestMapForUnit("player");
     local pos = C_Map.GetPlayerMapPosition(map, "player");
