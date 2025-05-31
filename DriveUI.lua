@@ -87,26 +87,44 @@ function DriveUI.CreateBar(index)
 	return bar
 end
 
-function DriveUI.TurboSpellsOnCD()
-	for k, v in pairs(TurboVehicleSpells) do
-		local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
-		if k == TurboSpell then
-			local isEnabled, startTime, modRate, duration
-			if C_Spell.GetSpellCooldown then
-				isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(v).isEnabled, C_Spell.GetSpellCooldown(v).startTime, C_Spell.GetSpellCooldown(v).modRate, C_Spell.GetSpellCooldown(v).duration
-			else
-				isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
-			end
-			if ( startTime > 0 and duration > 0) then
-				local cdLeft = startTime + duration - GetTime()
-				C_Timer.After(cdLeft, DriveUI.UpdateBars)
-				return true
-			else
-				return false
-			end
-		end
+function DriveUI.HideBars()
+	for i = 1, #bars do
+		bars[i]:Hide()
 	end
 end
+
+local scheduledCDTimer = nil
+
+function DriveUI.TurboSpellsOnCD()
+    local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
+    for k, v in pairs(TurboVehicleSpells) do
+        if k == TurboSpell then
+            local isEnabled, startTime, modRate, duration
+            if C_Spell.GetSpellCooldown then
+                local cd = C_Spell.GetSpellCooldown(v)
+                isEnabled, startTime, modRate, duration = cd.isEnabled, cd.startTime, cd.modRate, cd.duration
+            else
+                isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
+            end
+
+            if startTime > 0 and duration > 0 then
+                local cdLeft = startTime + duration - GetTime()
+
+                if not scheduledCDTimer then
+                    scheduledCDTimer = C_Timer.NewTimer(cdLeft, function()
+                        DriveUI.UpdateBars()
+                        scheduledCDTimer = nil
+                    end)
+                end
+
+                return true
+            else
+                return false
+            end
+        end
+    end
+end
+
 
 function DriveUI.UpdateBarConfig()
 	segmentRange = DriveUI.CheckTraitEngine()
@@ -115,9 +133,7 @@ function DriveUI.UpdateBarConfig()
 	local totalWidth = barWidth * segmentCount + spacing * (segmentCount - 1)
 	local Xplacement = -totalWidth / 2 + barWidth / 2
 
-	for i = 1, #bars do
-		bars[i]:Hide()
-	end
+	DriveUI.HideBars()
 
 	if not DragonRider_API.DriveUtils.IsDriving() then
 		return
@@ -186,6 +202,16 @@ function DriveUI.UpdateBars()
 end
 
 DriveUI:SetScript("OnEvent", function(self, event, ...)
+	if event == "PLAYER_GAINS_VEHICLE_DATA" or event == "PLAYER_LOSES_VEHICLE_DATA" or event == "UPDATE_UI_WIDGET" then
+		DriveUI.UpdateBarConfig()
+		DriveUI.UpdateBars()
+	end
+
+	if not DragonRider_API.DriveUtils.IsDriving() then
+		DriveUI.HideBars()
+		return
+	end
+
 	if event == "UNIT_POWER_UPDATE" then
 		local unit, powerType = ...
 		if unit == "player" and powerType == "ALTERNATE" then
