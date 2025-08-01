@@ -1,3 +1,7 @@
+# 0.5.9
+
+11.2.0 toc update, small adjustment to yes/no confirm dialog to be localized, added K'aresh race
+
 # 0.5.8
 
 11.1.7 toc update
