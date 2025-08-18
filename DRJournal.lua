@@ -138,6 +138,38 @@ DR.mainFrame:SetScript("OnHide", function()
 	PlaySound(74423);
 end);
 
+DR.mainFrame.portraitTooltipThing = CreateFrame("Frame", nil, DR.mainFrame)
+DR.mainFrame.portraitTooltipThing:SetAllPoints(DragonRiderMainFramePortrait)
+DR.mainFrame.portraitTooltipThing:SetScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_TOP");
+	GameTooltip:AddLine("[PH] Timerunning Statistics", 1, 1, 1, 1, true);
+	if DragonRider_DB.Timerunner.Demonfly then
+		GameTooltip:AddLine("[PH] Demonfly: "..DragonRider_DB.Timerunner.Demonfly, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.Darkglare then
+		GameTooltip:AddLine("[PH] Darkglare: "..DragonRider_DB.Timerunner.Darkglare, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.FelSpreader then
+		GameTooltip:AddLine("[PH] FelSpreader: "..DragonRider_DB.Timerunner.FelSpreader, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.Felbat then
+		GameTooltip:AddLine("[PH] Felbat: "..DragonRider_DB.Timerunner.Felbat, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.Felbomber then
+		GameTooltip:AddLine("[PH] Felbomber: "..DragonRider_DB.Timerunner.Felbomber, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.Skyterror then
+		GameTooltip:AddLine("[PH] Skyterror: "..DragonRider_DB.Timerunner.Skyterror, 1, 1, 1, 1, true);
+	end
+	if DragonRider_DB.Timerunner.EyeOfGreed then
+		GameTooltip:AddLine("[PH] EyeOfGreed: "..DragonRider_DB.Timerunner.EyeOfGreed, 1, 1, 1, 1, true);
+	end
+	GameTooltip:Show();
+end)
+DR.mainFrame.portraitTooltipThing:SetScript("OnLeave", function()
+	GameTooltip:Hide();
+end);
+
 function DR.mainFrame.width()
 	return DR.mainFrame:GetWidth();
 end
