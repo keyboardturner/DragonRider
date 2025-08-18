@@ -1,8 +1,17 @@
 local _, DR = ...
+local _, L = ...
+
+local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.0");
+
+local function Print(...)
+	local prefix = string.format("|cFFFFF569"..L["DragonRider"] .. "|r:");
+	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
+end
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 f:RegisterEvent("ADDON_LOADED")
+f:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 
 local buffedTargets = {}
 
@@ -29,8 +38,33 @@ if not DragonRider_DB.Timerunner then
 end
 local KillCounter = DragonRider_DB.Timerunner;
 
+local lastCurrency = C_CurrencyInfo.GetCurrencyInfo(3252).quantity or 0
 
-f:SetScript("OnEvent", function()
+
+f:SetScript("OnEvent", function(self, event, ...)
+
+	if event == "CURRENCY_DISPLAY_UPDATE" then
+		if DragonRider_DB.Timerunner and not DragonRider_DB.Timerunner.Bronze then
+			DragonRider_DB.Timerunner.Bronze = 0
+		end
+		local currencyType, quantity, quantityChange, quantityGainSource, destroyReason = ...
+
+		if currencyType == 3252 and quantityChange and quantityChange > 0 then
+			if LibAdvFlight and LibAdvFlight.IsAdvFlying and LibAdvFlight.IsAdvFlying() then
+				if quantityGainSource == Enum.CurrencySource.Spell then
+					DragonRider_DB.Timerunner.Bronze = DragonRider_DB.Timerunner.Bronze + quantityChange
+
+					--if DragonRider_DB.debug then --this is very spammy
+					--	Print(string.format(
+					--		"+%d Bronze (Total: %d)",
+					--		quantityChange,
+					--		DragonRider_DB.Timerunner.Bronze
+					--	))
+					--end
+				end
+			end
+		end
+	end
 
 	local _, subevent, _, 
 		  sourceGUID, _, _, _, 
@@ -51,11 +85,13 @@ f:SetScript("OnEvent", function()
 
 	if subevent == "UNIT_DIED" and destGUID then
 		local npcID = GetCreatureIDFromGUID(destGUID)
-		--print("NPC death:", npcID)
+		--Print("NPC death:", npcID) -- will be spammy
 		local groupKey = NPCGroups[npcID]
 		if groupKey and killBuffDetected then
 			KillCounter[groupKey] = (KillCounter[groupKey] or 0) + 1
-			print("Tracked Kill: "..groupKey.." | Total: "..KillCounter[groupKey]);
+			if DragonRider_DB.debug then
+				Print("Tracked Kill: "..groupKey.." | Total: "..KillCounter[groupKey]);
+			end
 			
 			buffedTargets[destGUID] = nil;
 			C_Timer.After(1, function() killBuffDetected = false; end)
