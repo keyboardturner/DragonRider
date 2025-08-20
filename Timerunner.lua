@@ -38,7 +38,10 @@ if not DragonRider_DB.Timerunner then
 end
 local KillCounter = DragonRider_DB.Timerunner;
 
-local lastCurrency = C_CurrencyInfo.GetCurrencyInfo(3252).quantity or 0
+local lastCurrency
+if C_CurrencyInfo.GetCurrencyInfo(3252) then
+	lastCurrency = C_CurrencyInfo.GetCurrencyInfo(3252).quantity or 0
+end
 
 
 f:SetScript("OnEvent", function(self, event, ...)
