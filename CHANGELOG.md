@@ -1,3 +1,7 @@
+# 0.6.0
+
+Legion Remix feature (only available to timerunning characters) - icon in journal will now show tracked relevant legion remix stats
+
 # 0.5.9
 
 11.2.0 toc update, small adjustment to yes/no confirm dialog to be localized, added K'aresh race
