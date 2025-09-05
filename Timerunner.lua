@@ -33,22 +33,26 @@ local NPCGroups = {
 
 local TrackingSpellID = 1250230;
 local killBuffDetected = false;
-if not DragonRider_DB.Timerunner then
-	DragonRider_DB.Timerunner = {};
-end
-local KillCounter = DragonRider_DB.Timerunner;
+local KillCounter;
 
 local lastCurrency
 if C_CurrencyInfo.GetCurrencyInfo(3252) then
-	lastCurrency = C_CurrencyInfo.GetCurrencyInfo(3252).quantity or 0
+	lastCurrency = C_CurrencyInfo.GetCurrencyInfo(3252).quantity or 0;
 end
 
 
 f:SetScript("OnEvent", function(self, event, ...)
+	if not DragonRider_DB then return end
+
+
+	if DragonRider_DB and not DragonRider_DB.Timerunner then
+		DragonRider_DB.Timerunner = {};
+		KillCounter = DragonRider_DB.Timerunner;
+	end
 
 	if event == "CURRENCY_DISPLAY_UPDATE" then
 		if DragonRider_DB.Timerunner and not DragonRider_DB.Timerunner.Bronze then
-			DragonRider_DB.Timerunner.Bronze = 0
+			DragonRider_DB.Timerunner.Bronze = 0;
 		end
 		local currencyType, quantity, quantityChange, quantityGainSource, destroyReason = ...
 
