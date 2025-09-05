@@ -1,3 +1,11 @@
+# 0.6.1
+
+Eastern Kingdoms & Kalimdor Cup Silver times now in journal for those who haven't done the races.
+
+Fixes to Timerunning features and fresh start character profile being established.
+
+K'aresh's Ecological Succession race data now implemented, POI point directs player to Ecological Succession POI
+
 # 0.6.0
 
 Legion Remix feature (only available to timerunning characters) - icon in journal will now show tracked relevant legion remix stats
