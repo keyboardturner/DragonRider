@@ -47,6 +47,8 @@ f:SetScript("OnEvent", function(self, event, ...)
 
 	if DragonRider_DB and not DragonRider_DB.Timerunner then
 		DragonRider_DB.Timerunner = {};
+	end
+	if DragonRider_DB and DragonRider_DB.Timerunner and not KillCounter then
 		KillCounter = DragonRider_DB.Timerunner;
 	end
 
@@ -91,6 +93,7 @@ f:SetScript("OnEvent", function(self, event, ...)
 	end
 
 	if subevent == "UNIT_DIED" and destGUID then
+		if not KillCounter then return end
 		local npcID = GetCreatureIDFromGUID(destGUID)
 		--Print("NPC death:", npcID) -- will be spammy
 		local groupKey = NPCGroups[npcID]

@@ -1,3 +1,7 @@
+# 0.6.2
+
+Fixes to the fix to timerunning thing
+
 # 0.6.1
 
 Eastern Kingdoms & Kalimdor Cup Silver times now in journal for those who haven't done the races.
