@@ -4407,7 +4407,7 @@ DR.RaceData = {
 		},
 		[81] = {
 			["currencyID"] = 2385,
-			["silverTime"] = nil,
+			["silverTime"] = 74,
 			["goldTime"] = 69,
 			["questID"] = 75472,
 			["mapPOI"] = 7507,
