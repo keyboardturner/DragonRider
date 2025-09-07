@@ -705,11 +705,19 @@ function DR.mainFrame.PopulationData(continent)
 			if accountBestChar == nil then
 				accountBestChar = "------"
 			end
-			local tooltipData = L["PersonalBest"]..scorePersonal.."\n"..L["AccountBest"]..accountBestScore.."\n"..L["BestCharacter"]..accountBestChar.."\n"..L["GoldTime"]..goldTime.."\n"..L["SilverTime"]..silverTime
 
 			DR.mainFrame["backFrame"..continent][k]:SetScript("OnEnter", function(self)
-				DR.tooltip_OnEnter(self, tooltipData)
-			end);
+				GameTooltip:SetOwner(self, "ANCHOR_TOP")
+
+				GameTooltip:AddDoubleLine(L["PersonalBest"], scorePersonal, 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(L["AccountBest"], accountBestScore, 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(L["BestCharacter"], accountBestChar, 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(L["GoldTime"], goldTime, 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(L["SilverTime"], silverTime, 1, 1, 1, 1, 1, 1)
+
+				GameTooltip:Show()
+			end)
+
 			DR.mainFrame["backFrame"..continent][k]:SetScript("OnLeave", DR.tooltip_OnLeave);
 
 			placeValueX = placeValueX+1
