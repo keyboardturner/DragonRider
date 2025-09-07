@@ -1,3 +1,7 @@
+# 0.6.3
+
+Changed tooltip format in journal to have a spaced left/right format
+
 # 0.6.2
 
 Fixes to the fix to timerunning thing
