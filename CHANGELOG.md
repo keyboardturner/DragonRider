@@ -6,6 +6,8 @@ Added extra effects for timerunners in the journal.
 
 Temporarily disabled the unused guide/settings tab in the journal for now.
 
+RaceData restructuring - if an addon ever used the global variables to access this, it needs to be rewritten.
+
 # 0.6.2
 
 Fixes to the fix to timerunning thing
