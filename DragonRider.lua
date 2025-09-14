@@ -1316,6 +1316,14 @@ end
 
 function DR.EventsList:PLAYER_LOGIN()
 	DR.mainFrame.DoPopulationStuff();
+	if PlayerGetTimerunningSeasonID() then -- needs to fire late to register any data
+		DR.mainFrame.CreateDragonRiderFlipbook()
+		DR.mainFrame.CreateDragonRiderFlipbook()
+		DR.mainFrame.CreateDragonRiderFlipbookRotated()
+		DR.mainFrame.CreateDragonRiderFlipbookRotated()
+		DR.mainFrame.CreateFadeIcon()
+		-- double the frames to make it appear more vibrant, as the flipbook is fairly muted
+	end
 end
 
 function DR.OnAddonLoaded()

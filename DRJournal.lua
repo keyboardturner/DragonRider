@@ -223,7 +223,7 @@ DR.mainFrame.portraitTooltipThing:SetScript("OnLeave", function()
 end)
 
 
-local function CreateDragonRiderFlipbook()
+function DR.mainFrame.CreateDragonRiderFlipbook()
 	if not DR or not DR.mainFrame or not DRportrait then
 		return
 	end
@@ -261,7 +261,7 @@ local function CreateDragonRiderFlipbook()
 end
 
 
-local function CreateDragonRiderFlipbookRotated()
+function DR.mainFrame.CreateDragonRiderFlipbookRotated()
 	if not DR or not DR.mainFrame or not DRportrait then
 		return
 	end
@@ -299,7 +299,7 @@ local function CreateDragonRiderFlipbookRotated()
 	DR.mainFrame.TimerunningFlipbook = frame
 end
 
-local function CreateFadeIcon()
+function DR.mainFrame.CreateFadeIcon()
 	if not DR or not DR.mainFrame or not DRportrait then
 		return
 	end
@@ -348,14 +348,7 @@ local function CreateFadeIcon()
 	return frame
 end
 
-if PlayerGetTimerunningSeasonID() then
-	CreateDragonRiderFlipbook()
-	CreateDragonRiderFlipbook()
-	CreateDragonRiderFlipbookRotated()
-	CreateDragonRiderFlipbookRotated()
-	CreateFadeIcon()
-	-- double the frames to make it appear more vibrant, as the flipbook is fairly muted
-end
+
 
 function DR.mainFrame.width()
 	return DR.mainFrame:GetWidth();
