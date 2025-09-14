@@ -224,7 +224,7 @@ end)
 
 
 local function CreateDragonRiderFlipbook()
-	if not DR or not DR.mainFrame or not DRportrait and not PlayerGetTimerunningSeasonID() then
+	if not DR or not DR.mainFrame or not DRportrait then
 		return
 	end
 
@@ -262,7 +262,7 @@ end
 
 
 local function CreateDragonRiderFlipbookRotated()
-	if not DR or not DR.mainFrame or not DRportrait and not PlayerGetTimerunningSeasonID() then
+	if not DR or not DR.mainFrame or not DRportrait then
 		return
 	end
 
@@ -300,6 +300,10 @@ local function CreateDragonRiderFlipbookRotated()
 end
 
 local function CreateFadeIcon()
+	if not DR or not DR.mainFrame or not DRportrait then
+		return
+	end
+	
 	local frame = CreateFrame("Frame", "FadeIconExample", DR.mainFrame)
 	frame:SetSize(60, 60)
 	frame:SetPoint("CENTER", DRportrait, "CENTER", 0, 0)
@@ -344,12 +348,14 @@ local function CreateFadeIcon()
 	return frame
 end
 
-CreateDragonRiderFlipbook()
-CreateDragonRiderFlipbook()
-CreateDragonRiderFlipbookRotated()
-CreateDragonRiderFlipbookRotated()
-CreateFadeIcon()
--- double the frames to make it appear more vibrant, as the flipbook is fairly muted
+if PlayerGetTimerunningSeasonID() then
+	CreateDragonRiderFlipbook()
+	CreateDragonRiderFlipbook()
+	CreateDragonRiderFlipbookRotated()
+	CreateDragonRiderFlipbookRotated()
+	CreateFadeIcon()
+	-- double the frames to make it appear more vibrant, as the flipbook is fairly muted
+end
 
 function DR.mainFrame.width()
 	return DR.mainFrame:GetWidth();

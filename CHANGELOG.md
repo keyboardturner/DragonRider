@@ -2,6 +2,10 @@
 
 Changed tooltip format in journal to have a spaced left/right format
 
+Added extra effects for timerunners in the journal.
+
+Temporarily disabled the unused guide/settings tab in the journal for now.
+
 # 0.6.2
 
 Fixes to the fix to timerunning thing
