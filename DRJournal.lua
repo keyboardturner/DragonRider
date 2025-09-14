@@ -117,9 +117,12 @@ local function CleanupFade(self)
 	PlayerMovementFrameFader.RemoveFrame(self);
 end
 
-DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitFrameTemplateMinimizable")
+DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitFrameTemplate")
 tinsert(UISpecialFrames, DR.mainFrame:GetName())
 DR.mainFrame:SetPortraitTextureRaw("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
+local DRportrait = DR.mainFrame.PortraitContainer.portrait
+DRportrait:SetTexCoord(0.03, 1, 0.03, 1) -- centers the icon a little bit more, since there was a large gap in the top / left
+
 --DR.mainFrame.PortraitContainer.portrait:SetTexture("Interface\\AddOns\\Languages\\Languages_Icon_Small")
 DR.mainFrame:SetTitle(L["DragonRider"])
 DR.mainFrame:SetSize(550,525)
@@ -140,7 +143,7 @@ end);
 
 
 DR.mainFrame.portraitTooltipThing = CreateFrame("Frame", nil, DR.mainFrame);
-DR.mainFrame.portraitTooltipThing:SetAllPoints(DragonRiderMainFramePortrait);
+DR.mainFrame.portraitTooltipThing:SetAllPoints(DRportrait);
 
 local function AddTimerunnerLines(tooltip)
 	tooltip:AddLine("|A:timerunning-glues-icon:0:0:0:0|a |cFFFFF569"..L["TimerunningStatistics"] .. "|r", 1, 1, 1, 1, true);
@@ -218,6 +221,135 @@ end)
 DR.mainFrame.portraitTooltipThing:SetScript("OnLeave", function()
 	GameTooltip:Hide()
 end)
+
+
+local function CreateDragonRiderFlipbook()
+	if not DR or not DR.mainFrame or not DRportrait and not PlayerGetTimerunningSeasonID() then
+		return
+	end
+
+	local frame = CreateFrame("Frame", nil, DR.mainFrame)
+	frame:SetSize(100, 100)
+	frame:SetPoint("CENTER", DRportrait, "CENTER", 10, -10)
+	frame:SetFrameLevel(800) -- yes really it has to be this high
+
+	local tex = frame:CreateTexture()
+	tex:SetAllPoints(frame)
+	tex:SetAtlas("timerunning-fx-cornerswoop-flipbook")
+	frame.tex = tex
+
+
+	local animGroup = frame:CreateAnimationGroup()
+	frame.animGroup = animGroup
+	animGroup:SetLooping("REPEAT")
+	animGroup:SetToFinalAlpha(true)
+
+	local flipAnim = animGroup:CreateAnimation("FlipBook")
+	flipAnim:SetChildKey("tex")
+	flipAnim:SetDuration(2)
+	flipAnim:SetOrder(1)
+	flipAnim:SetFlipBookRows(7)
+	flipAnim:SetFlipBookColumns(9)
+	flipAnim:SetFlipBookFrames(63)
+	flipAnim:SetFlipBookFrameWidth(0)
+	flipAnim:SetFlipBookFrameHeight(0)
+
+	frame:SetScript("OnShow", function(self) self.animGroup:Play() end)
+	frame:SetScript("OnHide", function(self) self.animGroup:Stop() end)
+
+	DR.mainFrame.TimerunningFlipbook = frame
+end
+
+
+local function CreateDragonRiderFlipbookRotated()
+	if not DR or not DR.mainFrame or not DRportrait and not PlayerGetTimerunningSeasonID() then
+		return
+	end
+
+	local frame = CreateFrame("Frame", nil, DR.mainFrame)
+	frame:SetSize(60, 60)
+	frame:SetPoint("CENTER", DRportrait, "CENTER", 0, 0)
+	frame:SetFrameLevel(800)
+
+	local tex = frame:CreateTexture()
+	tex:SetAllPoints(frame)
+	tex:SetAtlas("timerunning-fx-cornerswoop-flipbook")
+	tex:SetRotation(math.pi)
+	frame.tex = tex
+
+
+	local animGroup = frame:CreateAnimationGroup()
+	frame.animGroup = animGroup
+	animGroup:SetLooping("REPEAT")
+	animGroup:SetToFinalAlpha(true)
+
+	local flipAnim = animGroup:CreateAnimation("FlipBook")
+	flipAnim:SetChildKey("tex")
+	flipAnim:SetDuration(1.5)
+	flipAnim:SetOrder(15) -- makes it so it isn't as obvious a repeat
+	flipAnim:SetFlipBookRows(7)
+	flipAnim:SetFlipBookColumns(9)
+	flipAnim:SetFlipBookFrames(63)
+	flipAnim:SetFlipBookFrameWidth(0)
+	flipAnim:SetFlipBookFrameHeight(0)
+
+	frame:SetScript("OnShow", function(self) self.animGroup:Play() end)
+	frame:SetScript("OnHide", function(self) self.animGroup:Stop() end)
+
+	DR.mainFrame.TimerunningFlipbook = frame
+end
+
+local function CreateFadeIcon()
+	local frame = CreateFrame("Frame", "FadeIconExample", DR.mainFrame)
+	frame:SetSize(60, 60)
+	frame:SetPoint("CENTER", DRportrait, "CENTER", 0, 0)
+	frame:SetFrameLevel(800)
+
+	local tex = frame:CreateTexture(nil, "ARTWORK")
+	tex:SetAllPoints(frame)
+	tex:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\TimerunningIcon")
+	frame.tex = tex
+
+	local ag = tex:CreateAnimationGroup()
+	ag:SetLooping("NONE")
+
+	-- step 1 - delay at alpha 0
+	local hold = ag:CreateAnimation("Alpha")
+	hold:SetFromAlpha(0)
+	hold:SetToAlpha(0)
+	hold:SetDuration(5.0) -- hold faded
+	hold:SetOrder(1)
+
+	-- step 2 - fade in
+	local fadeIn = ag:CreateAnimation("Alpha")
+	fadeIn:SetFromAlpha(0)
+	fadeIn:SetToAlpha(1)
+	fadeIn:SetDuration(.5)
+	fadeIn:SetOrder(2)
+
+	-- step 3 - fade out
+	local fadeOut = ag:CreateAnimation("Alpha")
+	fadeOut:SetFromAlpha(1)
+	fadeOut:SetToAlpha(0)
+	fadeOut:SetDuration(3.5)
+	fadeOut:SetOrder(3)
+
+	-- when finished, restart
+	ag:SetScript("OnFinished", function(self)
+		self:Play()
+	end)
+
+	ag:Play()
+
+	return frame
+end
+
+CreateDragonRiderFlipbook()
+CreateDragonRiderFlipbook()
+CreateDragonRiderFlipbookRotated()
+CreateDragonRiderFlipbookRotated()
+CreateFadeIcon()
+-- double the frames to make it appear more vibrant, as the flipbook is fairly muted
 
 function DR.mainFrame.width()
 	return DR.mainFrame:GetWidth();
@@ -354,7 +486,10 @@ function DR.mainFrame.SetTabs(frame,numTabs, ...)
 
 end
 
-local content1, content2, content3 = DR.mainFrame.SetTabs(DR.mainFrame, 3, L["Score"], L["Guide"], L["Settings"])
+local content1 = DR.mainFrame.SetTabs(DR.mainFrame, 1, L["Score"])
+--[[
+-- for now, disable, as this hasn't been accessible for a while. maybe one day
+--local content1, content2, content3 = DR.mainFrame.SetTabs(DR.mainFrame, 3, L["Score"], L["Guide"], L["Settings"])
 
 DragonRiderMainFrameTab2:SetEnabled(false)
 DragonRiderMainFrameTab3:SetEnabled(false)
@@ -371,6 +506,8 @@ DragonRiderMainFrameTab3:SetScript("OnEnter", function(self)
 	DR.tooltip_OnEnter(self, L["ComingSoon"])
 end);
 DragonRiderMainFrameTab3:SetScript("OnLeave", DR.tooltip_OnLeave);
+]]
+
 
 function DR.mainFrame.UpdatePopulation()
 	for k, v in ipairs(DR.DragonRaceZones) do
@@ -717,7 +854,6 @@ function DR.mainFrame.PopulationData(continent)
 
 				GameTooltip:Show()
 			end)
-
 			DR.mainFrame["backFrame"..continent][k]:SetScript("OnLeave", DR.tooltip_OnLeave);
 
 			placeValueX = placeValueX+1
