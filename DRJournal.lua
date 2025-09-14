@@ -141,6 +141,19 @@ DR.mainFrame:SetScript("OnHide", function()
 	PlaySound(74423);
 end);
 
+--[[
+-- cool funni dragon portrait, maybe for something cool some day
+DR.mainFrame.PortraitDragon = CreateFrame("Frame", nil, DR.mainFrame.PortraitContainer)
+DR.mainFrame.PortraitDragon:SetPoint("CENTER", DR.mainFrame.PortraitContainer, "CENTER", 13, -22)
+DR.mainFrame.PortraitDragon:SetSize(99, 81)
+DR.mainFrame.PortraitDragon:SetFrameLevel(700)
+
+DR.mainFrame.PortraitDragon.tex = DR.mainFrame.PortraitDragon:CreateTexture()
+DR.mainFrame.PortraitDragon.tex:SetAllPoints()
+DR.mainFrame.PortraitDragon.tex:SetAtlas("UI-HUD-UnitFrame-Target-PortraitOn-Boss-Gold-Winged")
+DR.mainFrame.PortraitDragon.tex:SetTexCoord(1, 0, 0, 1)
+]]
+
 
 DR.mainFrame.portraitTooltipThing = CreateFrame("Frame", nil, DR.mainFrame);
 DR.mainFrame.portraitTooltipThing:SetAllPoints(DRportrait);
