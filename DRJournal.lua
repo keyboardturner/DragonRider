@@ -402,7 +402,7 @@ function DR.mainFrame.multiplayerRace_TT()
 end
  
 DR.mainFrame:SetResizable(true);
-DR.mainFrame:SetResizeBounds(338,424,992,534)
+DR.mainFrame:SetResizeBounds(365,424,992,534)
 DR.mainFrame.resizeButton = CreateFrame("Button", nil, DR.mainFrame)
 DR.mainFrame.resizeButton:SetSize(18, 18)
 DR.mainFrame.resizeButton:SetPoint("BOTTOMRIGHT")
@@ -427,11 +427,15 @@ DR.mainFrame.resizeButton:SetScript("OnMouseUp", function(self, button)
 	DR.mainFrame:StopMovingOrSizing()
 end)
 
-
+DR.mainFrame.ScrollBorder = CreateFrame("Frame", nil, DR.mainFrame, "InsetFrameTemplate3")
+local ScrollBorder = DR.mainFrame.ScrollBorder;
+ScrollBorder:SetWidth(210);
+ScrollBorder:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 2, -85);
+ScrollBorder:SetPoint("BOTTOMRIGHT", DR.mainFrame, "BOTTOMRIGHT", -3, 4);
 
 DR.mainFrame.ScrollFrame = CreateFrame("ScrollFrame", nil, DR.mainFrame, "ScrollFrameTemplate")
-DR.mainFrame.ScrollFrame:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 4, -8)
-DR.mainFrame.ScrollFrame:SetPoint("BOTTOMRIGHT", DR.mainFrame, "BOTTOMRIGHT", -3, 4)
+DR.mainFrame.ScrollFrame:SetPoint("TOPLEFT", ScrollBorder, "TOPLEFT", 3, -3.5)
+DR.mainFrame.ScrollFrame:SetPoint("BOTTOMRIGHT", ScrollBorder, "BOTTOMRIGHT", -2, 2)
 DR.mainFrame.ScrollFrame.ScrollBar:ClearAllPoints()
 DR.mainFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", DR.mainFrame.ScrollFrame, "TOPRIGHT", -12, -18)
 DR.mainFrame.ScrollFrame.ScrollBar:SetPoint("BOTTOMLEFT", DR.mainFrame.ScrollFrame, "BOTTOMRIGHT", -7, 16)
@@ -523,8 +527,8 @@ function DR.mainFrame.UpdatePopulation()
 	end
 end
 
-DR.mainFrame.accountAll_Checkbox = CreateFrame("CheckButton", nil, content1, "UICheckButtonTemplate");
-DR.mainFrame.accountAll_Checkbox:SetPoint("TOPLEFT", content1, "TOPLEFT", 55, -15);
+DR.mainFrame.accountAll_Checkbox = CreateFrame("CheckButton", nil, DR.mainFrame, "UICheckButtonTemplate");
+DR.mainFrame.accountAll_Checkbox:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 55, -25);
 DR.mainFrame.accountAll_Checkbox:SetScript("OnClick", function(self)
 	if self:GetChecked() then
 		PlaySound(856);
@@ -538,7 +542,7 @@ DR.mainFrame.accountAll_Checkbox:SetScript("OnClick", function(self)
 end);
 DR.mainFrame.accountAll_Checkbox.text = DR.mainFrame.accountAll_Checkbox:CreateFontString()
 DR.mainFrame.accountAll_Checkbox.text:SetFont(STANDARD_TEXT_FONT, 11)
-DR.mainFrame.accountAll_Checkbox.text:SetPoint("LEFT", DR.mainFrame.accountAll_Checkbox, "RIGHT", -5, 0)
+DR.mainFrame.accountAll_Checkbox.text:SetPoint("LEFT", DR.mainFrame.accountAll_Checkbox, "RIGHT", 0, 0)
 DR.mainFrame.accountAll_Checkbox.text:SetText(L["UseAccountScores"])
 DR.mainFrame.accountAll_Checkbox.text:SetScript("OnEnter", function(self)
 	DR.tooltip_OnEnter(self, L["UseAccountScoresTT"])
@@ -588,7 +592,7 @@ function DR.mainFrame.WorldQuestHandler()
 		if C_TaskQuest.IsActive(v) == true then
 			WorldQuestPlacement = WorldQuestPlacement +1
 			if not DR.mainFrame["WorldQuestList_"..v] then
-				DR.mainFrame["WorldQuestList_"..v] = CreateFrame("Button", nil, content1);
+				DR.mainFrame["WorldQuestList_"..v] = CreateFrame("Button", nil, DR.mainFrame);
 				DR.mainFrame["WorldQuestList_"..v].texlower = DR.mainFrame["WorldQuestList_"..v]:CreateTexture(nil, "OVERLAY", nil, 0);
 				DR.mainFrame["WorldQuestList_"..v].texlower:SetPoint("CENTER", DR.mainFrame["WorldQuestList_"..v],"CENTER", 0,0);
 				DR.mainFrame["WorldQuestList_"..v].texlower:SetSize(35,35);
@@ -602,7 +606,7 @@ function DR.mainFrame.WorldQuestHandler()
 			DR.mainFrame["WorldQuestList_"..v].texlower:SetAtlas("UI-QuestPoi-QuestNumber");
 			DR.mainFrame["WorldQuestList_"..v].texupper:SetAtlas("worldquest-icon-race");
 			SetPortraitToTexture(DR.mainFrame["WorldQuestList_"..v].texmiddle, DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID]);
-			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", content1, "TOPLEFT", 25*WorldQuestPlacement-40, -47);
+			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 25*WorldQuestPlacement-40, -57);
 			--DR.mainFrame["WorldQuestList_"..v]:SetParent(content1)
 			DR.mainFrame["WorldQuestList_"..v]:SetSize(20,20);
 		end
@@ -617,7 +621,7 @@ function DR.mainFrame.WorldQuestHandler()
 			DR.mainFrame["WorldQuestList_"..v].texlower:SetAtlas("UI-QuestPoi-QuestNumber");
 			DR.mainFrame["WorldQuestList_"..v].texupper:SetAtlas("worldquest-icon-race");
 			SetPortraitToTexture(DR.mainFrame["WorldQuestList_"..v].texmiddle, DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID]);
-			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", content1, "TOPLEFT", 25*WorldQuestPlacement-40, -47);
+			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 25*WorldQuestPlacement-40, -57);
 
 			DR.mainFrame["WorldQuestList_"..v]:SetScript("OnEnter", function(self)
 
@@ -630,6 +634,9 @@ function DR.mainFrame.WorldQuestHandler()
 				end);
 
 				DR.mainFrame["WorldQuestList_"..v]:SetScript("OnClick", function(self)
+					if not UnitAffectingCombat("player") then
+						C_Map.OpenWorldMap(C_TaskQuest.GetQuestZoneID(v));
+					end
 					QuestUtil.TrackWorldQuest(v, 1)
 					C_SuperTrack.SetSuperTrackedQuestID(v);
 					PlaySound(170270);
@@ -666,8 +673,8 @@ end
 DR.mainFrame:RegisterEvent("QUEST_REMOVED")
 DR.mainFrame:SetScript("OnEvent", DR.mainFrame.WorldQuestHandler)
 
-DR.mainFrame.OpenTalentsButton = CreateFrame("Button", nil, content1, "SharedButtonTemplate")
-DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", content1, "TOPRIGHT", 130, -25);
+DR.mainFrame.OpenTalentsButton = CreateFrame("Button", nil, DR.mainFrame, "SharedButtonTemplate")
+DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -5, -25);
 DR.mainFrame.OpenTalentsButton:SetSize(150, 26);
 DR.mainFrame.OpenTalentsButton:SetText(L["DragonridingTalents"]);
 DR.mainFrame.OpenTalentsButton:SetScript("OnClick", function(self)
@@ -689,6 +696,7 @@ function DR.mainFrame.PopulationData(continentIndex)
 
 	local continentData = DR.RaceData[continentIndex]
 	if not continentData or not continentData.races then return end
+	local mapID = continentData.zone
 
 	-- a list of difficulty keys in the order they appear in the UI columns
 	local difficultyOrder = {"normal", "advanced", "reverse", "challenge", "reversechallenge", "storm"}
@@ -717,6 +725,10 @@ function DR.mainFrame.PopulationData(continentIndex)
 					DR.mainFrame[courseTrackerName]:SetFrameLevel(5)
 					DR.mainFrame[courseTrackerName]:SetScript("OnEnter", function(self)
 						self:SetScript("OnClick", function(self, button, down)
+
+							if not UnitAffectingCombat("player") then
+								C_Map.OpenWorldMap(mapID);
+							end
 							C_SuperTrack.SetSuperTrackedMapPin(0, mapPOI)
 							PlaySound(170270)
 						end)
@@ -752,7 +764,10 @@ function DR.mainFrame.PopulationData(continentIndex)
 			end
 			
 			-- logic for score calculation and display
-			local scoreValueF = "------"
+			local scoreValueF = ""
+			if difficultyData then
+				scoreValueF = "------"
+			end
 			local medalValue = ""
 
 			if difficultyData then
@@ -848,6 +863,7 @@ function DR.mainFrame.PopulationData(continentIndex)
 			end
 			
 			scoreFrame:SetText(scoreValueF)
+			scoreFrame:SetTextColor(1,1,1)
 		end
 	end
 end
@@ -863,15 +879,15 @@ function DR.mainFrame.DoPopulationStuff()
 
 		if k == 1 then
 			DR.mainFrame["backFrame"..k] = CreateFrame("Frame", nil, content1, "BackdropTemplate");
-			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", content1, "TOPLEFT", 0, -70);
-			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -18, -70);
+			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", content1, "TOPLEFT", 0, -5);
+			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -18, -5);
 			DR.mainFrame["titleText"..k] = content1:CreateFontString();
 			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 10, -5);
 			DR.mainFrame["titleText"..k]:SetParent(DR.mainFrame["backFrame"..k])
 		else
 			DR.mainFrame["backFrame"..k] = CreateFrame("Frame", nil, DR.mainFrame["backFrame"..oneLess], "BackdropTemplate");
-			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..oneLess], "BOTTOMLEFT", 0, -35);
-			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame["backFrame"..oneLess], "BOTTOMRIGHT", 0, -35);
+			DR.mainFrame["backFrame"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..oneLess], "BOTTOMLEFT", 0, -10);
+			DR.mainFrame["backFrame"..k]:SetPoint("TOPRIGHT", DR.mainFrame["backFrame"..oneLess], "BOTTOMRIGHT", 0, -10);
 			DR.mainFrame["titleText"..k] = content1:CreateFontString();
 			DR.mainFrame["titleText"..k]:SetPoint("TOPLEFT", DR.mainFrame["backFrame"..k], "TOPLEFT", 10, -5);
 			DR.mainFrame["titleText"..k]:SetParent(DR.mainFrame["backFrame"..k])
@@ -1014,10 +1030,10 @@ function DR.mainFrame.DoPopulationStuff()
 		stormText:SetJustifyH("LEFT")
 		stormText:SetJustifyV("TOP")
 
-		DR.mainFrame.multiplayerRace = CreateFrame("Frame", nil, content1)
-		DR.mainFrame.multiplayerRace:SetPoint("TOPRIGHT", content1, "TOPRIGHT", -25, -15);
-		DR.mainFrame.multiplayerRace:SetParent(content1)
-		DR.mainFrame.multiplayerRace:SetSize(35,35)
+		DR.mainFrame.multiplayerRace = CreateFrame("Button", nil, DR.mainFrame)
+		DR.mainFrame.multiplayerRace:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -165, -25);
+		DR.mainFrame.multiplayerRace:SetParent(DR.mainFrame)
+		DR.mainFrame.multiplayerRace:SetSize(25,25)
 		DR.mainFrame.multiplayerRace.tex = DR.mainFrame.multiplayerRace:CreateTexture()
 		DR.mainFrame.multiplayerRace.tex:SetAllPoints(DR.mainFrame.multiplayerRace)
 		DR.mainFrame.multiplayerRace.tex:SetAtlas("racing")
@@ -1035,6 +1051,15 @@ function DR.mainFrame.DoPopulationStuff()
 		DR.mainFrame.multiplayerRace:SetScript("OnLeave", function(self)
 			DR.tooltip_OnLeave();
 			DR.mainFrame.multiplayerRace:SetScript("OnUpdate", nil)
+		end);
+
+		DR.mainFrame.multiplayerRace:SetScript("OnClick", function(self)
+			local activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo = DR.mainFrame.multiplayerRace_TT()
+			if not UnitAffectingCombat("player") then
+				C_Map.OpenWorldMap(activeMapID);
+			end
+			C_SuperTrack.SetSuperTrackedMapPin(0, activePOI)
+			PlaySound(170270);
 		end);
 
 
