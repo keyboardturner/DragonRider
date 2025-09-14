@@ -85,6 +85,7 @@ DR.WorldQuestIDs = {
 DR.RaceData = {
 	{ -- Isle of Dorn
 		zone = 2248,
+		expansion = 10,
 		races = {
 			[1] = { -- Dornogal Drift
 				["normal"] = {
@@ -204,6 +205,7 @@ DR.RaceData = {
 	},
 	{ -- The Ringing Deeps
 		zone = 2214,
+		expansion = 10,
 		races = {
 			[1] = { -- Earthenworks Weave
 				["normal"] = {
@@ -323,6 +325,7 @@ DR.RaceData = {
 	},
 	{ -- Hallowfall
 		zone = 2215,
+		expansion = 10,
 		races = {
 			[1] = { -- Dunelle's Detour
 				["normal"] = {
@@ -442,6 +445,7 @@ DR.RaceData = {
 	},
 	{ -- Azj-Kahet
 		zone = 2255,
+		expansion = 10,
 		races = {
 			[1] = { -- City of Threads Twist
 				["normal"] = {
@@ -561,6 +565,7 @@ DR.RaceData = {
 	},
 	{ -- Undermine
 		zone = 2346,
+		expansion = 10,
 		races = {
 			[1] = { -- Skyrocketing Sprint
 				["normal"] = {
@@ -678,6 +683,7 @@ DR.RaceData = {
 	},
 	{ -- K'aresh
 		zone = 2371,
+		expansion = 10,
 		races = {
 			[1] = { -- Oasis Biodome
 				["normal"] = {
@@ -702,6 +708,7 @@ DR.RaceData = {
 	},
 	{ -- Waking Shores
 		zone = 2022,
+		expansion = 9,
 		races = {
 			[1] = { -- Ruby Lifeshrine Loop
 				["normal"] = {
@@ -944,6 +951,7 @@ DR.RaceData = {
 	},
 	{ -- Ohn'ahran Plains
 		zone = 2023,
+		expansion = 9,
 		races = {
 			[1] = { -- Sundapple Copse Circuit
 				["normal"] = {
@@ -1127,6 +1135,7 @@ DR.RaceData = {
 	},
 	{ -- The Azure Span
 		zone = 2024,
+		expansion = 9,
 		races = {
 			[1] = { -- The Azure Span Sprint
 				["normal"] = {
@@ -1311,6 +1320,7 @@ DR.RaceData = {
 	},
 	{ -- Thaldraszus
 		zone = 2025,
+		expansion = 9,
 		races = {
 			[1] = { -- The Flowing Forest Flight
 				["normal"] = {
@@ -1495,6 +1505,7 @@ DR.RaceData = {
 	},
 	{ -- Forbidden Reach
 		zone = 2151,
+		expansion = 9,
 		races = {
 			[1] = { -- Stormsunder Crater Circuit
 				["normal"] = {
@@ -1679,6 +1690,7 @@ DR.RaceData = {
 	},
 	{ -- Zaralek Caverns
 		zone = 2133,
+		expansion = 9,
 		races = {
 			[1] = { -- Crystal Circuit
 				["normal"] = {
@@ -1863,6 +1875,7 @@ DR.RaceData = {
 	},
 	{ -- Emerald Dream
 		zone = 2200,
+		expansion = 9,
 		races = {
 			[1] = { -- Ysera Invitational
 				["normal"] = {
@@ -2042,6 +2055,7 @@ DR.RaceData = {
 	},
 { -- Kalimdor Cup
 		zone = 12,
+		expansion = 0,
 		races = {
 			[1] = { -- Felwood Flyover
 				["normal"] = {
@@ -2349,8 +2363,281 @@ DR.RaceData = {
 			},
 		},
 	},
+	{ -- Eastern Kingdoms Cup
+		zone = 13,
+		expansion = 0,
+		races = {
+			[1] = { -- Gilneas Gambit
+				["normal"] = {
+					["currencyID"] = 2536,
+					["silverTime"] = 83,
+					["goldTime"] = 78,
+				},
+				["advanced"] = {
+					["currencyID"] = 2552,
+					["silverTime"] = 77,
+					["goldTime"] = 74,
+				},
+				["reverse"] = {
+					["currencyID"] = 2568,
+					["silverTime"] = 77,
+					["goldTime"] = 74,
+				},
+				["questID"] = 76309,
+				["mapPOI"] = 7571,
+			},
+			[2] = { -- Loch Modan Loop
+				["normal"] = {
+					["currencyID"] = 2537,
+					["silverTime"] = 68,
+					["goldTime"] = 63,
+				},
+				["advanced"] = {
+					["currencyID"] = 2553,
+					["silverTime"] = 64,
+					["goldTime"] = 61,
+				},
+				["reverse"] = {
+					["currencyID"] = 2569,
+					["silverTime"] = 66,
+					["goldTime"] = 63,
+				},
+				["questID"] = 76339,
+				["mapPOI"] = 7572,
+			},
+			[3] = { -- Searing Slalom
+				["normal"] = {
+					["currencyID"] = 2538,
+					["silverTime"] = 57,
+					["goldTime"] = 52,
+				},
+				["advanced"] = {
+					["currencyID"] = 2554,
+					["silverTime"] = 49,
+					["goldTime"] = 46,
+				},
+				["reverse"] = {
+					["currencyID"] = 2570,
+					["silverTime"] = 46,
+					["goldTime"] = 43,
+				},
+				["questID"] = 76357,
+				["mapPOI"] = 7573,
+			},
+			[4] = { -- Twilight Terror
+				["normal"] = {
+					["currencyID"] = 2539,
+					["silverTime"] = 78,
+					["goldTime"] = 73,
+				},
+				["advanced"] = {
+					["currencyID"] = 2555,
+					["silverTime"] = 71,
+					["goldTime"] = 68,
+				},
+				["reverse"] = {
+					["currencyID"] = 2571,
+					["silverTime"] = 69,
+					["goldTime"] = 66,
+				},
+				["questID"] = 76364,
+				["mapPOI"] = 7574,
+			},
+			[5] = { -- Deadwind Derby
+				["normal"] = {
+					["currencyID"] = 2540,
+					["silverTime"] = 65,
+					["goldTime"] = 60,
+				},
+				["advanced"] = {
+					["currencyID"] = 2556,
+					["silverTime"] = 62,
+					["goldTime"] = 59,
+				},
+				["reverse"] = {
+					["currencyID"] = 2572,
+					["silverTime"] = 62,
+					["goldTime"] = 59,
+				},
+				["questID"] = 76380,
+				["mapPOI"] = 7575,
+			},
+			[6] = { -- Elwynn Forest Flash
+				["normal"] = {
+					["currencyID"] = 2541,
+					["silverTime"] = 78,
+					["goldTime"] = 73,
+				},
+				["advanced"] = {
+					["currencyID"] = 2557,
+					["silverTime"] = 69,
+					["goldTime"] = 66,
+				},
+				["reverse"] = {
+					["currencyID"] = 2573,
+					["silverTime"] = 66,
+					["goldTime"] = 63,
+				},
+				["questID"] = 76397,
+				["mapPOI"] = 7576,
+			},
+			[7] = { -- Gurubashi Gala
+				["normal"] = {
+					["currencyID"] = 2542,
+					["silverTime"] = 61,
+					["goldTime"] = 56,
+				},
+				["advanced"] = {
+					["currencyID"] = 2558,
+					["silverTime"] = 52,
+					["goldTime"] = 49,
+				},
+				["reverse"] = {
+					["currencyID"] = 2574,
+					["silverTime"] = 53,
+					["goldTime"] = 50,
+				},
+				["questID"] = 76438,
+				["mapPOI"] = 7577,
+			},
+			[8] = { -- Ironforge Interceptor
+				["normal"] = {
+					["currencyID"] = 2543,
+					["silverTime"] = 75,
+					["goldTime"] = 70,
+				},
+				["advanced"] = {
+					["currencyID"] = 2559,
+					["silverTime"] = 67,
+					["goldTime"] = 64,
+				},
+				["reverse"] = {
+					["currencyID"] = 2575,
+					["silverTime"] = 63,
+					["goldTime"] = 60,
+				},
+				["questID"] = 76445,
+				["mapPOI"] = 7578,
+			},
+			[9] = { -- Blasted Lands Bolt
+				["normal"] = {
+					["currencyID"] = 2544,
+					["silverTime"] = 74,
+					["goldTime"] = 69,
+				},
+				["advanced"] = {
+					["currencyID"] = 2560,
+					["silverTime"] = 65,
+					["goldTime"] = 62,
+				},
+				["reverse"] = {
+					["currencyID"] = 2576,
+					["silverTime"] = 67,
+					["goldTime"] = 64,
+				},
+				["questID"] = 76469,
+				["mapPOI"] = 7579,
+			},
+			[10] = { -- Plaguelands Plunge
+				["normal"] = {
+					["currencyID"] = 2545,
+					["silverTime"] = 68,
+					["goldTime"] = 63,
+				},
+				["advanced"] = {
+					["currencyID"] = 2561,
+					["silverTime"] = 56,
+					["goldTime"] = 53,
+				},
+				["reverse"] = {
+					["currencyID"] = 2577,
+					["silverTime"] = 61,
+					["goldTime"] = 58,
+				},
+				["questID"] = 76510,
+				["mapPOI"] = 7580,
+			},
+			[11] = { -- Booty Bay Blast
+				["normal"] = {
+					["currencyID"] = 2546,
+					["silverTime"] = 68,
+					["goldTime"] = 63,
+				},
+				["advanced"] = {
+					["currencyID"] = 2562,
+					["silverTime"] = 60,
+					["goldTime"] = 57,
+				},
+				["reverse"] = {
+					["currencyID"] = 2578,
+					["silverTime"] = 59,
+					["goldTime"] = 56,
+				},
+				["questID"] = 76515,
+				["mapPOI"] = 7581,
+			},
+			[12] = { -- Fuselight Night Flight
+				["normal"] = {
+					["currencyID"] = 2547,
+					["silverTime"] = 69,
+					["goldTime"] = 64,
+				},
+				["advanced"] = {
+					["currencyID"] = 2563,
+					["silverTime"] = 61,
+					["goldTime"] = 58,
+				},
+				["reverse"] = {
+					["currencyID"] = 2579,
+					["silverTime"] = 61,
+					["goldTime"] = 58,
+				},
+				["questID"] = 76523,
+				["mapPOI"] = 7582,
+			},
+			[13] = { -- Krazzworks Klash
+				["normal"] = {
+					["currencyID"] = 2548,
+					["silverTime"] = 76,
+					["goldTime"] = 71,
+				},
+				["advanced"] = {
+					["currencyID"] = 2564,
+					["silverTime"] = 67,
+					["goldTime"] = 64,
+				},
+				["reverse"] = {
+					["currencyID"] = 2580,
+					["silverTime"] = 65,
+					["goldTime"] = 62,
+				},
+				["questID"] = 76527,
+				["mapPOI"] = 7583,
+			},
+			[14] = { -- Redridge Rally
+				["normal"] = {
+					["currencyID"] = 2549,
+					["silverTime"] = 62,
+					["goldTime"] = 57,
+				},
+				["advanced"] = {
+					["currencyID"] = 2565,
+					["silverTime"] = 55,
+					["goldTime"] = 52,
+				},
+				["reverse"] = {
+					["currencyID"] = 2581,
+					["silverTime"] = 55,
+					["goldTime"] = 52,
+				},
+				["questID"] = 76536,
+				["mapPOI"] = 7584,
+			},
+		},
+	},
 	{ -- Outland Cup
 		zone = 101,
+		expansion = 1,
 		races = {
 			[1] = { -- Hellfire Hustle
 				["normal"] = {
@@ -2603,6 +2890,7 @@ DR.RaceData = {
 	},
 	{ -- Northrend Cup
 		zone = 113,
+		expansion = 2,
 		races = {
 			[1] = { -- Scalawag Slither
 				["normal"] = {
