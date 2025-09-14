@@ -1316,7 +1316,8 @@ end
 
 function DR.EventsList:PLAYER_LOGIN()
 	DR.mainFrame.DoPopulationStuff();
-	if PlayerGetTimerunningSeasonID() then -- needs to fire late to register any data
+	local SeasonID = PlayerGetTimerunningSeasonID()
+	if SeasonID then -- needs to fire late to register any data
 		DR.mainFrame.CreateDragonRiderFlipbook()
 		DR.mainFrame.CreateDragonRiderFlipbook()
 		DR.mainFrame.CreateDragonRiderFlipbookRotated()

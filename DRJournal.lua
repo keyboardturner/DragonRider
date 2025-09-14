@@ -148,16 +148,16 @@ DR.mainFrame.portraitTooltipThing:SetAllPoints(DRportrait);
 local function AddTimerunnerLines(tooltip)
 	tooltip:AddLine("|A:timerunning-glues-icon:0:0:0:0|a |cFFFFF569"..L["TimerunningStatistics"] .. "|r", 1, 1, 1, 1, true);
 
-	if not DragonRider_DB or not DragonRider_DB.Timerunner then return end
+	if not DragonRider_DB or not DragonRider_DB.Timerunner or not DragonRider_DB.Timerunner[2] then return end
 
 	local entries = {
-		{ key = "Creature_Demonfly",   value = DragonRider_DB.Timerunner.Demonfly },
-		{ key = "Creature_Darkglare",  value = DragonRider_DB.Timerunner.Darkglare },
-		{ key = "Creature_FelSpreader",value = DragonRider_DB.Timerunner.FelSpreader },
-		{ key = "Creature_Felbat",     value = DragonRider_DB.Timerunner.Felbat },
-		{ key = "Creature_Felbomber",  value = DragonRider_DB.Timerunner.Felbomber },
-		{ key = "Creature_Skyterror",  value = DragonRider_DB.Timerunner.Skyterror },
-		{ key = "Creature_EyeOfGreed", value = DragonRider_DB.Timerunner.EyeOfGreed },
+		{ key = "Creature_Demonfly",   value = DragonRider_DB.Timerunner[2].Demonfly },
+		{ key = "Creature_Darkglare",  value = DragonRider_DB.Timerunner[2].Darkglare },
+		{ key = "Creature_FelSpreader",value = DragonRider_DB.Timerunner[2].FelSpreader },
+		{ key = "Creature_Felbat",     value = DragonRider_DB.Timerunner[2].Felbat },
+		{ key = "Creature_Felbomber",  value = DragonRider_DB.Timerunner[2].Felbomber },
+		{ key = "Creature_Skyterror",  value = DragonRider_DB.Timerunner[2].Skyterror },
+		{ key = "Creature_EyeOfGreed", value = DragonRider_DB.Timerunner[2].EyeOfGreed },
 	}
 
 	local needsRefresh = false
@@ -196,7 +196,7 @@ local function AddTimerunnerLines(tooltip)
 	local currencyInfo = C_CurrencyInfo.GetCurrencyInfo(3252)
 	if currencyInfo then
 		local currencyName = currencyInfo.name or L["Unknown"]
-		local bronzeValue = DragonRider_DB.Timerunner.Bronze or 0
+		local bronzeValue = DragonRider_DB.Timerunner[2].Bronze or 0
 		tooltip:AddDoubleLine(
 			string.format("|A:timerunning-infographic-bullet:0:0:0:0|a "..L["SkyridingCurrencyGained"], currencyName),
 			bronzeValue,
@@ -212,7 +212,8 @@ end
 
 
 DR.mainFrame.portraitTooltipThing:SetScript("OnEnter", function(self)
-	if not PlayerGetTimerunningSeasonID() then return end
+	local SeasonID = PlayerGetTimerunningSeasonID()
+	if not SeasonID then return end
 	GameTooltip:SetOwner(self, "ANCHOR_TOP")
 	AddTimerunnerLines(GameTooltip)
 	GameTooltip:Show()
