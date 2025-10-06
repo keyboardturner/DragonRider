@@ -10,6 +10,8 @@ RaceData restructuring - if an addon ever used the global variables to access th
 
 Slightly reworked journal formatting - Widgets at the top now stay in a top margin, separate from the scrollable race scores.
 
+11.2.5 toc update
+
 # 0.6.2
 
 Fixes to the fix to timerunning thing
