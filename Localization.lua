@@ -32,11 +32,11 @@ local function FetchNPCNameByID(npcID)
         end
     else
         if not hiddenTip then
-            hiddenTip = CreateFrame("GameTooltip", "MyHiddenTooltip", UIParent, "GameTooltipTemplate");
+            hiddenTip = CreateFrame("GameTooltip", "DR_HiddenTooltip", UIParent, "GameTooltipTemplate");
             hiddenTip:SetOwner(UIParent, "ANCHOR_NONE");
         end
         hiddenTip:SetHyperlink(link);
-        return MyHiddenTooltipTextLeft1:GetText();
+        return DR_HiddenTooltipTextLeft1:GetText();
     end
 end
 
@@ -62,8 +62,14 @@ local function PreloadNPCNames()
     end
 end
 
-PreloadNPCNames()
-
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_LOGIN")
+f:SetScript("OnEvent", function(self, event, ...)
+	if event == "PLAYER_LOGIN" then
+		PreloadNPCNames()
+		self:UnregisterEvent("PLAYER_LOGIN") 
+	end
+end)
 
 if LOCALE == "enUS" then
 	-- The EU English game client also
