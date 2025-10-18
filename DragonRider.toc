@@ -1,4 +1,4 @@
-## Interface: 110200, 110205
+## Interface: 110207
 ## Author: Keyboardturner
 ## Version: @project-version@
 ## Title: Dragon Rider
@@ -48,11 +48,12 @@
 ## LoadSavedVariablesFirst: 1
 ## SavedVariables: DragonRider_DB
 
-Libs/LibStub/LibStub.lua
-Libs/LibAdvFlight-1.0/lib.xml
+Libs/LibAdvFlight/lib.xml
 
 Localization.lua
 DRRaceData.lua
 Timerunner.lua
 DRJournal.lua
+Vigor.lua
+Speedometer.lua
 DragonRider.lua

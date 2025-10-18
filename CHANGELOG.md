@@ -1,3 +1,7 @@
+# 0.6.4
+
+11.2.7 has removed the vigor bar. Dragon Rider has now implemented its own custom Vigor bar, now with additional color settings, size, wrapping, row/column, spacing, and orientation options.
+
 # 0.6.3
 
 Changed tooltip format in journal to have a spaced left/right format
