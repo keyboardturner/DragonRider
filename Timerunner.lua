@@ -1,7 +1,7 @@
 local _, DR = ...
 local _, L = ...
 
-local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.0");
+local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1");
 
 local function Print(...)
 	local prefix = string.format("|cFFFFF569"..L["DragonRider"] .. "|r:");

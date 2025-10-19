@@ -29,6 +29,21 @@ local BAR_FILL_ORIENTATION = 1
 -- 2 for (top-to-Bottom / right-to-left)
 local FILL_GROW = 1
 
+local SPARK_WIDTH = 32
+local SPARK_HEIGHT = 12
+
+local FLASH_FULL = true
+local FLASH_PROGRESS = true
+
+local VigorColors = {
+	full = CreateColor(0.24, 0.84, 1.0, 1.0),
+	empty = CreateColor(0.3, 0.3, 0.3, 1.0),
+	progress = CreateColor(1.0, 1.0, 1.0, 1.0),
+	spark = CreateColor(1.0, 1.0, 1.0, 0.9),
+	cover = CreateColor(0.4, 0.4, 0.4, 1.0),
+	flash = CreateColor(1.0, 1.0, 1.0, 0.9),
+};
+
 
 local vigorBar = CreateFrame("Frame", "DragonRider_Vigor", UIParent)
 vigorBar:SetPoint("CENTER", 0, -200)
@@ -51,7 +66,7 @@ local function CreateChargeBar(parent, index)
 	bar.staticFill:SetAtlas("dragonriding_vigor_fill")
 	bar.staticFill:SetAllPoints(bar)
 	bar.staticFill:SetDesaturated(true)
-	bar.staticFill:SetVertexColor(0.2, 0.8, 1.0, 1)
+	bar.staticFill:SetVertexColor(VigorColors.full:GetRGB())
 
 	-- mask for linear fill
 	bar.clippingFrame = CreateFrame("Frame", nil, bar)
@@ -113,10 +128,69 @@ local function CreateChargeBar(parent, index)
 	bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
 	bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
 	-- ensure cover is above the clipping frame
-	bar.overlayFrame:SetFrameLevel(bar.clippingFrame:GetFrameLevel() + 10) 
-	bar.cover = bar.overlayFrame:CreateTexture(nil, "OVERLAY", nil, 2)
+	bar.overlayFrame:SetFrameLevel(bar.clippingFrame:GetFrameLevel() + 10)
+	bar.cover = bar.overlayFrame:CreateTexture(nil, "OVERLAY", nil, 3)
 	bar.cover:SetAtlas("dragonriding_vigor_frame", true)
 	bar.cover:SetAllPoints()
+	-- doesns't look great atm, probably change later
+	bar.cover:SetDesaturated(true)
+	bar.cover:SetVertexColor(VigorColors.cover:GetRGB())
+
+	-- spark clipping frame (masking)
+	-- this frame will contain the spark and be masked by the bubble shape.
+	bar.sparkClippingFrame = CreateFrame("Frame", nil, bar)
+	bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
+	bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
+	bar.sparkClippingFrame:SetFrameLevel(bar.clippingFrame:GetFrameLevel() + 5)
+	bar.sparkMask = bar.sparkClippingFrame:CreateMaskTexture(nil, "ARTWORK")
+	bar.sparkMask:SetAtlas("dragonriding_vigor_mask")
+	bar.sparkMask:SetAllPoints(bar.sparkClippingFrame)
+	bar.spark = bar.sparkClippingFrame:CreateTexture(nil, "OVERLAY", nil, 2)
+	bar.spark:SetAtlas("dragonriding_vigor_spark")
+	bar.spark:SetSize(SPARK_WIDTH, SPARK_HEIGHT)
+	bar.spark:SetBlendMode("ADD")
+	bar.spark:SetVertexColor(VigorColors.spark:GetRGB())
+	bar.spark:AddMaskTexture(bar.sparkMask)
+
+	-- flash texture
+	bar.flash = bar.overlayFrame:CreateTexture(nil, "OVERLAY", nil, 4)
+	bar.flash:SetAtlas("dragonriding_vigor_flash")
+	bar.flash:SetAllPoints()
+	bar.flash:SetVertexColor(VigorColors.flash:GetRGB())
+	bar.flash:Hide()
+
+	-- animation group for the "full" flash (one-shot fade out)
+	bar.flashAnimFull = bar:CreateAnimationGroup()
+	local flashFullAnim = bar.flashAnimFull:CreateAnimation("Alpha")
+	flashFullAnim:SetChildKey("flash")
+	flashFullAnim:SetFromAlpha(1.0)
+	flashFullAnim:SetToAlpha(0)
+	flashFullAnim:SetDuration(0.5)
+	flashFullAnim:SetOrder(1)
+	
+	bar.flashAnimFull:SetScript("OnPlay", function() bar.flash:Show() end)
+	bar.flashAnimFull:SetScript("OnFinished", function() bar.flash:Hide() end)
+	
+	-- animation group for the "progress" flash (looping pulse)
+	bar.flashAnimProgress = bar:CreateAnimationGroup()
+	bar.flashAnimProgress:SetLooping("REPEAT")
+	
+	local flashProgAnimIn = bar.flashAnimProgress:CreateAnimation("Alpha")
+	flashProgAnimIn:SetChildKey("flash")
+	flashProgAnimIn:SetFromAlpha(0.2)
+	flashProgAnimIn:SetToAlpha(0.8)
+	flashProgAnimIn:SetDuration(0.7)
+	flashProgAnimIn:SetOrder(1)
+	
+	local flashProgAnimOut = bar.flashAnimProgress:CreateAnimation("Alpha")
+	flashProgAnimOut:SetChildKey("flash")
+	flashProgAnimOut:SetFromAlpha(0.8)
+	flashProgAnimOut:SetToAlpha(0.2)
+	flashProgAnimOut:SetDuration(0.7)
+	flashProgAnimOut:SetOrder(2)
+	
+	bar.flashAnimProgress:SetScript("OnPlay", function() bar.flash:Show() end)
+	bar.flashAnimProgress:SetScript("OnStop", function() bar.flash:Hide() end)
 
 	-- progress control
 	function bar:SetProgress(percent)
@@ -126,16 +200,36 @@ local function CreateChargeBar(parent, index)
 		if BAR_FILL_ORIENTATION == 1 then -- Vertical
 			local fillHeight = BAR_HEIGHT * percent
 			bar.clippingFrame:SetHeight(fillHeight)
+			-- position the spark at the top edge of the fill
+			bar.spark:ClearAllPoints()
+			local yOffset = (FILL_GROW == 1 and 1 or -1) * fillHeight
+			local anchorPoint = (FILL_GROW == 1 and "BOTTOM" or "TOP")
+			bar.spark:SetPoint("CENTER", bar, anchorPoint, 0, yOffset)
+
 		elseif BAR_FILL_ORIENTATION == 2 then -- Horizontal
 			local fillWidth = BAR_WIDTH * percent
 			bar.clippingFrame:SetWidth(fillWidth)
+			-- position the spark at the leading edge of the fill
+			bar.spark:ClearAllPoints()
+			local xOffset = (FILL_GROW == 1 and 1 or -1) * fillWidth
+			local anchorPoint = (FILL_GROW == 1 and "LEFT" or "RIGHT")
+			bar.spark:SetPoint("CENTER", bar, anchorPoint, xOffset, 0)
+			bar.spark:SetRotation(math.rad(90))
 		end
 
-		bar:SetAlpha(0.6 + 0.4 * percent)
+		-- show spark only when filling, not when full or empty
+		if percent > 0.01 and percent < 0.99 then
+			bar.spark:Show()
+		else
+			bar.spark:Hide()
+		end
+
+		--bar:SetAlpha(0.6 + 0.4 * percent)
 	end
 
 	-- initialize
 	bar:SetProgress(0)
+	bar.isFull = false
 	return bar
 end
 
@@ -228,24 +322,56 @@ local function UpdateChargeBars()
 		if i <= current then -- fully charged
 			bar.staticFill:Show()
 			bar.staticFill:SetDesaturated(false)
-			bar.staticFill:SetVertexColor(0.2, 0.8, 1.0, 1)
+			bar.staticFill:SetVertexColor(VigorColors.full:GetRGB())
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
-			bar:SetProgress(1) -- set linear fill to 100% (which also sets alpha)
+			bar:SetProgress(1)
+
+			-- stop progress flash if it was running
+			if bar.flashAnimProgress:IsPlaying() then
+				bar.flashAnimProgress:Stop()
+			end
+
+			-- check if it *just* became full
+			if not bar.isFull and FLASH_FULL then
+				bar.flashAnimFull:Play()
+			end
+			bar.isFull = true -- set current state
 
 		elseif i == current + 1 and duration > 0 then -- recharging
+			bar.isFull = false -- mark as not full
 			bar.staticFill:Hide()
 			if not bar.animGroup:IsPlaying() then bar.animGroup:Play() end
 
 			local elapsed = GetTime() - start
 			local progress = math.min(elapsed / duration, 1)
-			bar:SetProgress(progress) -- this updates the clipping frame and alpha
+			bar.animFill:SetVertexColor(VigorColors.progress:GetRGB())
+			bar:SetProgress(progress)
+
+			-- play progress flash
+			if FLASH_PROGRESS and not bar.flashAnimProgress:IsPlaying() then
+				bar.flashAnimProgress:Play()
+			end
+			
+			-- stop full flash if it was somehow running
+			if bar.flashAnimFull:IsPlaying() then
+				bar.flashAnimFull:Stop()
+			end
 
 		else -- empty
+			bar.isFull = false -- mark as not full
 			bar.staticFill:Show()
 			bar.staticFill:SetDesaturated(true)
-			bar.staticFill:SetVertexColor(0.3, 0.3, 0.3, 1)
+			bar.staticFill:SetVertexColor(VigorColors.empty:GetRGB())
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
-			bar:SetProgress(0) -- set linear fill to 0% (which also sets alpha)
+			bar:SetProgress(0)
+
+			-- stop any flashes
+			if bar.flashAnimProgress:IsPlaying() then
+				bar.flashAnimProgress:Stop()
+			end
+			if bar.flashAnimFull:IsPlaying() then
+				bar.flashAnimFull:Stop()
+			end
 		end
 	end
 end
@@ -258,3 +384,4 @@ vigorBar:SetScript("OnUpdate", function(self, elapsed)
 		updateTimer = 0
 	end
 end)
+
