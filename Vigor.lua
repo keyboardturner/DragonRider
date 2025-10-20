@@ -13,11 +13,11 @@ local MAX_CHARGES = 6
 local SPELL_ID = 372610
 
 -- 1 for vertical (stacks up), 2 for horizontal (stacks right)
-local DIRECTION = 2
+local ORIENTATION = 2
 
 -- 1 for top-to-bottom / left-to-right growth
 -- 2 for bottom-to-top / right-to-left growth
-local GROW = 1
+local DIRECTION = 1
 
 -- How many bubbles before wrapping to a new row/column
 local VIGOR_WRAP = 6
@@ -27,7 +27,7 @@ local BAR_FILL_ORIENTATION = 1
 
 -- 1 for (bottom-to-top / left-to-right)
 -- 2 for (top-to-Bottom / right-to-left)
-local FILL_GROW = 1
+local FILL_DIRECTION = 1
 
 local SPARK_WIDTH = 32
 local SPARK_HEIGHT = 12
@@ -81,7 +81,7 @@ local function CreateChargeBar(parent, index)
 
 	if BAR_FILL_ORIENTATION == 1 then -- vertical
 		bar.clippingFrame:SetSize(BAR_WIDTH, 0)
-		if FILL_GROW == 1 then -- bottom-to-top
+		if FILL_DIRECTION == 1 then -- bottom-to-top
 			bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
 			bar.clippingFrame:SetPoint("BOTTOMRIGHT", bar)
 			bar.animFill:SetPoint("BOTTOM", bar.clippingFrame, "BOTTOM")
@@ -92,7 +92,7 @@ local function CreateChargeBar(parent, index)
 		end
 	elseif BAR_FILL_ORIENTATION == 2 then -- Horizontal
 		bar.clippingFrame:SetSize(0, BAR_HEIGHT)
-		if FILL_GROW == 1 then -- left-to-right
+		if FILL_DIRECTION == 1 then -- left-to-right
 			bar.clippingFrame:SetPoint("TOPLEFT", bar)
 			bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
 			bar.animFill:SetPoint("LEFT", bar.clippingFrame, "LEFT")
@@ -202,8 +202,8 @@ local function CreateChargeBar(parent, index)
 			bar.clippingFrame:SetHeight(fillHeight)
 			-- position the spark at the top edge of the fill
 			bar.spark:ClearAllPoints()
-			local yOffset = (FILL_GROW == 1 and 1 or -1) * fillHeight
-			local anchorPoint = (FILL_GROW == 1 and "BOTTOM" or "TOP")
+			local yOffset = (FILL_DIRECTION == 1 and 1 or -1) * fillHeight
+			local anchorPoint = (FILL_DIRECTION == 1 and "BOTTOM" or "TOP")
 			bar.spark:SetPoint("CENTER", bar, anchorPoint, 0, yOffset)
 
 		elseif BAR_FILL_ORIENTATION == 2 then -- Horizontal
@@ -211,8 +211,8 @@ local function CreateChargeBar(parent, index)
 			bar.clippingFrame:SetWidth(fillWidth)
 			-- position the spark at the leading edge of the fill
 			bar.spark:ClearAllPoints()
-			local xOffset = (FILL_GROW == 1 and 1 or -1) * fillWidth
-			local anchorPoint = (FILL_GROW == 1 and "LEFT" or "RIGHT")
+			local xOffset = (FILL_DIRECTION == 1 and 1 or -1) * fillWidth
+			local anchorPoint = (FILL_DIRECTION == 1 and "LEFT" or "RIGHT")
 			bar.spark:SetPoint("CENTER", bar, anchorPoint, xOffset, 0)
 			bar.spark:SetRotation(math.rad(90))
 		end
@@ -238,7 +238,7 @@ local function UpdateLayout()
 	local wrap = math.min(VIGOR_WRAP, MAX_CHARGES)
 	if wrap <= 0 then wrap = MAX_CHARGES end
 
-	if DIRECTION == 1 then -- vertical layout
+	if ORIENTATION == 1 then -- vertical layout
 		local numCols = math.ceil(MAX_CHARGES / wrap)
 		local numRowsOnLongestCol = wrap
 
@@ -256,18 +256,18 @@ local function UpdateLayout()
 			local colHeight = (numBarsInThisCol * BAR_HEIGHT) + (math.max(0, numBarsInThisCol - 1) * BAR_SPACING)
 			local yOffset = (totalHeight - colHeight) / 2
 
-			if GROW == 1 then -- left-to-right columns, top-to-bottom bars
+			if DIRECTION == 1 then -- left-to-right columns, top-to-bottom bars
 				local x = col * (BAR_WIDTH + BAR_SPACING)
 				local y = -(yOffset + row * (BAR_HEIGHT + BAR_SPACING))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)
-			else -- GROW == 2 - right-to-left columns, bottom-to-top bars
+			else -- DIRECTION == 2 - right-to-left columns, bottom-to-top bars
 				local x = -(col * (BAR_WIDTH + BAR_SPACING))
 				local y = yOffset + row * (BAR_HEIGHT + BAR_SPACING)
 				bar:SetPoint("BOTTOMRIGHT", vigorBar, "BOTTOMRIGHT", x, y)
 			end
 		end
 
-	elseif DIRECTION == 2 then -- horizontal layout
+	elseif ORIENTATION == 2 then -- horizontal layout
 		local numRows = math.ceil(MAX_CHARGES / wrap)
 		local numColsOnLongestRow = wrap
 
@@ -285,11 +285,11 @@ local function UpdateLayout()
 			local rowWidth = (numBarsInThisRow * BAR_WIDTH) + (math.max(0, numBarsInThisRow - 1) * BAR_SPACING)
 			local xOffset = (totalWidth - rowWidth) / 2
 
-			if GROW == 1 then -- top-to-bottom rows, left-to-right bars
+			if DIRECTION == 1 then -- top-to-bottom rows, left-to-right bars
 				local x = xOffset + col * (BAR_WIDTH + BAR_SPACING)
 				local y = -(row * (BAR_HEIGHT + BAR_SPACING))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)
-			else -- GROW == 2 - bottom-to-top rows, rRight-to-left bars
+			else -- DIRECTION == 2 - bottom-to-top rows, rRight-to-left bars
 				local x = -(xOffset + col * (BAR_WIDTH + BAR_SPACING))
 				local y = row * (BAR_HEIGHT + BAR_SPACING)
 				bar:SetPoint("BOTTOMRIGHT", vigorBar, "BOTTOMRIGHT", x, y)

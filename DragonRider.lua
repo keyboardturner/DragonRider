@@ -828,11 +828,16 @@ function DR.OnAddonLoaded()
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
+
+		local categorySpeedometer, layoutSpeedometer = Settings.RegisterVerticalLayoutSubcategory(category, L["ProgressBar"]);
+
+		local categoryVigor, layoutVigor = Settings.RegisterVerticalLayoutSubcategory(category, L["Vigor"]);
+
 		--local subcategory, layout2 = Settings.RegisterVerticalLayoutSubcategory(category, "my very own subcategory")
 
 		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(string.format(L["Version"], GetAddOnMetadata("DragonRider", "Version"))));
 
-		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["ProgressBar"]));
+		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["ProgressBar"])); -- moved to subcategory
 
 		local CreateDropdown = Settings.CreateDropdown or Settings.CreateDropDown
 		local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox
@@ -849,125 +854,7 @@ function DR.OnAddonLoaded()
 			return setting;
 		end
 
-		do
-			local variable = "themeSpeed"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
-			local name = L["SpeedometerTheme"]
-			local tooltip = L["SpeedometerThemeTT"]
-
-			local function GetOptions()
-				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Default"])
-				container:Add(2, L["Algari"])
-				container:Add(3, L["Minimalist"])
-				container:Add(4, L["Alliance"])
-				container:Add(5, L["Horde"])
-				return container:GetData()
-			end
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateDropdown(category, setting, GetOptions, tooltip)
-		end
-
-		do
-			local variable = "speedometerPosPoint"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
-			local name = L["SpeedPosPointName"]
-			local tooltip = L["SpeedPosPointTT"]
-
-			local function GetOptions()
-				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Top"])
-				container:Add(2, L["Bottom"])
-				container:Add(3, L["Left"])
-				container:Add(4, L["Right"])
-				return container:GetData()
-			end
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateDropdown(category, setting, GetOptions, tooltip);
-		end
-
-		do
-			local variable = "speedometerPosX"
-			local name = L["SpeedPosXName"]
-			local tooltip = L["SpeedPosXTT"]
-			local defaultValue = 0
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(category, setting, options, tooltip);
-		end
-
-		do
-			local variable = "speedometerPosY"
-			local name = L["SpeedPosYName"]
-			local tooltip = L["SpeedPosYTT"]
-			local defaultValue = 5
-			local minValue = -Round(GetScreenHeight())
-			local maxValue = Round(GetScreenHeight())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(category, setting, options, tooltip)
-		end
-
-		do
-			local variable = "speedometerScale"
-			local name = L["SpeedScaleName"]
-			local tooltip = L["SpeedScaleTT"]
-			local defaultValue = 1
-			local minValue = .4
-			local maxValue = 4
-			local step = .1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(category, setting, options, tooltip)
-		end
-
-		do
-			local variable = "speedValUnits"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
-			local name = L["Units"]
-			local tooltip = L["UnitsTT"]
-
-			local function GetOptions()
-				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Yards"] .. " - " .. L["UnitYards"])
-				container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
-				container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
-				container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
-				container:Add(5, L["Percent"] .. " - " .. L["UnitPercent"])
-				container:Add(6, NONE)
-				return container:GetData()
-			end
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateDropdown(category, setting, GetOptions, tooltip)
-		end
-
-		do
-			local variable = "speedTextScale"
-			local name = L["SpeedTextScale"]
-			local tooltip = L["SpeedTextScaleTT"]
-			local defaultValue = 12
-			local minValue = 2
-			local maxValue = 30
-			local step = .5
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(category, setting, options, tooltip)
-		end
+		
 		
 		--[[
 		do
@@ -981,47 +868,9 @@ function DR.OnAddonLoaded()
 		end
 		]]
 
-		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"]));
+		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"])); -- moved to subcategory
 
-		do
-			local variable = "toggleModels"
-			local name = L["ToggleModelsName"]
-			local tooltip = L["ToggleModelsTT"]
-			local defaultValue = true
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateCheckbox(category, setting, tooltip)
-		end
-
-		do
-			local variable = "sideArt"
-			local name = L["SideArtName"]
-			local tooltip = L["SideArtTT"]
-			local defaultValue = true
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateCheckbox(category, setting, tooltip)
-		end
-
-		do
-			local variable = "showtooltip"
-			local name = L["ShowVigorTooltip"]
-			local tooltip = L["ShowVigorTooltipTT"]
-			local defaultValue = true
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateCheckbox(category, setting, tooltip)
-		end
-
-		do
-			local variable = "muteVigorSound"
-			local name = L["MuteVigorSound_Settings"]
-			local tooltip = L["MuteVigorSound_SettingsTT"]
-			local defaultValue = false
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateCheckbox(category, setting, tooltip)
-		end
+		
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
 
@@ -1057,62 +906,6 @@ function DR.OnAddonLoaded()
 			layout:AddInitializer(initializer);
 		end
 
-		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
-
-		do -- color picker - low progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.slow);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
-		do -- color picker - mid progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
-		do -- color picker - high progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.over);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
-		do -- color picker - low speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.slow);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
-		do -- color picker - mid speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.vigor);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Vigor"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
-		do -- color picker - high speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.over);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
-			layout:AddInitializer(initializer);
-		end
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(RESET));
 
 		StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
@@ -1140,6 +933,530 @@ function DR.OnAddonLoaded()
 		end
 
 		Settings.RegisterAddOnCategory(category)
+
+		-- Speedometer Subcategory
+
+		do
+			local variable = "themeSpeed"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = L["SpeedometerTheme"]
+			local tooltip = L["SpeedometerThemeTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, L["Default"])
+				container:Add(2, L["Algari"])
+				container:Add(3, L["Minimalist"])
+				container:Add(4, L["Alliance"])
+				container:Add(5, L["Horde"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "speedometerPosPoint"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = L["SpeedPosPointName"]
+			local tooltip = L["SpeedPosPointTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, L["Top"])
+				container:Add(2, L["Bottom"])
+				container:Add(3, L["Left"])
+				container:Add(4, L["Right"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip);
+		end
+
+		do
+			local variable = "speedometerPosX"
+			local name = L["SpeedPosXName"]
+			local tooltip = L["SpeedPosXTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip);
+		end
+
+		do
+			local variable = "speedometerPosY"
+			local name = L["SpeedPosYName"]
+			local tooltip = L["SpeedPosYTT"]
+			local defaultValue = 5
+			local minValue = -Round(GetScreenHeight())
+			local maxValue = Round(GetScreenHeight())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		do
+			local variable = "speedometerWidth"
+			local name = "[PH]"..L["speedometerWidthName"]
+			local tooltip = "[PH]"..L["speedometerWidthTT"]
+			local defaultValue = 244
+			local minValue = 10
+			local maxValue = 500
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		do
+			local variable = "speedometerHeight"
+			local name = "[PH]"..L["speedometerHeightName"]
+			local tooltip = "[PH]"..L["speedometerHeightTT"]
+			local defaultValue = 24
+			local minValue = 10
+			local maxValue = 500
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		-- scale is essentially defunct with width/height
+		--do
+		--	local variable = "speedometerScale"
+		--	local name = L["SpeedScaleName"]
+		--	local tooltip = L["SpeedScaleTT"]
+		--	local defaultValue = 1
+		--	local minValue = .4
+		--	local maxValue = 4
+		--	local step = .1
+--
+		--	local setting = RegisterSetting(variable, defaultValue, name);
+		--	local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+		--	options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+		--	Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		--end
+
+		do
+			local variable = "speedValUnits"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = L["Units"]
+			local tooltip = L["UnitsTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, L["Yards"] .. " - " .. L["UnitYards"])
+				container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
+				container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
+				container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
+				container:Add(5, L["Percent"] .. " - " .. L["UnitPercent"])
+				container:Add(6, NONE)
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "speedTextScale"
+			local name = L["SpeedTextScale"]
+			local tooltip = L["SpeedTextScaleTT"]
+			local defaultValue = 12
+			local minValue = 2
+			local maxValue = 30
+			local step = .5
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
+
+		do -- color picker - low progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.slow);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+		do -- color picker - mid progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. "[PH]"..L["Recharge"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+		do -- color picker - high progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedBarColor.over);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+		do -- color picker - low speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.slow);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+		do -- color picker - mid speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.vigor);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. "[PH]"..L["Recharge"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+		do -- color picker - high speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.speedTextColor.over);
+			end
+
+			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
+			layoutSpeedometer:AddInitializer(initializer);
+		end
+
+
+		Settings.RegisterAddOnCategory(categorySpeedometer)
+
+		-- Vigor Subcategory
+
+		do
+			local variable = "themeVigor"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["VigorTheme"]
+			local tooltip = "[PH]"..L["VigorThemeTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, L["Default"])
+				container:Add(2, L["Algari"])
+				container:Add(3, L["Minimalist"])
+				--container:Add(4, L["Alliance"])
+				--container:Add(5, L["Horde"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "vigorPosX"
+			local name = "[PH]"..L["VigorPosXName"]
+			local tooltip = L["VigorPosXNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorPosY"
+			local name = "[PH]"..L["VigorPosYName"]
+			local tooltip = "[PH]"..L["VigorPosYNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorBarWidth"
+			local name = "[PH]"..L["VigorBarWidthName"]
+			local tooltip = "[PH]"..L["VigorBarWidthNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorBarHeight"
+			local name = "[PH]"..L["VigorBarHeightName"]
+			local tooltip = "[PH]"..L["VigorBarHeightNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorBarSpacing"
+			local name = "[PH]"..L["VigorBarSpacingName"]
+			local tooltip = "[PH]"..L["VigorBarSpacingNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorBarOrientation"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["VigorBarOrientationName"]
+			local tooltip = "[PH]"..L["VigorBarOrientationNameTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH]"..L["Orientation_Vertical"])
+				container:Add(2, "[PH]"..L["Orientation_Horizontal"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "vigorBarDirection"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["VigorBarDirectionName"]
+			local tooltip = "[PH]"..L["VigorBarDirectionNameTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH]"..L["Direction_DownRight"])
+				container:Add(2, "[PH]"..L["Direction_UpLeft"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "vigorWrap"
+			local name = "[PH]"..L["VigorWrapName"]
+			local tooltip = L["VigorWrapNameTT"]
+			local defaultValue = 0
+			local minValue = 1
+			local maxValue = 6
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorBarFillDirection"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["VigorBarFillDirectionName"]
+			local tooltip = "[PH]"..L["VigorBarFillDirectionNameTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH]"..L["Direction_DownRight"])
+				container:Add(2, "[PH]"..L["Direction_UpLeft"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "vigorSparkWidth"
+			local name = "[PH]"..L["VigorSparkWidthName"]
+			local tooltip = "[PH]"..L["VigorSparkWidthNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "vigorSparkHeight"
+			local name = "[PH]"..L["VigorSparkHeightName"]
+			local tooltip = "[PH]"..L["VigorSparkHeightNameTT"]
+			local defaultValue = 0
+			local minValue = -Round(GetScreenWidth())
+			local maxValue = Round(GetScreenWidth())
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "toggleFlashFull"
+			local name = "[PH]"..L["ToggleFlashFullName"]
+			local tooltip = "[PH]"..L["ToggleFlashFullNameTT"]
+			local defaultValue = true
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "toggleFlashProgress"
+			local name = "[PH]"..L["toggleFlashProgressName"]
+			local tooltip = "[PH]"..L["toggleFlashProgressNameTT"]
+			local defaultValue = true
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "toggleModels"
+			local name = L["ToggleModelsName"]
+			local tooltip = L["ToggleModelsTT"]
+			local defaultValue = true
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "sideArt"
+			local name = L["SideArtName"]
+			local tooltip = L["SideArtTT"]
+			local defaultValue = true
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "showtooltip"
+			local name = L["ShowVigorTooltip"]
+			local tooltip = L["ShowVigorTooltipTT"]
+			local defaultValue = true
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "muteVigorSound"
+			local name = L["MuteVigorSound_Settings"]
+			local tooltip = L["MuteVigorSound_SettingsTT"]
+			local defaultValue = false
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		layoutVigor:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
+
+		do -- color picker - low progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.full);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		do -- color picker - mid progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.empty);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		do -- color picker - high progress bar color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.progress);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		do -- color picker - low speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.spark);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		do -- color picker - mid speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.cover);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		do -- color picker - high speed text color
+			local function OnButtonClick()
+				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.flash);
+			end
+
+			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
+			layoutVigor:AddInitializer(initializer);
+		end
+
+		Settings.RegisterAddOnCategory(categoryVigor)
+
 
 		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
 			if buttonName == "RightButton" then
