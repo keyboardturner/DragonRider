@@ -74,7 +74,7 @@ end
 
 local CAR_SPELL_ID = 460013;
 function DR.DriveUtils.IsDriving()
-	local aura = C_UnitAuras.GetPlayerAuraBySpellID(CAR_SPELL_ID);
+	local aura = false; --C_UnitAuras.GetPlayerAuraBySpellID(CAR_SPELL_ID); -- protected in combat
 	return aura and true or false;
 end
 
@@ -93,6 +93,7 @@ DR.statusbar:GetStatusBarTexture():SetVertTile(false)
 DR.statusbar:SetStatusBarColor(.98, .61, .0)
 Mixin(DR.statusbar, SmoothStatusBarMixin)
 DR.statusbar:SetMinMaxSmoothedValue(0,100)
+DR.statusbar:Hide();
 
 DR.tick1 = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 1)
 DR.tick1:SetAtlas("UI-Frame-Bar-BorderTick")
@@ -227,7 +228,7 @@ function DR.updateSpeed()
 	if not LibAdvFlight.IsAdvFlyEnabled() then
 		forwardSpeed = DR.DriveUtils.GetSmoothedSpeed()
 	end
-	local racing = C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID)
+	local racing = false --C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID) -- protected in combat, adjust later
 
 	local THRESHOLD_HIGH;
 	local THRESHOLD_LOW;

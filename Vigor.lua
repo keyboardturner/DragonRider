@@ -49,6 +49,8 @@ local vigorBar = CreateFrame("Frame", "DragonRider_Vigor", UIParent)
 vigorBar:SetPoint("CENTER", 0, -200)
 vigorBar.bars = {}
 
+DR.vigorBar = vigorBar
+
 
 local function CreateChargeBar(parent, index)
 	local bar = CreateFrame("Frame", "DRVigorBubble_"..index, parent)
@@ -308,7 +310,7 @@ UpdateLayout()
 
 local function UpdateChargeBars()
 	local info = C_Spell.GetSpellCharges(SPELL_ID)
-	if not info then return end
+	if issecretvalue(info) or not info then return end
 
 	local current = info.currentCharges or 0
 	local max = info.maxCharges or MAX_CHARGES
@@ -385,3 +387,4 @@ vigorBar:SetScript("OnUpdate", function(self, elapsed)
 	end
 end)
 
+vigorBar:Hide();
