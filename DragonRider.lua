@@ -42,16 +42,19 @@ local defaultsTable = {
 			r=1,
 			g=1,
 			b=1,
+			a=1,
 		},
 		vigor = {
 			r=1,
 			g=1,
 			b=1,
+			a=1,
 		},
 		over = {
 			r=1,
 			g=1,
 			b=1,
+			a=1,
 		},
 	},
 	speedTextScale = 12,
@@ -62,7 +65,7 @@ local defaultsTable = {
 		bronzeTimelock = true,
 		aerialHalt = true,
 	},
-	barStyle = 1, -- 1 = standard
+	barStyle = 1, -- this is now deprecated
 	statistics = {},
 	multiplayer = true,
 	sideArt = true,
@@ -70,42 +73,73 @@ local defaultsTable = {
 	tempFixes = {
 		hideVigor = true, -- this is now deprecated
 	},
-	showtooltip = true,
-	fadeVigor = true,
-	fadeSpeed = true,
+	showtooltip = true,  -- this is now deprecated
+	fadeVigor = false, -- this is now deprecated
+	fadeSpeed = true,  -- this is now deprecated
 	lightningRush = true,
 	muteVigorSound = false,
 	themeSpeed = 1, -- default
 	themeVigor = 1, -- default
-
+	vigorBarColor = {
+		full = {
+			r=0.24,
+			g=0.84,
+			b=1.0,
+			a=1.0,
+		},
+		empty = {
+			r=0.3,
+			g=0.3,
+			b=0.3,
+			a=1.0,
+		},
+		progress = {
+			r=1.0,
+			g=1.0,
+			b=1.0,
+			a=1.0,
+		},
+		spark = {
+			r=1.0,
+			g=1.0,
+			b=1.0,
+			a=0.9,
+		},
+		cover = {
+			r=0.4,
+			g=0.4,
+			b=0.4,
+			a=1.0,
+		},
+		flash = {
+			r=1.0,
+			g=1.0,
+			b=1.0,
+			a=1.0,
+		},
+		decor = {
+			r=0.4,
+			g=0.4,
+			b=0.4,
+			a=1.0,
+		},
+	},
 };
 
--- here, we just pass in the table containing our saved color config
-function DR:ShowColorPicker(configTable)
-	local r, g, b, a = configTable.r, configTable.g, configTable.b, configTable.a;
+function DR.MergeDefaults(saved, defaults)
+	for key, defaultValue in pairs(defaults) do
+		local savedValue = saved[key]
 
-	local function OnColorChanged()
-		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
-		local newA = ColorPickerFrame:GetColorAlpha();
-		configTable.r, configTable.g, configTable.b, configTable.a = newR, newG, newB, newA;
+		if savedValue == nil then
+			if type(defaultValue) == "table" then
+				saved[key] = CopyTable(defaultValue) 
+			else
+				saved[key] = defaultValue
+			end
+		elseif type(savedValue) == "table" and type(defaultValue) == "table" then
+			DR.MergeDefaults(savedValue, defaultValue)
+		end
 	end
-
-	local function OnCancel()
-		configTable.r, configTable.g, configTable.b, configTable.a = r, g, b, a;
-	end
-
-	local options = {
-		swatchFunc = OnColorChanged,
-		opacityFunc = OnColorChanged,
-		cancelFunc = OnCancel,
-		hasOpacity = a ~= nil,
-		opacity = a,
-		r = r,
-		g = g,
-		b = b,
-	};
-
-	ColorPickerFrame:SetupColorPickerAndShow(options);
 end
 
 DR.WidgetFrameIDs = {
@@ -445,8 +479,10 @@ function DR.OnAddonLoaded()
 		SLASH_DRAGONRIDER1 = "/"..L["COMMAND_dragonrider"]
 		SlashCmdList.DRAGONRIDER = HandleSlashCommands;
 
-		if DragonRider_DB == nil then
+		if not DragonRider_DB then
 			DragonRider_DB = CopyTable(defaultsTable)
+		else
+			DR.MergeDefaults(DragonRider_DB, defaultsTable)
 		end
 
 		-- build the currency-to-race lookup map on addon load.
@@ -474,31 +510,7 @@ function DR.OnAddonLoaded()
 			end
 			buildCurrencyMap()
 		end
-
-		if DragonRider_DB.sideArt == nil then
-			DragonRider_DB.sideArt = true
-		end
-		if DragonRider_DB.sideArtStyle == nil then
-			DragonRider_DB.sideArtStyle = 1
-		end
-		if DragonRider_DB.tempFixes == nil then
-			DragonRider_DB.tempFixes = {};
-		end
-		if DragonRider_DB.tempFixes.hideVigor == nil then -- this is now deprecated
-			DragonRider_DB.tempFixes.hideVigor = true
-		end
-		if DragonRider_DB.showtooltip == nil then
-			DragonRider_DB.showtooltip = true
-		end
-		if DragonRider_DB.fadeVigor == nil then
-			DragonRider_DB.fadeVigor = false
-		end
-		--if DragonRider_DB.fadeSpeed == nil then
-		--	DragonRider_DB.fadeSpeed = true
-		--end
-		if DragonRider_DB.lightningRush == nil then
-			DragonRider_DB.lightningRush = true
-		end
+		
 		if DragonRider_DB.DynamicFOV == nil then
 			if C_CVar.GetCVar("AdvFlyingDynamicFOVEnabled") == "1" then
 				DragonRider_DB.DynamicFOV = true
@@ -524,13 +536,7 @@ function DR.OnAddonLoaded()
 			DragonRider_DB.raceData = {};
 			DragonRider_DB.raceData[charKey] = {};
 		end
-		if DragonRider_DB.muteVigorSound == nil then
-			DragonRider_DB.muteVigorSound = false
-		end
 		DR.MuteVigorSound()
-		if DragonRider_DB.themeSpeed == nil then
-			DragonRider_DB.themeSpeed = 1
-		end
 
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
@@ -1171,42 +1177,42 @@ function DR.OnAddonLoaded()
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- empty
 			local key, subKey = "vigorBarColor", "empty"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- progress
 			local key, subKey = "vigorBarColor", "progress"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- spark
 			local key, subKey = "vigorBarColor", "spark"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- cover
 			local key, subKey = "vigorBarColor", "cover"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- flash
 			local key, subKey = "vigorBarColor", "flash"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 
 		Settings.RegisterAddOnCategory(categoryVigor)
