@@ -79,9 +79,8 @@ function DR.DriveUtils.IsDriving()
 end
 
 ---------------------------------------------------------------------------------------------------------------
--- DRIVE system
+-- Speedometer
 ---------------------------------------------------------------------------------------------------------------
-
 
 DR.statusbar = CreateFrame("StatusBar", "DRStatusBar", UIParent)
 DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -93,6 +92,7 @@ DR.statusbar:GetStatusBarTexture():SetVertTile(false)
 DR.statusbar:SetStatusBarColor(.98, .61, .0)
 Mixin(DR.statusbar, SmoothStatusBarMixin)
 DR.statusbar:SetMinMaxSmoothedValue(0,100)
+DR.statusbar:Hide();
 
 DR.tick1 = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 1)
 DR.tick1:SetAtlas("UI-Frame-Bar-BorderTick")
@@ -585,6 +585,10 @@ function DR.SetTheme()
 		frameborder.bottom:SetColorTexture(0,0,0,0)
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------
+-- Fade Animations
+---------------------------------------------------------------------------------------------------------------
 
 function DR.GetBarAlpha()
 	return DR.statusbar:GetAlpha()

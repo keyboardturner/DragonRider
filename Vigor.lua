@@ -42,13 +42,18 @@ local VigorColors = {
 	spark = CreateColor(1.0, 1.0, 1.0, 0.9),
 	cover = CreateColor(0.4, 0.4, 0.4, 1.0),
 	flash = CreateColor(1.0, 1.0, 1.0, 0.9),
+	decor = CreateColor(0.4, 0.4, 0.4, 1.0),
 };
+
+local DECOR_X = -15
+local DECOR_Y = -10
 
 
 local vigorBar = CreateFrame("Frame", "DragonRider_Vigor", UIParent)
 vigorBar:SetPoint("CENTER", 0, -200)
-vigorBar.bars = {}
-
+vigorBar.bars = {};
+DR.vigorBar = vigorBar;
+vigorBar:Hide();
 
 local function CreateChargeBar(parent, index)
 	local bar = CreateFrame("Frame", "DRVigorBubble_"..index, parent)
@@ -234,12 +239,13 @@ local function CreateChargeBar(parent, index)
 end
 
 -- calculates the layout based on settings
-local function UpdateLayout()
-	local wrap = math.min(VIGOR_WRAP, MAX_CHARGES)
-	if wrap <= 0 then wrap = MAX_CHARGES end
+local function UpdateLayout(currentMaxCharges)
+	local maxChargesToDisplay = currentMaxCharges or MAX_CHARGES
+	local wrap = math.min(VIGOR_WRAP, maxChargesToDisplay)
+	if wrap <= 0 then wrap = maxChargesToDisplay end
 
 	if ORIENTATION == 1 then -- vertical layout
-		local numCols = math.ceil(MAX_CHARGES / wrap)
+		local numCols = math.ceil(maxChargesToDisplay / wrap)
 		local numRowsOnLongestCol = wrap
 
 		local totalWidth = (numCols * BAR_WIDTH) + (math.max(0, numCols - 1) * BAR_SPACING)
@@ -252,7 +258,7 @@ local function UpdateLayout()
 			local row = (i - 1) % wrap
 
 			-- calculate how many bars are in this column to center it vertically
-			local numBarsInThisCol = (col < numCols - 1) and wrap or (MAX_CHARGES - (col * wrap))
+			local numBarsInThisCol = (col < numCols - 1) and wrap or (maxChargesToDisplay - (col * wrap))
 			local colHeight = (numBarsInThisCol * BAR_HEIGHT) + (math.max(0, numBarsInThisCol - 1) * BAR_SPACING)
 			local yOffset = (totalHeight - colHeight) / 2
 
@@ -268,7 +274,7 @@ local function UpdateLayout()
 		end
 
 	elseif ORIENTATION == 2 then -- horizontal layout
-		local numRows = math.ceil(MAX_CHARGES / wrap)
+		local numRows = math.ceil(maxChargesToDisplay / wrap)
 		local numColsOnLongestRow = wrap
 
 		local totalWidth = (numColsOnLongestRow * BAR_WIDTH) + (math.max(0, numColsOnLongestRow - 1) * BAR_SPACING)
@@ -281,7 +287,7 @@ local function UpdateLayout()
 			local col = (i - 1) % wrap
 
 			-- calculate how many bars are in this row to center it horizontally
-			local numBarsInThisRow = (row < numRows - 1) and wrap or (MAX_CHARGES - (row * wrap))
+			local numBarsInThisRow = (row < numRows - 1) and wrap or (maxChargesToDisplay - (row * wrap))
 			local rowWidth = (numBarsInThisRow * BAR_WIDTH) + (math.max(0, numBarsInThisRow - 1) * BAR_SPACING)
 			local xOffset = (totalWidth - rowWidth) / 2
 
@@ -302,6 +308,37 @@ end
 for i = 1, MAX_CHARGES do
 	vigorBar.bars[i] = CreateChargeBar(vigorBar, i)
 end
+
+
+-- side wings art
+vigorBar.decor = {};
+
+local function CreateDecor(parent, index)
+	local decor = CreateFrame("Frame", "DragonRider_Decor"..index, parent)
+	decor:SetSize(64, 64) -- adjust size as desired
+	decor.texture = decor:CreateTexture(nil, "ARTWORK", nil, 1)
+	decor.texture:SetAtlas("dragonriding_vigor_decor", true)
+	decor.texture:SetAllPoints(decor)
+	decor.texture:SetDesaturated(true)
+	decor.texture:SetVertexColor(VigorColors.decor:GetRGB())
+
+	if index == 1 then
+		-- Left side (mirrored)
+		decor:SetPoint("RIGHT", parent, "LEFT", -DECOR_X, DECOR_Y)
+		decor.texture:SetTexCoord(1, 0, 0, 1) -- horizontal flip
+	else
+		-- Right side (normal)
+		decor:SetPoint("LEFT", parent, "RIGHT", DECOR_X, DECOR_Y)
+	end
+
+	parent.decor[index] = decor
+	return decor
+end
+
+for i = 1, 2 do
+	vigorBar.decor[i] = CreateDecor(vigorBar, i);
+end
+
 
 UpdateLayout()
 
@@ -379,9 +416,66 @@ end
 local updateTimer = 0 -- throttle
 vigorBar:SetScript("OnUpdate", function(self, elapsed)
 	updateTimer = updateTimer + elapsed
-	if updateTimer > 0.05 then
+	if updateTimer > 0.1 then
 		UpdateChargeBars()
 		updateTimer = 0
 	end
 end)
 
+
+
+---------------------------------------------------------------------------------------------------------------
+-- Models
+---------------------------------------------------------------------------------------------------------------
+
+DR.model = {};
+DR.modelScene = {};
+
+function DR:modelSetup(number)
+	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then -- algarian stormrider
+		DR.model[number]:SetModelByFileID(3009394)
+		DR.model[number]:SetPosition(5,0,-1.5)
+		--DR.model1:SetPitch(.3)
+		DR.model[number]:SetYaw(0)
+	else
+		DR.model[number]:SetModelByFileID(1100194)
+		DR.model[number]:SetPosition(5,0,-1.5)
+		--DR.model1:SetPitch(.3)
+		DR.model[number]:SetYaw(0)
+	end
+end
+
+for i = 1, MAX_CHARGES do
+	DR.modelScene[i] = CreateFrame("ModelScene", nil, vigorBar.bars[i])
+	DR.modelScene[i]:SetAllPoints()
+	DR.modelScene[i]:SetFrameStrata("HIGH")
+	DR.modelScene[i]:SetFrameLevel(vigorBar.bars[i]:GetFrameLevel() + 5)
+	DR.modelScene[i]:SetSize(43,43)
+
+	DR.model[i] = DR.modelScene[i]:CreateActor()
+
+	DR:modelSetup(i)
+end
+
+
+function DR.toggleModels()
+	for i = 1, MAX_CHARGES do
+		DR.modelScene[i]:Hide()
+	end
+end
+
+function DR.vigorCounter(vigorCurrent)
+	if not vigorCurrent then
+		-- vigorCurrent will be nil during login I think
+		return;
+	end
+		for i = 1, MAX_CHARGES do
+		if vigorCurrent >= i then
+			DR.modelScene[i]:Show()
+		else
+			DR.modelScene[i]:Hide()
+		end
+	end
+end
+
+DR.toggleModels()

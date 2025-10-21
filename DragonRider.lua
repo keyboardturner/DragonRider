@@ -137,189 +137,6 @@ function DR.DragonRidingZoneCheck()
 	end
 end
 
-DR.model = {};
-DR.modelScene = {};
-
-function DR:modelSetup(number)
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then -- algarian stormrider
-		DR.model[number]:SetModelByFileID(3009394)
-		DR.model[number]:SetPosition(5,0,-1.5)
-		--DR.model1:SetPitch(.3)
-		DR.model[number]:SetYaw(0)
-	else
-		DR.model[number]:SetModelByFileID(1100194)
-		DR.model[number]:SetPosition(5,0,-1.5)
-		--DR.model1:SetPitch(.3)
-		DR.model[number]:SetYaw(0)
-	end
-end
-
-for i = 1,6 do
-	DR.modelScene[i] = CreateFrame("ModelScene", nil, UIParent)
-	DR.modelScene[i]:SetPoint("CENTER", DR.statusbar, "CENTER", -145+(i*40), -36)
-	DR.modelScene[i]:SetWidth(43)
-	DR.modelScene[i]:SetHeight(43)
-	DR.modelScene[i]:SetFrameStrata("MEDIUM")
-	DR.modelScene[i]:SetFrameLevel(500)
-
-	DR.model[i] = DR.modelScene[i]:CreateActor()
-
-	DR:modelSetup(i)
-end
-
-
-function DR.toggleModels()
-	for i = 1,6 do
-		DR.modelScene[i]:Hide()
-	end
-end
-
-DR.toggleModels()
-
-DR.charge = CreateFrame("Frame")
-DR.charge:RegisterEvent("UNIT_AURA")
-DR.charge:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-
-function DR:chargeSetup(number)
-	if UIWidgetPowerBarContainerFrame then
-		DR.SetUpChargePos(number)
-		if UIWidgetPowerBarContainerFrame.widgetFrames[5140] then -- gold tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5143] then -- silver tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5144] then -- bronze tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5145] then -- dark tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Cover.blp")
-		elseif C_UnitAuras.GetPlayerAuraBySpellID(418590) then -- default fallback, buff exists, not stormrider
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-		else
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-			DR.charge[number]:Hide();
-		end
-	end
-end
-
-function DR.SetUpChargePos(i)
-	DR.charge[1]:SetPoint("CENTER", UIWidgetPowerBarContainerFrame, -61,15)
-	if i ~= 1 then
-		if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-			DR.charge[i]:SetPoint("CENTER", DR.charge[i-1], 30.5, 0)
-		else
-			DR.charge[i]:SetPoint("CENTER", DR.charge[i-1], 26.75, 0)
-		end
-		DR.charge[i]:SetParent(DR.charge[i-1])
-	end
-	if DR.charge[6] then
-		if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-			DR.charge[6]:SetPoint("CENTER", DR.charge[1], 0, -30)
-		else
-			DR.charge[6]:SetPoint("CENTER", DR.charge[1], 0, -33)
-		end
-	end
-end
-
-for i = 1, 10 do
-	DR.charge[i] = CreateFrame("Frame")
-	DR.charge[i]:SetSize(25,25)
-
-	DR.SetUpChargePos(i)
-
-	DR.charge[i].texBase = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 0)
-	DR.charge[i].texBase:SetAllPoints(DR.charge[i])
-	DR.charge[i].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-	DR.charge[i].texFill = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 1)
-	DR.charge[i].texFill:SetAllPoints(DR.charge[i])
-	DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp")
-	DR.charge[i].texCover = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 2)
-	DR.charge[i].texCover:SetAllPoints(DR.charge[i])
-	DR.charge[i].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-
-	DR.charge[i].texFill:Hide();
-
-end
-
-
-function DR.toggleCharges(self, event, arg1)
-	if event == "UNIT_AURA" and arg1 == "player" then
-		if C_UnitAuras.GetPlayerAuraBySpellID(418590) then
-			local chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(418590).applications
-			for i = 1,10 do
-				DR:chargeSetup(i)
-				if i <= chargeCount then
-					DR.charge[i].texFill:Show();
-				else
-					DR.charge[i].texFill:Hide();
-				end
-			end
-			DR.setPositions();
-		else
-			for i = 1,10 do
-				DR.charge[i].texFill:Hide();
-			end
-			DR.setPositions();
-		end
-	end
-	if event == "SPELL_UPDATE_COOLDOWN" then
-		local isEnabled, startTime, modRate, duration
-		if C_Spell.GetSpellCooldown then
-			isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(418592).isEnabled, C_Spell.GetSpellCooldown(418592).startTime, C_Spell.GetSpellCooldown(418592).modRate, C_Spell.GetSpellCooldown(418592).duration
-		else
-			isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
-		end
-		if ( startTime > 0 and duration > 0) then
-			local cdLeft = startTime + duration - GetTime()
-			for i = 1,10 do
-				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill_CD.blp");
-			end
-		else
-			for i = 1,10 do
-				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp");
-			end
-		end
-	end
-end
-
-DR.charge:SetScript("OnEvent", DR.toggleCharges)
-
-function DR.vigorCounter(vigorCurrent)
-	if not vigorCurrent then
-		-- vigorCurrent will be nil during login I think
-		return;
-	end
-
-	if not LibAdvFlight.IsAdvFlyEnabled() or DR.DriveUtils.IsDriving() then
-		DR.toggleModels()
-		return
-	end
-
-	if not DragonRider_DB.toggleModels then
-		DR.toggleModels()
-		return
-	end
-
-	if vigorCurrent == 0 then
-		DR.toggleModels()
-	end
-
-	local frameLevelThing = UIWidgetPowerBarContainerFrame:GetFrameLevel()+15
-	for i = 1,6 do
-		if vigorCurrent >= i then
-			DR.modelScene[i]:Show()
-		else
-			DR.modelScene[i]:Hide()
-		end
-		DR.modelScene[i]:SetFrameLevel(frameLevelThing)
-	end
-	DR.setPositions()
-end
-
 LibAdvFlight.RegisterCallback(LibAdvFlight.Events.VIGOR_CHANGED, DR.vigorCounter);
 
 DR.EventsList = CreateFrame("Frame")
@@ -396,151 +213,48 @@ function DR.setPositions()
 		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 0)
 	end
 
+	-- Setup ParentFrame anchor
 	ParentFrame:ClearAllPoints()
 	ParentFrame:SetScale(UIWidgetPowerBarContainerFrame:GetScale()) -- because some of you are rescaling this thing...... the "moving vigor bar" was your fault.
 	ParentFrame:SetPoint("TOPLEFT", UIWidgetPowerBarContainerFrame, "TOPLEFT")
 	ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame, "BOTTOMRIGHT")
 	for k, v in pairs(DR.WidgetFrameIDs) do
-		if UIWidgetPowerBarContainerFrame.widgetFrames[v] then
+		if UIWidgetPowerBarContainerFrame.widgetFrames[v] and UIWidgetPowerBarContainerFrame.widgetFrames[v]:IsShown() then
 			ParentFrame:ClearAllPoints()
 			ParentFrame:SetPoint("TOPLEFT", UIWidgetPowerBarContainerFrame.widgetFrames[v], "TOPLEFT")
 			ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame.widgetFrames[v], "BOTTOMRIGHT")
 		end
 	end
+
+	-- Position Speedometer
 	DR.statusbar:ClearAllPoints();
-	DR.statusbar:SetPoint("BOTTOM", ParentFrame, "TOP", 0, 5);
-	if DragonRider_DB.speedometerPosPoint == 1 then
-		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("BOTTOM", ParentFrame, "TOP", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
-	elseif DragonRider_DB.speedometerPosPoint == 2 then
-		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("TOP", ParentFrame, "BOTTOM", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+	local point, relPoint, xOff, yOff = "BOTTOM", "TOP", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY
+	if DragonRider_DB.speedometerPosPoint == 2 then
+		point, relPoint = "TOP", "BOTTOM"
 	elseif DragonRider_DB.speedometerPosPoint == 3 then
-		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("RIGHT", ParentFrame, "LEFT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		point, relPoint = "RIGHT", "LEFT"
 	elseif DragonRider_DB.speedometerPosPoint == 4 then
-		DR.statusbar:ClearAllPoints();
-		DR.statusbar:SetPoint("LEFT", ParentFrame, "RIGHT", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY);
+		point, relPoint = "LEFT", "RIGHT"
 	end
-
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-		DR.charge[1]:SetPoint("TOPLEFT", ParentFrame, "TOPLEFT", 45,8)
-	else
-		DR.charge[1]:SetPoint("TOPLEFT", ParentFrame, "TOPLEFT", 31,14)
-	end
-	DR.charge[1]:SetParent(ParentFrame)
-	DR.charge[1]:SetScale(1.5625)
-
-	for i = 1, 10 do
-		if C_UnitAuras.GetPlayerAuraBySpellID(418590) and DragonRider_DB.lightningRush == true then
-			DR.charge[i]:Show();
-			DR:chargeSetup(i)
-		else
-			DR.charge[i]:Hide();
-		end
-	end
-
+	DR.statusbar:SetPoint(point, ParentFrame, relPoint, xOff, yOff);
+	DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
+	DR.glide:SetFont(STANDARD_TEXT_FONT, DragonRider_DB.speedTextScale)
+	
+	-- Position Custom Vigor Bar
+	DR.vigorBar:SetParent(ParentFrame)
+	DR.vigorBar:ClearAllPoints()
+	DR.vigorBar:SetPoint("CENTER", 0, 0) -- Center on the parent anchor
+	
+	-- Position Static Charges
+	DR.UpdateChargePositions(ParentFrame)
+	
+	-- Handle Side Art Alpha
 	local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
 	if PowerBarChildren[3] ~= nil then
 		for _, child in ipairs({PowerBarChildren[3]:GetRegions()}) do
-			if DragonRider_DB.sideArt == false then
-				child:SetAlpha(0)
-			else
-				child:SetAlpha(1)
-			end
+			child:SetAlpha(DragonRider_DB.sideArt and 1 or 0)
 		end
 	end
-	DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
-	for i = 1,6 do
-		DR.modelScene[i]:SetParent(ParentFrame)
-		DR.modelScene[i]:ClearAllPoints();
-	end
-
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-		local spacing = 50
-		if DR.model[1]:GetModelFileID() == 1100194 then
-			for i = 1,6 do
-				DR:modelSetup(i)
-			end
-		end
-		-- algarian stormrider uses gems for the vigor bar, spacing is ~50
-		if IsPlayerSpell(377922) == true then -- 6 vigor
-			for i = 1,6 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -175+(i*spacing), 14);
-			end
-		elseif IsPlayerSpell(377921) == true then -- 5 vigor
-			for i = 1,5 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -150+(i*spacing), 14);
-			end
-			for i = 6,6,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		elseif IsPlayerSpell(377920) == true then -- 4 vigor
-			for i = 1,4 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -125+(i*spacing), 14);
-			end
-			for i = 6,5,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		else
-			for i = 1,3 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -100+(i*spacing), 14);
-			end
-			for i = 6,4,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		end
-	else
-		local spacing = 42
-		if DR.model[1]:GetModelFileID() == 3009394 then
-			for i = 1,6 do
-				DR:modelSetup(i)
-			end
-		end
-		--dragonriding is a spacing diff of 42
-		if IsPlayerSpell(377922) == true then -- 6 vigor
-			for i = 1,6 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -147+(i*spacing), 14);
-			end
-		elseif IsPlayerSpell(377921) == true then -- 5 vigor
-			for i = 1,5 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -126+(i*spacing), 14);
-			end
-			for i = 6,6,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		elseif IsPlayerSpell(377920) == true then -- 4 vigor
-			for i = 1,4 do 
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -105+(i*spacing), 14);
-			end
-			for i = 6,5,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		else
-			for i = 1,3 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:SetPoint("CENTER", ParentFrame, "CENTER", -84+(i*spacing), 14);
-			end
-			for i = 6,4,-1 do
-				DR.modelScene[i]:SetParent(ParentFrame)
-				DR.modelScene[i]:Hide()
-			end
-		end
-	end
-
-	DR.glide:SetFont(STANDARD_TEXT_FONT, DragonRider_DB.speedTextScale)
 end
 
 function DR.clearPositions()
@@ -1351,8 +1065,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleFlashProgress"
-			local name = "[PH]"..L["toggleFlashProgressName"]
-			local tooltip = "[PH]"..L["toggleFlashProgressNameTT"]
+			local name = "[PH]"..L["ToggleFlashProgressName"]
+			local tooltip = "[PH]"..L["ToggleFlashProgressNameTT"]
 			local defaultValue = true
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1367,6 +1081,23 @@ function DR.OnAddonLoaded()
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local variable = "modelTheme"
+			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["ModelThemeName"]
+			local tooltip = "[PH]"..L["ModelThemeNameTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH]"..L["Wind"])
+				container:Add(2, "[PH]"..L["Lightning"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
 		end
 
 		do
@@ -1503,6 +1234,7 @@ function DR.OnAddonLoaded()
 		local function OnAdvFlyEnabled()
 			DR.HideWithFadeBar();
 			DR.setPositions();
+			DR.vigorBar:Show();
 		end
 
 		local function OnAdvFlyEnd()
@@ -1514,6 +1246,7 @@ function DR.OnAddonLoaded()
 		local function OnAdvFlyDisabled()
 			DR.HideWithFadeBar();
 			DR.clearPositions();
+			DR.vigorBar:Hide();
 		end
 
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_START, OnAdvFlyStart);
