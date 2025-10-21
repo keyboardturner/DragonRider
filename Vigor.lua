@@ -239,13 +239,20 @@ local function CreateChargeBar(parent, index)
 end
 
 -- calculates the layout based on settings
-local function UpdateLayout(currentMaxCharges)
-	local maxChargesToDisplay = currentMaxCharges or MAX_CHARGES
-	local wrap = math.min(VIGOR_WRAP, maxChargesToDisplay)
-	if wrap <= 0 then wrap = maxChargesToDisplay end
+function DR.UpdateVigorLayout()
+	local vigorWrap
+	if DragonRider_DB then
+		vigorWrap = (DragonRider_DB.vigorWrap and DragonRider_DB.vigorWrap > 0 and DragonRider_DB.vigorWrap) or VIGOR_WRAP
+	else
+		vigorWrap = VIGOR_WRAP
+	end
 
-	if ORIENTATION == 1 then -- vertical layout
-		local numCols = math.ceil(maxChargesToDisplay / wrap)
+	local wrap = math.min(vigorWrap, MAX_CHARGES)
+	if wrap <= 0 then wrap = MAX_CHARGES end
+
+
+	if ORIENTATION == 1 then -- Vertical layout
+		local numCols = math.ceil(MAX_CHARGES / wrap)
 		local numRowsOnLongestCol = wrap
 
 		local totalWidth = (numCols * BAR_WIDTH) + (math.max(0, numCols - 1) * BAR_SPACING)
@@ -258,7 +265,7 @@ local function UpdateLayout(currentMaxCharges)
 			local row = (i - 1) % wrap
 
 			-- calculate how many bars are in this column to center it vertically
-			local numBarsInThisCol = (col < numCols - 1) and wrap or (maxChargesToDisplay - (col * wrap))
+			local numBarsInThisCol = (col < numCols - 1) and wrap or (MAX_CHARGES - (col * wrap))
 			local colHeight = (numBarsInThisCol * BAR_HEIGHT) + (math.max(0, numBarsInThisCol - 1) * BAR_SPACING)
 			local yOffset = (totalHeight - colHeight) / 2
 
@@ -266,15 +273,15 @@ local function UpdateLayout(currentMaxCharges)
 				local x = col * (BAR_WIDTH + BAR_SPACING)
 				local y = -(yOffset + row * (BAR_HEIGHT + BAR_SPACING))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)
-			else -- DIRECTION == 2 - right-to-left columns, bottom-to-top bars
+			else -- right-to-left columns, bottom-to-top bars
 				local x = -(col * (BAR_WIDTH + BAR_SPACING))
 				local y = yOffset + row * (BAR_HEIGHT + BAR_SPACING)
 				bar:SetPoint("BOTTOMRIGHT", vigorBar, "BOTTOMRIGHT", x, y)
 			end
 		end
 
-	elseif ORIENTATION == 2 then -- horizontal layout
-		local numRows = math.ceil(maxChargesToDisplay / wrap)
+	elseif ORIENTATION == 2 then -- Horizontal layout
+		local numRows = math.ceil(MAX_CHARGES / wrap)
 		local numColsOnLongestRow = wrap
 
 		local totalWidth = (numColsOnLongestRow * BAR_WIDTH) + (math.max(0, numColsOnLongestRow - 1) * BAR_SPACING)
@@ -287,7 +294,7 @@ local function UpdateLayout(currentMaxCharges)
 			local col = (i - 1) % wrap
 
 			-- calculate how many bars are in this row to center it horizontally
-			local numBarsInThisRow = (row < numRows - 1) and wrap or (maxChargesToDisplay - (row * wrap))
+			local numBarsInThisRow = (row < numRows - 1) and wrap or (MAX_CHARGES - (row * wrap))
 			local rowWidth = (numBarsInThisRow * BAR_WIDTH) + (math.max(0, numBarsInThisRow - 1) * BAR_SPACING)
 			local xOffset = (totalWidth - rowWidth) / 2
 
@@ -295,7 +302,7 @@ local function UpdateLayout(currentMaxCharges)
 				local x = xOffset + col * (BAR_WIDTH + BAR_SPACING)
 				local y = -(row * (BAR_HEIGHT + BAR_SPACING))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)
-			else -- DIRECTION == 2 - bottom-to-top rows, rRight-to-left bars
+			else -- bottom-to-top rows, right-to-left bars
 				local x = -(xOffset + col * (BAR_WIDTH + BAR_SPACING))
 				local y = row * (BAR_HEIGHT + BAR_SPACING)
 				bar:SetPoint("BOTTOMRIGHT", vigorBar, "BOTTOMRIGHT", x, y)
@@ -308,6 +315,8 @@ end
 for i = 1, MAX_CHARGES do
 	vigorBar.bars[i] = CreateChargeBar(vigorBar, i)
 end
+
+DR.UpdateVigorLayout()
 
 
 -- side wings art
@@ -338,9 +347,6 @@ end
 for i = 1, 2 do
 	vigorBar.decor[i] = CreateDecor(vigorBar, i);
 end
-
-
-UpdateLayout()
 
 
 local function UpdateChargeBars()
@@ -458,24 +464,30 @@ for i = 1, MAX_CHARGES do
 end
 
 
-function DR.toggleModels()
+function DR.hideModels()
 	for i = 1, MAX_CHARGES do
 		DR.modelScene[i]:Hide()
 	end
 end
 
-function DR.vigorCounter(vigorCurrent)
+DR.hideModels()
+
+function DR.vigorCounter()
+	local vigorCurrent = LibAdvFlight:GetCurrentVigor()
+	local toggleModels = DragonRider_DB and DragonRider_DB.toggleModels
 	if not vigorCurrent then
 		-- vigorCurrent will be nil during login I think
 		return;
 	end
+	if toggleModels then
 		for i = 1, MAX_CHARGES do
-		if vigorCurrent >= i then
-			DR.modelScene[i]:Show()
-		else
-			DR.modelScene[i]:Hide()
+			if vigorCurrent >= i then
+				DR.modelScene[i]:Show()
+			else
+				DR.modelScene[i]:Hide()
+			end
 		end
+	else
+		DR.hideModels();
 	end
 end
-
-DR.toggleModels()

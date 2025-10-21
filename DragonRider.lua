@@ -262,7 +262,7 @@ function DR.clearPositions()
 	for i = 1, 10 do
 		DR.charge[i]:Hide();
 	end
-	DR.toggleModels()
+	DR.hideModels()
 end
 
 DR.clearPositions();
@@ -417,6 +417,16 @@ function DR.EventsList:PLAYER_LOGIN()
 	end
 end
 
+
+local function CreateColorPickerButtonForSetting(category, setting, tooltip)
+	local data = Settings.CreateSettingInitializerData(setting, {}, tooltip);
+	local initializer = Settings.CreateSettingInitializer("DragonRiderColorSwatchSettingTemplate", data);
+	local layout = SettingsPanel:GetLayout(category);
+	layout:AddInitializer(initializer);
+	return initializer;
+end
+
+
 function DR.OnAddonLoaded()
 	--[[ -- hiding code test
 	if event == "UPDATE_UI_WIDGET" then
@@ -539,6 +549,7 @@ function DR.OnAddonLoaded()
 			DR.vigorCounter()
 			DR.setPositions()
 			DR.MuteVigorSound()
+			DR.UpdateVigorLayout()
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
@@ -556,16 +567,33 @@ function DR.OnAddonLoaded()
 		local CreateDropdown = Settings.CreateDropdown or Settings.CreateDropDown
 		local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox
 
-		local function RegisterSetting(variableKey, defaultValue, name)
-			local uniqueVariable = "DR_" .. variableKey; -- these have to be unique or calamity ensues, savedvars will be unaffected
+		local function RegisterSetting(key, defaultValue, name, subKey)
+			local uniqueVariable
+			local setting
 
-			local setting;
-			setting = Settings.RegisterAddOnSetting(category, uniqueVariable, variableKey, DragonRider_DB, type(defaultValue), name, defaultValue);
+			if subKey then
+				-- This block handles nested settings like DragonRider_DB.speedBarColor.slow
+				uniqueVariable = "DR_" .. key .. "_" .. subKey
+				
+				-- Ensure the parent table exists to avoid errors
+				if DragonRider_DB[key] == nil then DragonRider_DB[key] = {} end
 
-			setting:SetValue(DragonRider_DB[variableKey]);
-			Settings.SetOnValueChangedCallback(uniqueVariable, OnSettingChanged);
+				-- Register the setting against the sub-table
+				setting = Settings.RegisterAddOnSetting(category, uniqueVariable, subKey, DragonRider_DB[key], type(defaultValue), name, defaultValue)
+				
+				-- Set the initial value from the nested variable
+				if DragonRider_DB[key][subKey] == nil then DragonRider_DB[key][subKey] = defaultValue end
+				setting:SetValue(DragonRider_DB[key][subKey])
+			else
+				-- This block handles top-level settings like DragonRider_DB.toggleModels
+				uniqueVariable = "DR_" .. key
+				setting = Settings.RegisterAddOnSetting(category, uniqueVariable, key, DragonRider_DB, type(defaultValue), name, defaultValue)
+				if DragonRider_DB[key] == nil then DragonRider_DB[key] = defaultValue end
+				setting:SetValue(DragonRider_DB[key])
+			end
 
-			return setting;
+			Settings.SetOnValueChangedCallback(uniqueVariable, OnSettingChanged)
+			return setting
 		end
 
 		
@@ -583,8 +611,16 @@ function DR.OnAddonLoaded()
 		]]
 
 		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"])); -- moved to subcategory
+		do
+			local variable = "testsetting"
+			local name = "[PH]".."Test Setting"
+			local tooltip = "[PH]".."This is a test setting."
+			-- Provide the default value as an RGBA table, just like your other color settings
+			local defaultValue = {r = 1, g = 1, b = 1, a = 1}
 
-		
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateColorPickerButtonForSetting(category, setting, tooltip);
+		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
 
@@ -803,58 +839,54 @@ function DR.OnAddonLoaded()
 
 		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
 
-		do -- color picker - low progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.slow);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		-- Speedometer Colors
+		do -- Low Speed Progress Bar Color
+			local key, subKey = "speedBarColor", "slow"
+			local name = L["ProgressBarColor"] .. " - " .. L["Low"]
+			local tooltip = L["ColorPickerLowProgTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		do -- color picker - mid progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.vigor);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. "[PH]"..L["Recharge"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		do -- Vigor Speed Progress Bar Color
+			local key, subKey = "speedBarColor", "vigor"
+			local name = L["ProgressBarColor"] .. " - " .. L["Vigor"] 
+			local tooltip = L["ColorPickerMidProgTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		do -- color picker - high progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedBarColor.over);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["ProgressBarColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		do -- High Speed Progress Bar Color
+			local key, subKey = "speedBarColor", "over"
+			local name = L["ProgressBarColor"] .. " - " .. L["High"]
+			local tooltip = L["ColorPickerHighProgTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		do -- color picker - low speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.slow);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["Low"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		-- Text Colors
+		do -- Low Speed Text Color
+			local key, subKey = "speedTextColor", "slow"
+			local name = L["UnitsColor"] .. " - " .. L["Low"]
+			local tooltip = L["ColorPickerLowTextTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		do -- color picker - mid speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.vigor);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. "[PH]"..L["Recharge"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		do -- Vigor Speed Text Color
+			local key, subKey = "speedTextColor", "vigor"
+			local name = L["UnitsColor"] .. " - " .. L["Vigor"]
+			local tooltip = L["ColorPickerMidTextTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		do -- color picker - high speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.speedTextColor.over);
-			end
-
-			local initializer = CreateSettingsButtonInitializer(L["UnitsColor"] .. " - " .. L["High"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
-			layoutSpeedometer:AddInitializer(initializer);
+		do -- High Speed Text Color
+			local key, subKey = "speedTextColor", "over"
+			local name = L["UnitsColor"] .. " - " .. L["High"]
+			local tooltip = L["ColorPickerHighTextTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 
@@ -995,7 +1027,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorWrap"
 			local name = "[PH]"..L["VigorWrapName"]
 			local tooltip = L["VigorWrapNameTT"]
-			local defaultValue = 0
+			local defaultValue = 6
 			local minValue = 1
 			local maxValue = 6
 			local step = 1
@@ -1132,58 +1164,49 @@ function DR.OnAddonLoaded()
 
 		layoutVigor:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
 
-		do -- color picker - low progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.full);
-			end
 
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowProgTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		-- Vigor Colors
+		do -- full
+			local key, subKey = "vigorBarColor", "full"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
-
-		do -- color picker - mid progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.empty);
-			end
-
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidProgTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		do -- empty
+			local key, subKey = "vigorBarColor", "empty"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
-
-		do -- color picker - high progress bar color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.progress);
-			end
-
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighProgTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		do -- progress
+			local key, subKey = "vigorBarColor", "progress"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
-
-		do -- color picker - low speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.spark);
-			end
-
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"], COLOR_PICKER, OnButtonClick, L["ColorPickerLowTextTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		do -- spark
+			local key, subKey = "vigorBarColor", "spark"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
-
-		do -- color picker - mid speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.cover);
-			end
-
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"], COLOR_PICKER, OnButtonClick, L["ColorPickerMidTextTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		do -- cover
+			local key, subKey = "vigorBarColor", "cover"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
-
-		do -- color picker - high speed text color
-			local function OnButtonClick()
-				DR:ShowColorPicker(DragonRider_DB.vigorBarColor.flash);
-			end
-
-			local initializer = CreateSettingsButtonInitializer("[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"], COLOR_PICKER, OnButtonClick, L["ColorPickerHighTextTT"], true);
-			layoutVigor:AddInitializer(initializer);
+		do -- flash
+			local key, subKey = "vigorBarColor", "flash"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		Settings.RegisterAddOnCategory(categoryVigor)
@@ -1235,6 +1258,7 @@ function DR.OnAddonLoaded()
 			DR.HideWithFadeBar();
 			DR.setPositions();
 			DR.vigorBar:Show();
+			DR.vigorCounter();
 		end
 
 		local function OnAdvFlyEnd()

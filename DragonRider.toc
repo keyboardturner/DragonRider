@@ -50,10 +50,13 @@
 
 Libs/LibAdvFlight/lib.xml
 
+Templates/SettingsTemplates.xml
+
 Localization.lua
 DRRaceData.lua
 Timerunner.lua
 DRJournal.lua
 Vigor.lua
 Speedometer.lua
+Charges.lua
 DragonRider.lua
