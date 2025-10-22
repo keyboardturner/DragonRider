@@ -6,6 +6,8 @@ local _, L = ...
 local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1")
 
 -- temp / default settings
+local BAR_X = 0
+local BAR_Y = -200
 local BAR_WIDTH = 32
 local BAR_HEIGHT = 32
 local BAR_SPACING = 10
@@ -50,7 +52,7 @@ local DECOR_Y = -10
 
 
 local vigorBar = CreateFrame("Frame", "DragonRider_Vigor", UIParent)
-vigorBar:SetPoint("CENTER", 0, -200)
+vigorBar:SetPoint("CENTER", BAR_X, BAR_Y)
 vigorBar.bars = {};
 DR.vigorBar = vigorBar;
 vigorBar:Hide();
@@ -173,7 +175,12 @@ local function CreateChargeBar(parent, index)
 	flashFullAnim:SetDuration(0.5)
 	flashFullAnim:SetOrder(1)
 	
-	bar.flashAnimFull:SetScript("OnPlay", function() bar.flash:Show() end)
+	bar.flashAnimFull:SetScript("OnPlay", function()
+		bar.flash:Show();
+		if not DragonRider_DB.muteVigorSound then
+			PlaySound(201528)
+		end
+	end)
 	bar.flashAnimFull:SetScript("OnFinished", function() bar.flash:Hide() end)
 	
 	-- animation group for the "progress" flash (looping pulse)

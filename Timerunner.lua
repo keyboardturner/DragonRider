@@ -9,7 +9,9 @@ local function Print(...)
 end
 
 local f = CreateFrame("Frame")
-f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
+	f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+end
 f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 

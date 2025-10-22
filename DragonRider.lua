@@ -15,6 +15,8 @@ local defaultsTable = {
 	speedometerPosPoint = 1,
 	speedometerPosX = 0,
 	speedometerPosY = 5,
+	speedometerWidth = 244,
+	speedometerHeight = 24,
 	speedometerScale = 1,
 	speedValUnits = 1,
 	speedBarColor = {
@@ -58,9 +60,9 @@ local defaultsTable = {
 		},
 	},
 	speedTextScale = 12,
-	glyphDetector = true,
+	glyphDetector = true, -- unused
 	vigorProgressStyle = 1, -- 1 = vertical, 2 = horizontal, 3 = cooldown
-	cooldownTimer = {
+	cooldownTimer = { -- unused
 		whirlingSurge = true,
 		bronzeTimelock = true,
 		aerialHalt = true,
@@ -80,6 +82,20 @@ local defaultsTable = {
 	muteVigorSound = false,
 	themeSpeed = 1, -- default
 	themeVigor = 1, -- default
+	vigorPosX = 0,
+	vigorPosY = -200,
+	vigorBarWidth = 32,
+	vigorBarHeight = 32,
+	vigorBarSpacing = 10,
+	vigorBarOrientation = 1,
+	vigorBarDirection = 1,
+	vigorWrap = 6,
+	vigorBarFillDirection = 1,
+	vigorSparkWidth = 32,
+	vigorSparkHeight = 12,
+	toggleFlashFull = true,
+	toggleFlashProgress = true,
+	modelTheme = 1,
 	vigorBarColor = {
 		full = {
 			r=0.24,
@@ -178,7 +194,9 @@ DR.EventsList = CreateFrame("Frame")
 DR.EventsList:RegisterEvent("ADDON_LOADED")
 DR.EventsList:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 DR.EventsList:RegisterEvent("MOUNT_JOURNAL_USABILITY_CHANGED")
-DR.EventsList:RegisterEvent("LEARNED_SPELL_IN_TAB")
+if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
+	DR.EventsList:RegisterEvent("LEARNED_SPELL_IN_TAB")
+end
 DR.EventsList:RegisterEvent("PLAYER_CAN_GLIDE_CHANGED")
 DR.EventsList:RegisterEvent("COMPANION_UPDATE")
 DR.EventsList:RegisterEvent("PLAYER_LOGIN")
@@ -240,7 +258,7 @@ ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame, "BOTTOMRIGHT
 
 
 function DR.setPositions()
-	DR.SetTheme()
+	if SettingsPanel:IsShown() then return end
 	if DragonRider_DB.DynamicFOV == true then
 		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 1)
 	elseif DragonRider_DB.DynamicFOV == false then
@@ -380,14 +398,6 @@ end
 local goldTime
 local silverTime
 
-function DR.MuteVigorSound()
-	if DragonRider_DB.muteVigorSound == true then
-		MuteSoundFile(1489541)
-	else
-		UnmuteSoundFile(1489541)
-	end
-end
-
 -- event handling
 function DR.EventsList:CURRENCY_DISPLAY_UPDATE(currencyID)
 	-- update the temporary gold/silver time variables when their specific currencies update
@@ -460,6 +470,25 @@ local function CreateColorPickerButtonForSetting(category, setting, tooltip)
 	return initializer;
 end
 
+local function UpdateSettingsFramePositions(categoryID)
+	if SettingsPanel and SettingsPanel:IsShown() then -- and SettingsPanel.selectedCategory and SettingsPanel.selectedCategory.ID == categoryID -- need to find the actual currently selected thing
+		DR.vigorBar:SetFrameStrata("DIALOG");
+		DR.statusbar:SetFrameStrata("DIALOG");
+		DR.vigorBar:ClearAllPoints()
+		DR.statusbar:ClearAllPoints()
+		DR.vigorBar:SetPoint("TOP", SettingsPanel, "BOTTOM")
+		DR.statusbar:SetPoint("BOTTOM", DR.vigorBar, "TOP", 0, 13)
+		
+		DR.statusbar:Show();
+		DR.vigorBar:Show();
+	else
+		DR.statusbar:SetFrameStrata("MEDIUM");
+		DR.vigorBar:SetFrameStrata("MEDIUM");
+
+		DR.setPositions()
+		DR.SetTheme()
+	end
+end
 
 function DR.OnAddonLoaded()
 	--[[ -- hiding code test
@@ -554,6 +583,7 @@ function DR.OnAddonLoaded()
 
 			DR.vigorCounter()
 			DR.setPositions()
+			DR.SetTheme()
 			DR.MuteVigorSound()
 			DR.UpdateVigorLayout()
 		end
@@ -617,16 +647,6 @@ function DR.OnAddonLoaded()
 		]]
 
 		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"])); -- moved to subcategory
-		do
-			local variable = "testsetting"
-			local name = "[PH]".."Test Setting"
-			local tooltip = "[PH]".."This is a test setting."
-			-- Provide the default value as an RGBA table, just like your other color settings
-			local defaultValue = {r = 1, g = 1, b = 1, a = 1}
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateColorPickerButtonForSetting(category, setting, tooltip);
-		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
 
@@ -634,7 +654,7 @@ function DR.OnAddonLoaded()
 			local variable = "lightningRush"
 			local name = L["LightningRush"]
 			local tooltip = L["LightningRushTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
@@ -694,7 +714,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "themeSpeed"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = L["SpeedometerTheme"]
 			local tooltip = L["SpeedometerThemeTT"]
 
@@ -714,7 +734,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedometerPosPoint"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = L["SpeedPosPointName"]
 			local tooltip = L["SpeedPosPointTT"]
 
@@ -735,7 +755,7 @@ function DR.OnAddonLoaded()
 			local variable = "speedometerPosX"
 			local name = L["SpeedPosXName"]
 			local tooltip = L["SpeedPosXTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -750,7 +770,7 @@ function DR.OnAddonLoaded()
 			local variable = "speedometerPosY"
 			local name = L["SpeedPosYName"]
 			local tooltip = L["SpeedPosYTT"]
-			local defaultValue = 5
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenHeight())
 			local maxValue = Round(GetScreenHeight())
 			local step = 1
@@ -765,7 +785,7 @@ function DR.OnAddonLoaded()
 			local variable = "speedometerWidth"
 			local name = "[PH]"..L["speedometerWidthName"]
 			local tooltip = "[PH]"..L["speedometerWidthTT"]
-			local defaultValue = 244
+			local defaultValue = defaultsTable[variable]
 			local minValue = 10
 			local maxValue = 500
 			local step = 1
@@ -780,7 +800,7 @@ function DR.OnAddonLoaded()
 			local variable = "speedometerHeight"
 			local name = "[PH]"..L["speedometerHeightName"]
 			local tooltip = "[PH]"..L["speedometerHeightTT"]
-			local defaultValue = 24
+			local defaultValue = defaultsTable[variable]
 			local minValue = 10
 			local maxValue = 500
 			local step = 1
@@ -809,7 +829,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedValUnits"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = L["Units"]
 			local tooltip = L["UnitsTT"]
 
@@ -832,7 +852,7 @@ function DR.OnAddonLoaded()
 			local variable = "speedTextScale"
 			local name = L["SpeedTextScale"]
 			local tooltip = L["SpeedTextScaleTT"]
-			local defaultValue = 12
+			local defaultValue = defaultsTable[variable]
 			local minValue = 2
 			local maxValue = 30
 			local step = .5
@@ -902,7 +922,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "themeVigor"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["VigorTheme"]
 			local tooltip = "[PH]"..L["VigorThemeTT"]
 
@@ -924,7 +944,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorPosX"
 			local name = "[PH]"..L["VigorPosXName"]
 			local tooltip = L["VigorPosXNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -939,7 +959,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorPosY"
 			local name = "[PH]"..L["VigorPosYName"]
 			local tooltip = "[PH]"..L["VigorPosYNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -954,7 +974,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorBarWidth"
 			local name = "[PH]"..L["VigorBarWidthName"]
 			local tooltip = "[PH]"..L["VigorBarWidthNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -969,7 +989,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorBarHeight"
 			local name = "[PH]"..L["VigorBarHeightName"]
 			local tooltip = "[PH]"..L["VigorBarHeightNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -984,7 +1004,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorBarSpacing"
 			local name = "[PH]"..L["VigorBarSpacingName"]
 			local tooltip = "[PH]"..L["VigorBarSpacingNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -997,7 +1017,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarOrientation"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["VigorBarOrientationName"]
 			local tooltip = "[PH]"..L["VigorBarOrientationNameTT"]
 
@@ -1014,7 +1034,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarDirection"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["VigorBarDirectionName"]
 			local tooltip = "[PH]"..L["VigorBarDirectionNameTT"]
 
@@ -1033,7 +1053,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorWrap"
 			local name = "[PH]"..L["VigorWrapName"]
 			local tooltip = L["VigorWrapNameTT"]
-			local defaultValue = 6
+			local defaultValue = defaultsTable[variable]
 			local minValue = 1
 			local maxValue = 6
 			local step = 1
@@ -1046,7 +1066,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarFillDirection"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["VigorBarFillDirectionName"]
 			local tooltip = "[PH]"..L["VigorBarFillDirectionNameTT"]
 
@@ -1065,7 +1085,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorSparkWidth"
 			local name = "[PH]"..L["VigorSparkWidthName"]
 			local tooltip = "[PH]"..L["VigorSparkWidthNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -1080,7 +1100,7 @@ function DR.OnAddonLoaded()
 			local variable = "vigorSparkHeight"
 			local name = "[PH]"..L["VigorSparkHeightName"]
 			local tooltip = "[PH]"..L["VigorSparkHeightNameTT"]
-			local defaultValue = 0
+			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
 			local step = 1
@@ -1095,7 +1115,7 @@ function DR.OnAddonLoaded()
 			local variable = "toggleFlashFull"
 			local name = "[PH]"..L["ToggleFlashFullName"]
 			local tooltip = "[PH]"..L["ToggleFlashFullNameTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
@@ -1105,7 +1125,7 @@ function DR.OnAddonLoaded()
 			local variable = "toggleFlashProgress"
 			local name = "[PH]"..L["ToggleFlashProgressName"]
 			local tooltip = "[PH]"..L["ToggleFlashProgressNameTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
@@ -1115,7 +1135,7 @@ function DR.OnAddonLoaded()
 			local variable = "toggleModels"
 			local name = L["ToggleModelsName"]
 			local tooltip = L["ToggleModelsTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
@@ -1123,7 +1143,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "modelTheme"
-			local defaultValue = 1  -- Corresponds to "Option 1" below.
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["ModelThemeName"]
 			local tooltip = "[PH]"..L["ModelThemeNameTT"]
 
@@ -1142,17 +1162,34 @@ function DR.OnAddonLoaded()
 			local variable = "sideArt"
 			local name = L["SideArtName"]
 			local tooltip = L["SideArtTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
 		end
 
 		do
+			local variable = "sideArtStyle"
+			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
+			local name = "[PH]"..L["SideArtStyleName"]
+			local tooltip = "[PH]"..L["SideArtStyleNameTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH]"..L["Default"])
+				container:Add(2, "[PH]"..L["Algari"])
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
+		end
+
+		do
 			local variable = "showtooltip"
 			local name = L["ShowVigorTooltip"]
 			local tooltip = L["ShowVigorTooltipTT"]
-			local defaultValue = true
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
@@ -1162,7 +1199,7 @@ function DR.OnAddonLoaded()
 			local variable = "muteVigorSound"
 			local name = L["MuteVigorSound_Settings"]
 			local tooltip = L["MuteVigorSound_SettingsTT"]
-			local defaultValue = false
+			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
@@ -1207,6 +1244,13 @@ function DR.OnAddonLoaded()
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
+		do -- decor
+			local key, subKey = "vigorBarColor", "decor"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Decor"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Decor"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
+		end
 		do -- flash
 			local key, subKey = "vigorBarColor", "flash"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
@@ -1217,6 +1261,10 @@ function DR.OnAddonLoaded()
 
 		Settings.RegisterAddOnCategory(categoryVigor)
 
+
+		SettingsPanel:HookScript("OnShow", function() UpdateSettingsFramePositions(category.ID) end);
+		SettingsPanel:HookScript("OnHide", function() UpdateSettingsFramePositions(category.ID) end);
+		EventRegistry:RegisterCallback("Settings.CategoryChanged", function() UpdateSettingsFramePositions(category.ID) end);
 
 		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
 			if buttonName == "RightButton" then

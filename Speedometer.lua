@@ -630,6 +630,7 @@ end
 
 -- Function to hide the frame with a fade out animation
 function DR.HideWithFadeBar()
+	if SettingsPanel:IsShown() then return end
 	DR.fadeOutBarGroup:Stop(); -- Stop any ongoing animations
 	DR.fadeOutBarGroup:Play(); -- Play the fade out animation
 end
