@@ -119,20 +119,23 @@ function DR.toggleCharges(self, event, arg1)
 		end
 	end
 	if event == "SPELL_UPDATE_COOLDOWN" then
-		local isEnabled, startTime, modRate, duration
-		if C_Spell.GetSpellCooldown then
-			isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(418592).isEnabled, C_Spell.GetSpellCooldown(418592).startTime, C_Spell.GetSpellCooldown(418592).modRate, C_Spell.GetSpellCooldown(418592).duration
-		else
-			isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
-		end
-		if ( startTime > 0 and duration > 0) then
-			local cdLeft = startTime + duration - GetTime()
-			for i = 1,10 do
-				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill_CD.blp");
+
+	if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
+			local isEnabled, startTime, modRate, duration
+			if C_Spell.GetSpellCooldown then
+				isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(418592).isEnabled, C_Spell.GetSpellCooldown(418592).startTime, C_Spell.GetSpellCooldown(418592).modRate, C_Spell.GetSpellCooldown(418592).duration
+			else
+				isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
 			end
-		else
-			for i = 1,10 do
-				DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp");
+			if ( startTime > 0 and duration > 0) then
+				local cdLeft = startTime + duration - GetTime()
+				for i = 1,10 do
+					DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill_CD.blp");
+				end
+			else
+				for i = 1,10 do
+					DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp");
+				end
 			end
 		end
 	end

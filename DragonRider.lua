@@ -565,7 +565,6 @@ function DR.OnAddonLoaded()
 			DragonRider_DB.raceData = {};
 			DragonRider_DB.raceData[charKey] = {};
 		end
-		DR.MuteVigorSound()
 
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
@@ -584,7 +583,6 @@ function DR.OnAddonLoaded()
 			DR.vigorCounter()
 			DR.setPositions()
 			DR.SetTheme()
-			DR.MuteVigorSound()
 			DR.UpdateVigorLayout()
 		end
 
@@ -692,7 +690,6 @@ function DR.OnAddonLoaded()
 				DragonRider_DB = CopyTable(defaultsTable);
 				DR.vigorCounter();
 				DR.setPositions();
-				DR.MuteVigorSound();
 			end,
 			timeout = 0,
 			whileDead = true,

@@ -357,6 +357,8 @@ end
 
 
 local function UpdateChargeBars()
+
+	if not LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then return end
 	local info = C_Spell.GetSpellCharges(SPELL_ID)
 	if not info then return end
 
