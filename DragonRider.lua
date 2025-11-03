@@ -72,6 +72,8 @@ local defaultsTable = {
 	multiplayer = true,
 	sideArt = true,
 	sideArtStyle = 1,
+	sideArtPosX = -15,
+	sideArtPosY = -10,
 	tempFixes = {
 		hideVigor = true, -- this is now deprecated
 	},
@@ -141,6 +143,8 @@ local defaultsTable = {
 		},
 	},
 };
+
+DR.defaultsTable = defaultsTable
 
 function DR.MergeDefaults(saved, defaults)
 	for key, defaultValue in pairs(defaults) do
@@ -920,7 +924,7 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "themeVigor"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorTheme"]
+			local name = "[PH]"..L["VigorTheme"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorThemeTT"]
 
 			local function GetOptions()
@@ -939,7 +943,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorPosX"
-			local name = "[PH]"..L["VigorPosXName"]
+			local name = "[PH]"..L["VigorPosXName"].." [NYI]"
 			local tooltip = L["VigorPosXNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
@@ -954,7 +958,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorPosY"
-			local name = "[PH]"..L["VigorPosYName"]
+			local name = "[PH]"..L["VigorPosYName"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorPosYNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
@@ -972,8 +976,8 @@ function DR.OnAddonLoaded()
 			local name = "[PH]"..L["VigorBarWidthName"]
 			local tooltip = "[PH]"..L["VigorBarWidthNameTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
+			local minValue = 1
+			local maxValue = 500
 			local step = 1
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -987,8 +991,8 @@ function DR.OnAddonLoaded()
 			local name = "[PH]"..L["VigorBarHeightName"]
 			local tooltip = "[PH]"..L["VigorBarHeightNameTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
+			local minValue = 1
+			local maxValue = 500
 			local step = 1
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1002,8 +1006,8 @@ function DR.OnAddonLoaded()
 			local name = "[PH]"..L["VigorBarSpacingName"]
 			local tooltip = "[PH]"..L["VigorBarSpacingNameTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
+			local minValue = 0
+			local maxValue = 100
 			local step = 1
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1064,7 +1068,7 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "vigorBarFillDirection"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorBarFillDirectionName"]
+			local name = "[PH]"..L["VigorBarFillDirectionName"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorBarFillDirectionNameTT"]
 
 			local function GetOptions()
@@ -1080,7 +1084,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorSparkWidth"
-			local name = "[PH]"..L["VigorSparkWidthName"]
+			local name = "[PH]"..L["VigorSparkWidthName"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorSparkWidthNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
@@ -1095,7 +1099,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorSparkHeight"
-			local name = "[PH]"..L["VigorSparkHeightName"]
+			local name = "[PH]"..L["VigorSparkHeightName"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorSparkHeightNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
@@ -1141,7 +1145,7 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "modelTheme"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["ModelThemeName"]
+			local name = "[PH]"..L["ModelThemeName"].." [NYI]"
 			local tooltip = "[PH]"..L["ModelThemeNameTT"]
 
 			local function GetOptions()
@@ -1157,7 +1161,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArt"
-			local name = L["SideArtName"]
+			local name = L["SideArtName"].." [NYI]"
 			local tooltip = L["SideArtTT"]
 			local defaultValue = defaultsTable[variable]
 
@@ -1168,7 +1172,7 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "sideArtStyle"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["SideArtStyleName"]
+			local name = "[PH]"..L["SideArtStyleName"].." [NYI]"
 			local tooltip = "[PH]"..L["SideArtStyleNameTT"]
 
 			local function GetOptions()
@@ -1183,8 +1187,38 @@ function DR.OnAddonLoaded()
 		end
 
 		do
+			local variable = "sideArtPosX"
+			local name = "[PH]"..L["SideArtPosX"].." [NYI]"
+			local tooltip = L["SideArtPosXTT"]
+			local defaultValue = defaultsTable[variable]
+			local minValue = -100
+			local maxValue = 100
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "sideArtPosY"
+			local name = "[PH]"..L["SideArtPosY"].." [NYI]"
+			local tooltip = L["SideArtPosYTT"]
+			local defaultValue = defaultsTable[variable]
+			local minValue = -100
+			local maxValue = 100
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
 			local variable = "showtooltip"
-			local name = L["ShowVigorTooltip"]
+			local name = L["ShowVigorTooltip"].." [NYI]"
 			local tooltip = L["ShowVigorTooltipTT"]
 			local defaultValue = defaultsTable[variable]
 
