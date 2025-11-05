@@ -403,6 +403,64 @@ for i = 1, 2 do
 	vigorBar.decor[i] = CreateDecor(vigorBar, i);
 end
 
+local DecorOptions = {
+	[1] = {
+		Atlas = "dragonriding_vigor_decor"
+	},
+	[2] = {
+		Atlas = "dragonriding_sgvigor_decor_bronze"
+	},
+	[3] = {
+		Atlas = "dragonriding_sgvigor_decor_dark"
+	},
+	[4] = {
+		Atlas = "dragonriding_sgvigor_decor_gold"
+	},
+	[5] = {
+		Atlas = "dragonriding_sgvigor_decor_silver"
+	},
+};
+
+function DR.ToggleDecor()
+	local toggleModels = DragonRider_DB and DragonRider_DB.sideArt
+	local PosX, PosY = (DragonRider_DB and DragonRider_DB.sideArtPosX) or DECOR_X, (DragonRider_DB and DragonRider_DB.sideArtPosY) or DECOR_Y
+	local Size = (DragonRider_DB and DragonRider_DB.sideArtSize) or 1
+	if toggleModels then
+		for i = 1, 2 do
+			vigorBar.decor[i]:Show()
+		end
+	else
+		for i = 1, 2 do
+			vigorBar.decor[i]:Hide()
+		end
+	end
+
+
+	local themeIndex = DragonRider_DB.sideArtStyle or 1
+	local options = DecorOptions[themeIndex] or DecorOptions[1]
+
+	for i = 1, 2 do
+		local decor = vigorBar.decor[i]
+		if decor then
+			if options.Atlas then
+				decor.texture:SetAtlas(options.Atlas)
+			elseif options.Texture then
+				decor.texture:SetTexture(options.Texture)
+			end
+		end
+
+		if i == 1 then
+			-- Left side (mirrored)
+			decor:SetPoint("RIGHT", vigorBar, "LEFT", -PosX, PosY)
+		else
+			-- Right side (normal)
+			decor:SetPoint("LEFT", vigorBar, "RIGHT", PosX, PosY)
+		end
+		decor:SetScale(Size)
+	end
+end
+
+
 
 local function UpdateChargeBars()
 	
@@ -574,19 +632,114 @@ end)
 DR.model = {};
 DR.modelScene = {};
 
-function DR:modelSetup(number)
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then -- algarian stormrider
-		DR.model[number]:SetModelByFileID(3009394)
-		DR.model[number]:SetPosition(5,0,-1.5)
-		--DR.model1:SetPitch(.3)
-		DR.model[number]:SetYaw(0)
-	else
-		DR.model[number]:SetModelByFileID(1100194)
-		DR.model[number]:SetPosition(5,0,-1.5)
-		--DR.model1:SetPitch(.3)
-		DR.model[number]:SetYaw(0)
+local ModelOptions = {
+	[1] = { -- Wind
+		modelFileID = 1100194,
+		Pos = {
+			X = 5, Y = 0, Z = -1.5,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[2] = { -- Lightning
+		modelFileID = 3009394,
+		Pos = {
+			X = 5, Y = 0, Z = -.5,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[3] = { -- Fire Form
+		modelFileID = 166112,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[4] = { -- Arcane Form
+		modelFileID = 165568,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[5] = { -- Frost Form
+		modelFileID = 166209,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[6] = { -- Holy Form
+		modelFileID = 166322,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[7] = { -- Nature Form
+		modelFileID = 166603,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+	[8] = { -- Shadow Form
+		modelFileID = 166792,
+		Pos = {
+			X = 2.2, Y = 0, Z = -.65,
+		},
+		Yaw = 0,
+		Pitch = 0,
+		Anim = 1,
+	},
+
+
+	--[[
+	[number] = { -- Water (wasn't very visible, maybe revisit later)
+		modelFileID = 791823,
+		Pos = {
+			X = 3, Y = 0, Z = -.3,
+		},
+		Yaw = 0,
+		Pitch = 1,
+		Anim = 1,
+	},
+	]]
+};
+
+function DR.modelSetup()
+	local themeIndex = DragonRider_DB.modelTheme or 1
+	local options = ModelOptions[themeIndex] or ModelOptions[1]
+
+	for i = 1, MAX_CHARGES do
+		local model = DR.model[i]
+		if model then
+			model:SetModelByFileID(options.modelFileID)
+			model:SetPosition(options.Pos.X, options.Pos.Y, options.Pos.Z)
+			if options.Pitch then
+				model:SetPitch(options.Pitch)
+			end
+			model:SetYaw(options.Yaw or 0) -- rotation?
+			if options.Anim then
+				model:SetAnimation(options.Anim)
+			end
+		end
 	end
 end
+
 
 for i = 1, MAX_CHARGES do
 	DR.modelScene[i] = CreateFrame("ModelScene", nil, vigorBar.bars[i])
@@ -596,9 +749,9 @@ for i = 1, MAX_CHARGES do
 	DR.modelScene[i]:SetSize(43,43)
 
 	DR.model[i] = DR.modelScene[i]:CreateActor()
-
-	DR:modelSetup(i)
 end
+
+DR.modelSetup()
 
 
 function DR.hideModels()

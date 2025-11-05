@@ -74,6 +74,7 @@ local defaultsTable = {
 	sideArtStyle = 1,
 	sideArtPosX = -15,
 	sideArtPosY = -10,
+	sideArtSize = 1,
 	tempFixes = {
 		hideVigor = true, -- this is now deprecated
 	},
@@ -89,10 +90,12 @@ local defaultsTable = {
 	vigorBarWidth = 32,
 	vigorBarHeight = 32,
 	vigorBarSpacing = 10,
-	vigorBarOrientation = 1,
-	vigorBarDirection = 1,
-	vigorWrap = 6,
-	vigorBarFillDirection = 1,
+	vigorBarOrientation = 2,		-- 1 for vertical (stacks up), 2 for horizontal (stacks right)
+	vigorBarDirection = 1,			-- 1 for top-to-bottom / left-to-right growth
+									-- 2 for bottom-to-top / right-to-left growth
+	vigorWrap = 6,					-- How many bubbles before wrapping to a new row/column
+	vigorBarFillDirection = 1,		-- 1 for top-to-bottom / left-to-right growth
+									-- 2 for bottom-to-top / right-to-left growth
 	vigorSparkWidth = 32,
 	vigorSparkHeight = 12,
 	toggleFlashFull = true,
@@ -584,10 +587,12 @@ function DR.OnAddonLoaded()
 				variable = strsub(variable, 4); -- remove our prefix so it matches existing savedvar keys
 			end
 
-			DR.vigorCounter()
-			DR.setPositions()
-			DR.SetTheme()
-			DR.UpdateVigorLayout()
+			DR.vigorCounter();
+			DR.setPositions();
+			DR.SetTheme();
+			DR.UpdateVigorLayout();
+			DR.modelSetup();
+			DR.ToggleDecor();
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
@@ -1065,6 +1070,7 @@ function DR.OnAddonLoaded()
 			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
 
+		--[[ -- too much of a headache to bother for now
 		do
 			local variable = "vigorBarFillDirection"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
@@ -1111,6 +1117,7 @@ function DR.OnAddonLoaded()
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
 			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
+		]]
 
 		do
 			local variable = "toggleFlashFull"
@@ -1145,13 +1152,19 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "modelTheme"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["ModelThemeName"].." [NYI]"
+			local name = "[PH]"..L["ModelThemeName"]
 			local tooltip = "[PH]"..L["ModelThemeNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, "[PH]"..L["Wind"])
 				container:Add(2, "[PH]"..L["Lightning"])
+				container:Add(3, "[PH]"..L["Fire Form"])
+				container:Add(4, "[PH]"..L["Arcane Form"])
+				container:Add(5, "[PH]"..L["Frost Form"])
+				container:Add(6, "[PH]"..L["Holy Form"])
+				container:Add(7, "[PH]"..L["Nature Form"])
+				container:Add(8, "[PH]"..L["Shadow Form"])
 				return container:GetData()
 			end
 
@@ -1161,7 +1174,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArt"
-			local name = L["SideArtName"].." [NYI]"
+			local name = L["SideArtName"]
 			local tooltip = L["SideArtTT"]
 			local defaultValue = defaultsTable[variable]
 
@@ -1172,13 +1185,16 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "sideArtStyle"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["SideArtStyleName"].." [NYI]"
+			local name = "[PH]"..L["SideArtStyleName"]
 			local tooltip = "[PH]"..L["SideArtStyleNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, "[PH]"..L["Default"])
-				container:Add(2, "[PH]"..L["Algari"])
+				container:Add(2, "[PH]"..L["Algari Bronze"])
+				container:Add(3, "[PH]"..L["Algari Dark"])
+				container:Add(4, "[PH]"..L["Algari Gold"])
+				container:Add(5, "[PH]"..L["Algari Silver"])
 				return container:GetData()
 			end
 
@@ -1188,7 +1204,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtPosX"
-			local name = "[PH]"..L["SideArtPosX"].." [NYI]"
+			local name = "[PH]"..L["SideArtPosX"]
 			local tooltip = L["SideArtPosXTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
@@ -1203,7 +1219,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtPosY"
-			local name = "[PH]"..L["SideArtPosY"].." [NYI]"
+			local name = "[PH]"..L["SideArtPosY"]
 			local tooltip = L["SideArtPosYTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
@@ -1213,6 +1229,25 @@ function DR.OnAddonLoaded()
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "sideArtSize"
+			local name = "[PH]"..L["SideArtScale"]
+			local tooltip = L["SideArtPosYTT"]
+			local defaultValue = defaultsTable[variable]
+			local minValue = .5
+			local maxValue = 2
+			local step = .1
+
+			local function Formatter(value)
+				return string.format("%.1f", value);
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, Formatter);
 			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
 
@@ -1344,6 +1379,8 @@ function DR.OnAddonLoaded()
 			DR.setPositions();
 			DR.vigorBar:Show();
 			DR.vigorCounter();
+			DR.modelSetup();
+			DR.ToggleDecor();
 		end
 
 		local function OnAdvFlyEnd()

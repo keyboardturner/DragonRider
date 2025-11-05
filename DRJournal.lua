@@ -119,9 +119,9 @@ end
 
 DR.mainFrame = CreateFrame("Frame", "DragonRiderMainFrame", UIParent, "PortraitFrameTemplate")
 tinsert(UISpecialFrames, DR.mainFrame:GetName())
-DR.mainFrame:SetPortraitTextureRaw("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
 local DRportrait = DR.mainFrame.PortraitContainer.portrait
 DRportrait:SetTexCoord(0.03, 1, 0.03, 1) -- centers the icon a little bit more, since there was a large gap in the top / left
+DRportrait:SetTexture("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
 
 --DR.mainFrame.PortraitContainer.portrait:SetTexture("Interface\\AddOns\\Languages\\Languages_Icon_Small")
 DR.mainFrame:SetTitle(L["DragonRider"])
@@ -152,7 +152,7 @@ DR.mainFrame.PortraitDragon.tex = DR.mainFrame.PortraitDragon:CreateTexture()
 DR.mainFrame.PortraitDragon.tex:SetAllPoints()
 DR.mainFrame.PortraitDragon.tex:SetAtlas("UI-HUD-UnitFrame-Target-PortraitOn-Boss-Gold-Winged")
 DR.mainFrame.PortraitDragon.tex:SetTexCoord(1, 0, 0, 1)
-]]
+--]]
 
 
 DR.mainFrame.portraitTooltipThing = CreateFrame("Frame", nil, DR.mainFrame);
@@ -612,7 +612,7 @@ function DR.mainFrame.WorldQuestHandler()
 			--DR.mainFrame["WorldQuestList_"..v].tex:SetTexture(DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID])
 			DR.mainFrame["WorldQuestList_"..v].texlower:SetAtlas("UI-QuestPoi-QuestNumber");
 			DR.mainFrame["WorldQuestList_"..v].texupper:SetAtlas("worldquest-icon-race");
-			SetPortraitToTexture(DR.mainFrame["WorldQuestList_"..v].texmiddle, DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID]);
+			DR.mainFrame["WorldQuestList_"..v].texmiddle:SetTexture(DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID])
 			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 25*WorldQuestPlacement-40, -57);
 			--DR.mainFrame["WorldQuestList_"..v]:SetParent(content1)
 			DR.mainFrame["WorldQuestList_"..v]:SetSize(20,20);
@@ -627,7 +627,7 @@ function DR.mainFrame.WorldQuestHandler()
 		if DR.mainFrame["WorldQuestList_"..v] and C_TaskQuest.IsActive(v) == true then
 			DR.mainFrame["WorldQuestList_"..v].texlower:SetAtlas("UI-QuestPoi-QuestNumber");
 			DR.mainFrame["WorldQuestList_"..v].texupper:SetAtlas("worldquest-icon-race");
-			SetPortraitToTexture(DR.mainFrame["WorldQuestList_"..v].texmiddle, DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID]);
+			DR.mainFrame["WorldQuestList_"..v].texmiddle:SetTexture(DR.ZoneIcons[C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(v)).mapID])
 			DR.mainFrame["WorldQuestList_"..v]:SetPoint("TOPLEFT", DR.mainFrame, "TOPLEFT", 25*WorldQuestPlacement-40, -57);
 
 			DR.mainFrame["WorldQuestList_"..v]:SetScript("OnEnter", function(self)
