@@ -74,6 +74,7 @@ local defaultsTable = {
 	sideArtStyle = 1,
 	sideArtPosX = -15,
 	sideArtPosY = -10,
+	sideArtRot = 0,
 	sideArtSize = 1,
 	tempFixes = {
 		hideVigor = true, -- this is now deprecated
@@ -591,6 +592,7 @@ function DR.OnAddonLoaded()
 			DR.setPositions();
 			DR.SetTheme();
 			DR.UpdateVigorLayout();
+			DR.UpdateVigorTheme();
 			DR.modelSetup();
 			DR.ToggleDecor();
 		end
@@ -929,14 +931,19 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "themeVigor"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorTheme"].." [NYI]"
+			local name = "[PH]"..L["VigorTheme"]
 			local tooltip = "[PH]"..L["VigorThemeTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, L["Default"])
-				container:Add(2, L["Algari"])
-				container:Add(3, L["Minimalist"])
+				container:Add(2, "[PH]"..L["Algari Bronze"])
+				container:Add(3, "[PH]"..L["Algari Dark"])
+				container:Add(4, "[PH]"..L["Algari Gold"])
+				container:Add(5, "[PH]"..L["Algari Silver"])
+				container:Add(6, "[PH]"..L["Default - Desaturated"])
+				container:Add(7, "[PH]"..L["Algari - Desaturated"])
+				--container:Add(9, "[PH]"..L["Minimalist"].." [NYI]")
 				--container:Add(4, L["Alliance"])
 				--container:Add(5, L["Horde"])
 				return container:GetData()
@@ -1186,7 +1193,7 @@ function DR.OnAddonLoaded()
 			local variable = "sideArtStyle"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = "[PH]"..L["SideArtStyleName"]
-			local tooltip = "[PH]"..L["SideArtStyleNameTT"]
+			local tooltip = "[PH]"..L["SideArtStyleNameTT"].."\n\n"..L["DesaturatedOption"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
@@ -1195,6 +1202,11 @@ function DR.OnAddonLoaded()
 				container:Add(3, "[PH]"..L["Algari Dark"])
 				container:Add(4, "[PH]"..L["Algari Gold"])
 				container:Add(5, "[PH]"..L["Algari Silver"])
+				container:Add(6, "[PH]"..L["Default - Desaturated"])
+				container:Add(7, "[PH]"..L["Algari - Desaturated"])
+				container:Add(8, "[PH]"..L["Gryphon - Desaturated"])
+				container:Add(9, "[PH]"..L["Wyvern - Desaturated"])
+				container:Add(10, "[PH]"..L["Dragon - Desaturated"])
 				return container:GetData()
 			end
 
@@ -1224,6 +1236,21 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
 			local maxValue = 100
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
+		end
+
+		do
+			local variable = "sideArtRot"
+			local name = "[PH]"..L["SideArtRot"]
+			local tooltip = L["SideArtRotTT"]
+			local defaultValue = defaultsTable[variable]
+			local minValue = 0
+			local maxValue = 360
 			local step = 1
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1381,6 +1408,8 @@ function DR.OnAddonLoaded()
 			DR.vigorCounter();
 			DR.modelSetup();
 			DR.ToggleDecor();
+			DR.UpdateVigorLayout();
+			DR.UpdateVigorTheme();
 		end
 
 		local function OnAdvFlyEnd()

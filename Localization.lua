@@ -229,6 +229,7 @@ if LOCALE == "enUS" then
 	L["Cover"] = "Cover"
 	L["Decor"] = "Decor"
 	L["Flash"] = "Flash"
+	L["DesaturatedOption"] = "Some options are desaturated, allowing them to be colored better by the color picker options. Options which are not desaturated are best viewed with the color picker set to white (#FFFFFF)."
 
 
 return end

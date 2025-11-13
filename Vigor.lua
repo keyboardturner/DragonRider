@@ -50,6 +50,353 @@ local VigorColors = {
 local DECOR_X = -15
 local DECOR_Y = -10
 
+local VigorOptions = {
+	[1] = { -- default, non-desaturated
+		Full = {
+			Atlas = "dragonriding_vigor_fillfull",
+			Desat = false,
+		},
+		Fill = {
+			Atlas = "dragonriding_vigor_fill",
+			Desat = false,
+		},
+		Progress = {
+			Atlas = "dragonriding_vigor_fill_flipbook",
+			Desat = false,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_vigor_background",
+			Desat = false,
+		},
+		Spark = {
+			Atlas = "dragonriding_vigor_spark",
+			Desat = false,
+		},
+		Mask = {
+			Atlas = "dragonriding_vigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_vigor_frame",
+			Desat = false,
+		},
+		Flash = {
+			Atlas = "dragonriding_vigor_flash",
+			Desat = false,
+		},
+		Overlay = {
+			X = .4,
+			Y = .4,
+		},
+	},
+	[2] = { -- Algari Bronze, non-desaturated
+		Full = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = false,
+		},
+		Fill = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true, -- texture doesn't exist so just use a desat version
+		},
+		Progress = {
+			Atlas = "dragonriding_sgvigor_fill_flipbook",
+			Desat = false,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_sgvigor_background",
+			Desat = false,
+		},
+		Spark = {
+			Atlas = "dragonriding_sgvigor_spark",
+			Desat = false,
+		},
+		Mask = {
+			Atlas = "dragonriding_sgvigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_sgvigor_frame_bronze",
+			Desat = false,
+		},
+		Flash = {
+			Atlas = "dragonriding_sgvigor_flash",
+			Desat = false,
+		},
+		Overlay = {
+			X = .2,
+			Y = .2,
+		},
+	},
+	[3] = { -- Algari Dark, non-desaturated
+		Full = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = false,
+		},
+		Fill = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true, -- texture doesn't exist so just use a desat version
+		},
+		Progress = {
+			Atlas = "dragonriding_sgvigor_fill_flipbook",
+			Desat = false,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_sgvigor_background",
+			Desat = false,
+		},
+		Spark = {
+			Atlas = "dragonriding_sgvigor_spark",
+			Desat = false,
+		},
+		Mask = {
+			Atlas = "dragonriding_sgvigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_sgvigor_frame_dark",
+			Desat = false,
+		},
+		Flash = {
+			Atlas = "dragonriding_sgvigor_flash",
+			Desat = false,
+		},
+		Overlay = {
+			X = .2,
+			Y = .2,
+		},
+	},
+	[4] = { -- Algari Gold, non-desaturated
+		Full = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = false,
+		},
+		Fill = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true, -- texture doesn't exist so just use a desat version
+		},
+		Progress = {
+			Atlas = "dragonriding_sgvigor_fill_flipbook",
+			Desat = false,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_sgvigor_background",
+			Desat = false,
+		},
+		Spark = {
+			Atlas = "dragonriding_sgvigor_spark",
+			Desat = false,
+		},
+		Mask = {
+			Atlas = "dragonriding_sgvigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_sgvigor_frame_gold",
+			Desat = false,
+		},
+		Flash = {
+			Atlas = "dragonriding_sgvigor_flash",
+			Desat = false,
+		},
+		Overlay = {
+			X = .2,
+			Y = .2,
+		},
+	},
+	[5] = { -- Algari Silver, non-desaturated
+		Full = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = false,
+		},
+		Fill = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true, -- texture doesn't exist so just use a desat version
+		},
+		Progress = {
+			Atlas = "dragonriding_sgvigor_fill_flipbook",
+			Desat = false,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_sgvigor_background",
+			Desat = false,
+		},
+		Spark = {
+			Atlas = "dragonriding_sgvigor_spark",
+			Desat = false,
+		},
+		Mask = {
+			Atlas = "dragonriding_sgvigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_sgvigor_frame_silver",
+			Desat = false,
+		},
+		Flash = {
+			Atlas = "dragonriding_sgvigor_flash",
+			Desat = false,
+		},
+		Overlay = {
+			X = .2,
+			Y = .2,
+		},
+	},
+	[6] = { -- default but desaturated
+		Full = {
+			Atlas = "dragonriding_vigor_fillfull",
+			Desat = true,
+		},
+		Fill = {
+			Atlas = "dragonriding_vigor_fill",
+			Desat = true,
+		},
+		Progress = {
+			Atlas = "dragonriding_vigor_fill_flipbook",
+			Desat = true,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_vigor_background",
+			Desat = true,
+		},
+		Spark = {
+			Atlas = "dragonriding_vigor_spark",
+			Desat = true,
+		},
+		Mask = {
+			Atlas = "dragonriding_vigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_vigor_frame",
+			Desat = true,
+		},
+		Flash = {
+			Atlas = "dragonriding_vigor_flash",
+			Desat = true,
+		},
+		Overlay = {
+			X = .4,
+			Y = .4,
+		},
+	},
+	[7] = { -- Algari but desaturated
+		Full = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true,
+		},
+		Fill = {
+			Atlas = "dragonriding_sgvigor_fillfull",
+			Desat = true, -- texture doesn't exist so just use a desat version
+		},
+		Progress = {
+			Atlas = "dragonriding_sgvigor_fill_flipbook",
+			Desat = true,
+			Flipbook = {
+				Duration = 1.0,
+				Rows = 5,
+				Columns = 4,
+				Frames = 20,
+			},
+		},
+		Background = { -- bar.bg
+			Atlas = "dragonriding_sgvigor_background",
+			Desat = true,
+		},
+		Spark = {
+			Atlas = "dragonriding_sgvigor_spark",
+			Desat = true,
+		},
+		Mask = {
+			Atlas = "dragonriding_sgvigor_mask",
+		},
+		Cover = {
+			Atlas = "dragonriding_sgvigor_frame_silver",
+			Desat = true,
+		},
+		Flash = {
+			Atlas = "dragonriding_sgvigor_flash",
+			Desat = true,
+		},
+		Overlay = {
+			X = .2,
+			Y = .2,
+		},
+	},
+};
+
+local DecorOptions = {
+	[1] = {
+		Atlas = "dragonriding_vigor_decor",
+		Desat = false,
+	},
+	[2] = {
+		Atlas = "dragonriding_sgvigor_decor_bronze",
+		Desat = false,
+	},
+	[3] = {
+		Atlas = "dragonriding_sgvigor_decor_dark",
+		Desat = false,
+	},
+	[4] = {
+		Atlas = "dragonriding_sgvigor_decor_gold",
+		Desat = false,
+	},
+	[5] = {
+		Atlas = "dragonriding_sgvigor_decor_silver",
+		Desat = false,
+	},
+	[6] = {
+		Atlas = "dragonriding_vigor_decor",
+		Desat = true,
+	},
+	[7] = {
+		Atlas = "dragonriding_sgvigor_decor_silver",
+		Desat = true,
+	},
+	[8] = {
+		Atlas = "UI-HUD-ActionBar-Gryphon-Right",
+		Desat = true,
+	},
+	[9] = {
+		Atlas = "UI-HUD-ActionBar-Wyvern-Right",
+		Desat = true,
+	},
+	[10] = {
+		Atlas = "nameplates-icon-elite-silver",
+		Desat = true,
+	},
+};
+
 
 local vigorBar = CreateFrame("Frame", "DragonRider_Vigor", UIParent)
 vigorBar:SetPoint("CENTER", BAR_X, BAR_Y)
@@ -61,19 +408,30 @@ local function CreateChargeBar(parent, index)
 	local bar = CreateFrame("Frame", "DRVigorBubble_"..index, parent)
 	bar:SetSize(BAR_WIDTH, BAR_HEIGHT)
 
+	local themeOptions = VigorOptions[1]
+
 	-- background frame
 	bar.bg = bar:CreateTexture(nil, "BACKGROUND", nil, 0)
-	bar.bg:SetAtlas("dragonriding_vigor_background")
+	bar.bg:SetAtlas(themeOptions.Background.Atlas)
 	bar.bg:ClearAllPoints()
 	bar.bg:SetAllPoints(bar)
 	bar.bg:SetDrawLayer("BACKGROUND", 0)
+	bar.bg:SetDesaturated(themeOptions.Background.Desat or false)
 
-	-- static fill texture
-	bar.staticFill = bar:CreateTexture(nil, "ARTWORK", nil, 1)
-	bar.staticFill:SetAtlas("dragonriding_vigor_fill")
-	bar.staticFill:SetAllPoints(bar)
-	bar.staticFill:SetDesaturated(true)
-	bar.staticFill:SetVertexColor(VigorColors.full:GetRGBA())
+	-- empty fill texture
+	bar.emptyFill = bar:CreateTexture(nil, "ARTWORK", nil, 1)
+	bar.emptyFill:SetAtlas(themeOptions.Fill.Atlas)
+	bar.emptyFill:SetAllPoints(bar)
+	bar.emptyFill:SetDesaturated(themeOptions.Fill.Desat or true)
+	bar.emptyFill:SetVertexColor(VigorColors.full:GetRGBA())
+
+	-- full fill texture
+	bar.fullFill = bar:CreateTexture(nil, "ARTWORK", nil, 1)
+	bar.fullFill:SetAtlas(themeOptions.Full.Atlas)
+	bar.fullFill:SetAllPoints(bar)
+	bar.fullFill:SetDesaturated(themeOptions.Full.Desat or false)
+	bar.fullFill:SetVertexColor(VigorColors.full:GetRGBA())
+	bar.fullFill:Hide() -- Hide by default
 
 	-- mask for linear fill
 	bar.clippingFrame = CreateFrame("Frame", nil, bar)
@@ -82,7 +440,7 @@ local function CreateChargeBar(parent, index)
 
 	-- animated fill texture, placed inside the clipping mask frame
 	bar.animFill = bar.clippingFrame:CreateTexture(nil, "ARTWORK", nil, 1)
-	bar.animFill:SetAtlas("dragonriding_vigor_fill_flipbook")
+	bar.animFill:SetAtlas(themeOptions.Progress.Atlas)
 	bar.animFill:SetSize(BAR_WIDTH, BAR_HEIGHT)
 	bar.animFillKey = "animFill" -- key for the animation group
 
@@ -116,12 +474,14 @@ local function CreateChargeBar(parent, index)
 
 	-- animation for the fill texture
 	local flipAnim = animGroup:CreateAnimation("FlipBook")
+	bar.flipAnim = flipAnim -- Store reference for theme updates
 	flipAnim:SetChildKey(bar.animFillKey)
-	flipAnim:SetDuration(1.0)
+	local flipbookOptions = themeOptions.Progress.Flipbook
+	flipAnim:SetDuration(flipbookOptions.Duration)
 	flipAnim:SetOrder(1)
-	flipAnim:SetFlipBookRows(5)
-	flipAnim:SetFlipBookColumns(4)
-	flipAnim:SetFlipBookFrames(20)
+	flipAnim:SetFlipBookRows(flipbookOptions.Rows)
+	flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
+	flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
 
 	animGroup:SetScript("OnPlay", function()
 		bar.clippingFrame:Show()
@@ -132,28 +492,29 @@ local function CreateChargeBar(parent, index)
 
 	-- cover
 	bar.overlayFrame = CreateFrame("Frame", nil, bar)
-	--bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-	--bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
+	local overlayOptions = themeOptions.Overlay
+	bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*overlayOptions.X, bar:GetHeight()*overlayOptions.Y)
+	bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*overlayOptions.X, -bar:GetHeight()*overlayOptions.Y)
 	-- ensure cover is above the clipping frame
 	bar.overlayFrame:SetFrameLevel(bar.clippingFrame:GetFrameLevel() + 10)
 	bar.cover = bar.overlayFrame:CreateTexture(nil, "OVERLAY", nil, 3)
-	bar.cover:SetAtlas("dragonriding_vigor_frame")
+	bar.cover:SetAtlas(themeOptions.Cover.Atlas)
 	bar.cover:SetAllPoints()
-	-- doesns't look great atm, probably change later
-	bar.cover:SetDesaturated(true)
+	bar.cover:SetDesaturated(themeOptions.Cover.Desat or true)
 	bar.cover:SetVertexColor(VigorColors.cover:GetRGBA())
 
 	-- spark clipping frame (masking)
 	-- this frame will contain the spark and be masked by the bubble shape.
 	bar.sparkClippingFrame = CreateFrame("Frame", nil, bar)
-	--bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-	--bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
+	bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*overlayOptions.X, bar:GetHeight()*overlayOptions.Y)
+	bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*overlayOptions.X, -bar:GetHeight()*overlayOptions.Y)
 	bar.sparkClippingFrame:SetFrameLevel(bar.clippingFrame:GetFrameLevel() + 5)
 	bar.sparkMask = bar.sparkClippingFrame:CreateMaskTexture(nil, "ARTWORK")
-	bar.sparkMask:SetAtlas("dragonriding_vigor_mask")
+	bar.sparkMask:SetAtlas(themeOptions.Mask.Atlas)
 	bar.sparkMask:SetAllPoints(bar.sparkClippingFrame)
 	bar.spark = bar.sparkClippingFrame:CreateTexture(nil, "OVERLAY", nil, 2)
-	bar.spark:SetAtlas("dragonriding_vigor_spark")
+	bar.spark:SetAtlas(themeOptions.Spark.Atlas)
+	bar.spark:SetDesaturated(themeOptions.Spark.Desat or false)
 	bar.spark:SetSize(SPARK_WIDTH, SPARK_HEIGHT)
 	bar.spark:SetBlendMode("ADD")
 	bar.spark:SetVertexColor(VigorColors.spark:GetRGBA())
@@ -161,7 +522,8 @@ local function CreateChargeBar(parent, index)
 
 	-- flash texture
 	bar.flash = bar.overlayFrame:CreateTexture(nil, "OVERLAY", nil, 4)
-	bar.flash:SetAtlas("dragonriding_vigor_flash")
+	bar.flash:SetAtlas(themeOptions.Flash.Atlas)
+	bar.flash:SetDesaturated(themeOptions.Flash.Desat or false)
 	bar.flash:SetAllPoints()
 	bar.flash:SetVertexColor(VigorColors.flash:GetRGBA())
 	bar.flash:Hide()
@@ -289,13 +651,7 @@ function DR.UpdateVigorLayout()
 			elseif BAR_FILL_ORIENTATION == 2 then bar.clippingFrame:SetHeight(bar_height)
 			end
 			
-			bar.overlayFrame:ClearAllPoints()
-			bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-			bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
-
-			bar.sparkClippingFrame:ClearAllPoints()
-			bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-			bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
+			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
 
 			bar:ClearAllPoints()
 			local col = math.floor((i - 1) / wrap)
@@ -334,13 +690,7 @@ function DR.UpdateVigorLayout()
 			elseif BAR_FILL_ORIENTATION == 2 then bar.clippingFrame:SetHeight(bar_height)
 			end
 			
-			bar.overlayFrame:ClearAllPoints()
-			bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-			bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
-
-			bar.sparkClippingFrame:ClearAllPoints()
-			bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*.4, bar:GetHeight()*.4)
-			bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*.4, -bar:GetHeight()*.4)
+			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
 
 			bar:ClearAllPoints()
 			local row = math.floor((i - 1) / wrap)
@@ -366,12 +716,66 @@ function DR.UpdateVigorLayout()
 	end
 end
 
+function DR.UpdateVigorTheme()
+	local themeIndex = (DragonRider_DB and DragonRider_DB.themeVigor) or 1
+	local options = VigorOptions[themeIndex] or VigorOptions[1]
+	local overlayOptions = options.Overlay or VigorOptions[1].Overlay
+
+	for i, bar in ipairs(vigorBar.bars) do
+		if bar then
+			-- Apply Textures and Desaturation
+			bar.bg:SetAtlas(options.Background.Atlas)
+			bar.bg:SetDesaturated(options.Background.Desat or false)
+			
+			bar.emptyFill:SetAtlas(options.Fill.Atlas)
+			bar.emptyFill:SetDesaturated(options.Fill.Desat or false)
+
+			bar.fullFill:SetAtlas(options.Full.Atlas)
+			bar.fullFill:SetDesaturated(options.Full.Desat or false)
+
+			bar.animFill:SetAtlas(options.Progress.Atlas)
+			bar.animFill:SetDesaturated(options.Progress.Desat or false)
+
+			bar.cover:SetAtlas(options.Cover.Atlas)
+			bar.cover:SetDesaturated(options.Cover.Desat or false)
+
+			bar.sparkMask:SetAtlas(options.Mask.Atlas)
+
+			bar.spark:SetAtlas(options.Spark.Atlas)
+			bar.spark:SetDesaturated(options.Spark.Desat or false)
+
+			bar.flash:SetAtlas(options.Flash.Atlas)
+			bar.flash:SetDesaturated(options.Flash.Desat or false)
+
+			-- Update Flipbook Animation
+			local flipbookOptions = options.Progress.Flipbook or VigorOptions[1].Progress.Flipbook
+			if bar.flipAnim then
+				bar.flipAnim:SetDuration(flipbookOptions.Duration)
+				bar.flipAnim:SetFlipBookRows(flipbookOptions.Rows)
+				bar.flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
+				bar.flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
+			end
+			
+			-- Update Overlay/Spark Clipping Frame positions
+			bar.overlayFrame:ClearAllPoints()
+			bar.overlayFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*overlayOptions.X, bar:GetHeight()*overlayOptions.Y)
+			bar.overlayFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*overlayOptions.X, -bar:GetHeight()*overlayOptions.Y)
+			
+			bar.sparkClippingFrame:ClearAllPoints()
+			bar.sparkClippingFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", -bar:GetWidth()*overlayOptions.X, bar:GetHeight()*overlayOptions.Y)
+			bar.sparkClippingFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", bar:GetWidth()*overlayOptions.X, -bar:GetHeight()*overlayOptions.Y)
+		end
+	end
+end
+
+
 -- create all the bar objects first
 for i = 1, MAX_CHARGES do
 	vigorBar.bars[i] = CreateChargeBar(vigorBar, i)
 end
 
 DR.UpdateVigorLayout()
+DR.UpdateVigorTheme() -- Call after layout to apply the theme
 
 
 -- side wings art
@@ -403,28 +807,12 @@ for i = 1, 2 do
 	vigorBar.decor[i] = CreateDecor(vigorBar, i);
 end
 
-local DecorOptions = {
-	[1] = {
-		Atlas = "dragonriding_vigor_decor"
-	},
-	[2] = {
-		Atlas = "dragonriding_sgvigor_decor_bronze"
-	},
-	[3] = {
-		Atlas = "dragonriding_sgvigor_decor_dark"
-	},
-	[4] = {
-		Atlas = "dragonriding_sgvigor_decor_gold"
-	},
-	[5] = {
-		Atlas = "dragonriding_sgvigor_decor_silver"
-	},
-};
-
 function DR.ToggleDecor()
 	local toggleModels = DragonRider_DB and DragonRider_DB.sideArt
 	local PosX, PosY = (DragonRider_DB and DragonRider_DB.sideArtPosX) or DECOR_X, (DragonRider_DB and DragonRider_DB.sideArtPosY) or DECOR_Y
 	local Size = (DragonRider_DB and DragonRider_DB.sideArtSize) or 1
+	local Rot = (DragonRider_DB and DragonRider_DB.sideArtRot) or 0
+
 	if toggleModels then
 		for i = 1, 2 do
 			vigorBar.decor[i]:Show()
@@ -435,8 +823,7 @@ function DR.ToggleDecor()
 		end
 	end
 
-
-	local themeIndex = DragonRider_DB.sideArtStyle or 1
+	local themeIndex = (DragonRider_DB and DragonRider_DB.sideArtStyle) or 1
 	local options = DecorOptions[themeIndex] or DecorOptions[1]
 
 	for i = 1, 2 do
@@ -447,14 +834,21 @@ function DR.ToggleDecor()
 			elseif options.Texture then
 				decor.texture:SetTexture(options.Texture)
 			end
+			if options.Desat ~= nil then
+				decor.texture:SetDesaturated(options.Desat)
+			else
+				decor.texture:SetDesaturated(false)
+			end
 		end
 
 		if i == 1 then
 			-- Left side (mirrored)
 			decor:SetPoint("RIGHT", vigorBar, "LEFT", -PosX, PosY)
+			decor.texture:SetRotation(math.rad(-Rot)) -- apply opposite rotation
 		else
 			-- Right side (normal)
 			decor:SetPoint("LEFT", vigorBar, "RIGHT", PosX, PosY)
+			decor.texture:SetRotation(math.rad(Rot))
 		end
 		decor:SetScale(Size)
 	end
@@ -556,9 +950,10 @@ local function UpdateChargeBars()
 		bar.flash:SetVertexColor(rFl, gFl, bFl, aFl)
 
 		if i <= current then -- fully charged
-			bar.staticFill:Show()
-			bar.staticFill:SetDesaturated(false)
-			bar.staticFill:SetVertexColor(rF, gF, bF, aF)
+			bar.fullFill:Show()
+			bar.emptyFill:Hide()
+			bar.fullFill:SetDesaturated(false)
+			bar.fullFill:SetVertexColor(rF, gF, bF, aF)
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
 			bar:SetProgress(1)
 
@@ -575,7 +970,8 @@ local function UpdateChargeBars()
 
 		elseif i == current + 1 and duration > 0 then -- recharging
 			bar.isFull = false -- mark as not full
-			bar.staticFill:Hide()
+			bar.fullFill:Hide()
+			bar.emptyFill:Hide()
 			if not bar.animGroup:IsPlaying() then bar.animGroup:Play() end
 
 			local elapsed = GetTime() - start
@@ -596,9 +992,10 @@ local function UpdateChargeBars()
 
 		else -- empty
 			bar.isFull = false -- mark as not full
-			bar.staticFill:Show()
-			bar.staticFill:SetDesaturated(true)
-			bar.staticFill:SetVertexColor(rE, gE, bE, aE)
+			bar.emptyFill:Show()
+			bar.fullFill:Hide()
+			bar.emptyFill:SetDesaturated(true)
+			bar.emptyFill:SetVertexColor(rE, gE, bE, aE)
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
 			bar:SetProgress(0)
 
@@ -721,7 +1118,7 @@ local ModelOptions = {
 };
 
 function DR.modelSetup()
-	local themeIndex = DragonRider_DB.modelTheme or 1
+	local themeIndex = (DragonRider_DB and DragonRider_DB.modelTheme) or 1
 	local options = ModelOptions[themeIndex] or ModelOptions[1]
 
 	for i = 1, MAX_CHARGES do
