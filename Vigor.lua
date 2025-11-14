@@ -952,7 +952,7 @@ local function UpdateChargeBars()
 		if i <= current then -- fully charged
 			bar.fullFill:Show()
 			bar.emptyFill:Hide()
-			bar.fullFill:SetDesaturated(false)
+			--bar.fullFill:SetDesaturated(false)
 			bar.fullFill:SetVertexColor(rF, gF, bF, aF)
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
 			bar:SetProgress(1)

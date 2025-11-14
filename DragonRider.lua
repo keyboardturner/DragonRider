@@ -21,42 +21,78 @@ local defaultsTable = {
 	speedValUnits = 1,
 	speedBarColor = {
 		slow = {
-			r=196/255,
-			g=97/255,
-			b=0/255,
-			a=1,
+			r=0.77,
+			g=0.38,
+			b=0.00,
+			a=1.00,
 		},
 		vigor = {
 			r=0/255,
 			g=144/255,
 			b=155/255,
-			a=1,
+			a=1.00,
 		},
 		over = {
 			r=168/255,
 			g=77/255,
 			b=195/255,
-			a=1,
+			a=1.00,
 		},
+		cover = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
+		},
+		tick = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
+		},
+		topper = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
+		},
+		footer = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
+		},
+		background = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=0.80,
+		},
+		--spark = { -- NYI
+		--	r=1.00,
+		--	g=1.00,
+		--	b=1.00,
+		--	a=0.90,
+		--},
 	},
 	speedTextColor = {
 		slow = {
-			r=1,
-			g=1,
-			b=1,
-			a=1,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
 		},
 		vigor = {
-			r=1,
-			g=1,
-			b=1,
-			a=1,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
 		},
 		over = {
-			r=1,
-			g=1,
-			b=1,
-			a=1,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
 		},
 	},
 	speedTextScale = 12,
@@ -102,48 +138,52 @@ local defaultsTable = {
 	toggleFlashFull = true,
 	toggleFlashProgress = true,
 	modelTheme = 1,
+	toggleSpeedometer = true,
+	toggleVigor = true,
+	toggleTopper = true,
+	toggleFooter = true,
 	vigorBarColor = {
 		full = {
 			r=0.24,
 			g=0.84,
-			b=1.0,
-			a=1.0,
+			b=1.00,
+			a=1.00,
 		},
 		empty = {
-			r=0.3,
-			g=0.3,
-			b=0.3,
-			a=1.0,
+			r=0.30,
+			g=0.30,
+			b=0.30,
+			a=1.00,
 		},
 		progress = {
-			r=1.0,
-			g=1.0,
-			b=1.0,
-			a=1.0,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
 		},
 		spark = {
-			r=1.0,
-			g=1.0,
-			b=1.0,
-			a=0.9,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=0.90,
 		},
 		cover = {
-			r=0.4,
-			g=0.4,
-			b=0.4,
-			a=1.0,
+			r=0.40,
+			g=0.40,
+			b=0.40,
+			a=1.00,
 		},
 		flash = {
-			r=1.0,
-			g=1.0,
-			b=1.0,
-			a=1.0,
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
 		},
 		decor = {
-			r=0.4,
-			g=0.4,
-			b=0.4,
-			a=1.0,
+			r=0.40,
+			g=0.40,
+			b=0.40,
+			a=1.00,
 		},
 	},
 };
@@ -478,7 +518,7 @@ local function CreateColorPickerButtonForSetting(category, setting, tooltip)
 	return initializer;
 end
 
-local function UpdateSettingsFramePositions(categoryID)
+function DR.UpdateSettingsFramePositions(categoryID)
 	if SettingsPanel and SettingsPanel:IsShown() then -- and SettingsPanel.selectedCategory and SettingsPanel.selectedCategory.ID == categoryID -- need to find the actual currently selected thing
 		DR.vigorBar:SetFrameStrata("DIALOG");
 		DR.statusbar:SetFrameStrata("DIALOG");
@@ -487,14 +527,33 @@ local function UpdateSettingsFramePositions(categoryID)
 		DR.vigorBar:SetPoint("TOP", SettingsPanel, "BOTTOM")
 		DR.statusbar:SetPoint("BOTTOM", DR.vigorBar, "TOP", 0, 13)
 		
-		DR.statusbar:Show();
-		DR.vigorBar:Show();
+		DR.ShowWithFadeBar()
+		if DragonRider_DB.toggleVigor then
+			DR.vigorBar:Show()
+		else
+			DR.vigorBar:Hide()
+		end
 	else
 		DR.statusbar:SetFrameStrata("MEDIUM");
 		DR.vigorBar:SetFrameStrata("MEDIUM");
 
 		DR.setPositions()
-		DR.SetTheme()
+		DR.UpdateSpeedometerTheme()
+
+		if LibAdvFlight.IsAdvFlying() or DR.DriveUtils.IsDriving() then
+			DR.ShowWithFadeBar()
+		elseif LibAdvFlight.IsAdvFlyEnabled() then
+			DR.HideWithFadeBar()
+		else
+			DR.statusbar:Hide()
+		end
+
+		-- Handle Vigor visibility
+		if DragonRider_DB.toggleVigor and LibAdvFlight.IsAdvFlyEnabled() then
+			DR.vigorBar:Show()
+		else
+			DR.vigorBar:Hide()
+		end
 	end
 end
 
@@ -590,7 +649,7 @@ function DR.OnAddonLoaded()
 
 			DR.vigorCounter();
 			DR.setPositions();
-			DR.SetTheme();
+			DR.UpdateSpeedometerTheme();
 			DR.UpdateVigorLayout();
 			DR.UpdateVigorTheme();
 			DR.modelSetup();
@@ -721,6 +780,16 @@ function DR.OnAddonLoaded()
 		-- Speedometer Subcategory
 
 		do
+			local variable = "toggleSpeedometer"
+			local name = "[PH]"..L["ToggleSpeedometer"]
+			local tooltip = "[PH]"..L["ToggleSpeedometerTT"]
+			local defaultValue = defaultsTable[variable]
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
+		end
+
+		do
 			local variable = "themeSpeed"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = L["SpeedometerTheme"]
@@ -729,15 +798,40 @@ function DR.OnAddonLoaded()
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, L["Default"])
-				container:Add(2, L["Algari"])
+				container:Add(2, "[PH]"..L["Algari Gold"])
 				container:Add(3, L["Minimalist"])
 				container:Add(4, L["Alliance"])
 				container:Add(5, L["Horde"])
+				container:Add(6, "[PH]"..L["Algari Bronze"])
+				container:Add(7, "[PH]"..L["Algari Dark"])
+				container:Add(8, "[PH]"..L["Algari Silver"])
+				container:Add(9, "[PH]"..L["Default - Desaturated"])
+				container:Add(10, "[PH]"..L["Algari - Desaturated"])
 				return container:GetData()
 			end
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "toggleTopper"
+			local name = "[PH]"..L["ToggleTopper"]
+			local tooltip = "[PH]"..L["ToggleTopperTT"]
+			local defaultValue = defaultsTable[variable]
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
+		end
+
+		do
+			local variable = "toggleFooter"
+			local name = "[PH]"..L["ToggleFooter"]
+			local tooltip = "[PH]"..L["ToggleFooterTT"]
+			local defaultValue = defaultsTable[variable]
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
 		end
 
 		do
@@ -794,7 +888,7 @@ function DR.OnAddonLoaded()
 			local name = "[PH]"..L["speedometerWidthName"]
 			local tooltip = "[PH]"..L["speedometerWidthTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = 10
+			local minValue = 100
 			local maxValue = 500
 			local step = 1
 
@@ -810,7 +904,7 @@ function DR.OnAddonLoaded()
 			local tooltip = "[PH]"..L["speedometerHeightTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 10
-			local maxValue = 500
+			local maxValue = 100
 			local step = 1
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -923,10 +1017,68 @@ function DR.OnAddonLoaded()
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
+		do -- Speedometer Cover Color
+			local key, subKey = "speedBarColor", "cover"
+			local name = "[PH]"..L["SpeedometerCoverColor"]
+			local tooltip = "[PH]"..L["SpeedometerCoverColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
+
+		do -- Speedometer Tick Color
+			local key, subKey = "speedBarColor", "tick"
+			local name = "[PH]"..L["SpeedometerTickColor"]
+			local tooltip = "[PH]"..L["SpeedometerTickColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
+
+		do -- Speedometer Topper Color
+			local key, subKey = "speedBarColor", "topper"
+			local name = "[PH]"..L["SpeedometerTopperColor"]
+			local tooltip = "[PH]"..L["SpeedometerTopperColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
+
+		do -- Speedometer Footer Color
+			local key, subKey = "speedBarColor", "footer"
+			local name = "[PH]"..L["SpeedometerFooterColor"]
+			local tooltip = "[PH]"..L["SpeedometerFooterColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
+
+		do -- Speedometer Background Color
+			local key, subKey = "speedBarColor", "background"
+			local name = "[PH]"..L["SpeedometerBackgroundColor"]
+			local tooltip = "[PH]"..L["SpeedometerBackgroundColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
+
+		--do -- Speedometer Spark Color (Frame Not Yet Implemented)
+		--	local key, subKey = "speedBarColor", "spark"
+		--	local name = "[PH]"..L["SpeedometerSparkColor"] .. " [NYI]"
+		--	local tooltip = "[PH]"..L["SpeedometerSparkColorTT"] .. " [NYI]"
+		--	local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+		--	CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		--end
+
 
 		Settings.RegisterAddOnCategory(categorySpeedometer)
 
 		-- Vigor Subcategory
+
+		do
+			local variable = "toggleVigor"
+			local name = "[PH]"..L["ToggleVigor"]
+			local tooltip = "[PH]"..L["ToggleVigorTT"]
+			local defaultValue = defaultsTable[variable]
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
 
 		do
 			local variable = "themeVigor"
@@ -943,9 +1095,9 @@ function DR.OnAddonLoaded()
 				container:Add(5, "[PH]"..L["Algari Silver"])
 				container:Add(6, "[PH]"..L["Default - Desaturated"])
 				container:Add(7, "[PH]"..L["Algari - Desaturated"])
-				--container:Add(9, "[PH]"..L["Minimalist"].." [NYI]")
-				--container:Add(4, L["Alliance"])
-				--container:Add(5, L["Horde"])
+				--container:Add(8, "[PH]"..L["Minimalist"].." [NYI]")
+				--container:Add(9, L["Alliance"])
+				--container:Add(10, L["Horde"])
 				return container:GetData()
 			end
 
@@ -1355,9 +1507,9 @@ function DR.OnAddonLoaded()
 		Settings.RegisterAddOnCategory(categoryVigor)
 
 
-		SettingsPanel:HookScript("OnShow", function() UpdateSettingsFramePositions(category.ID) end);
-		SettingsPanel:HookScript("OnHide", function() UpdateSettingsFramePositions(category.ID) end);
-		EventRegistry:RegisterCallback("Settings.CategoryChanged", function() UpdateSettingsFramePositions(category.ID) end);
+		SettingsPanel:HookScript("OnShow", function() DR.UpdateSettingsFramePositions(category.ID) end);
+		SettingsPanel:HookScript("OnHide", function() DR.UpdateSettingsFramePositions(category.ID) end);
+		EventRegistry:RegisterCallback("Settings.CategoryChanged", function() DR.UpdateSettingsFramePositions(category.ID) end);
 
 		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
 			if buttonName == "RightButton" then
@@ -1404,12 +1556,15 @@ function DR.OnAddonLoaded()
 		local function OnAdvFlyEnabled()
 			DR.HideWithFadeBar();
 			DR.setPositions();
-			DR.vigorBar:Show();
+			if DragonRider_DB.toggleVigor then
+				DR.vigorBar:Show();
+			end
 			DR.vigorCounter();
 			DR.modelSetup();
 			DR.ToggleDecor();
 			DR.UpdateVigorLayout();
 			DR.UpdateVigorTheme();
+			DR.UpdateSpeedometerTheme();
 		end
 
 		local function OnAdvFlyEnd()
