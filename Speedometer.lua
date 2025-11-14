@@ -554,6 +554,37 @@ DR.statusbar:SetMinMaxSmoothedValue(0,100)
 DR.statusbar:SetValue(50)
 DR.statusbar:Hide()
 
+local borderPixel = "Interface\\buttons\\white8x8"
+local borderThickness = 2 -- Set pixel thickness (1 or 2)
+
+DR.statusbar.borderTop = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5) -- High strata
+DR.statusbar.borderTop:SetTexture(borderPixel)
+DR.statusbar.borderTop:SetPoint("TOPLEFT", DR.statusbar, "TOPLEFT", 0, 0)
+DR.statusbar.borderTop:SetPoint("TOPRIGHT", DR.statusbar, "TOPRIGHT", 0, 0)
+DR.statusbar.borderTop:SetHeight(borderThickness)
+DR.statusbar.borderTop:Hide()
+
+DR.statusbar.borderBottom = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5)
+DR.statusbar.borderBottom:SetTexture(borderPixel)
+DR.statusbar.borderBottom:SetPoint("BOTTOMLEFT", DR.statusbar, "BOTTOMLEFT", 0, 0)
+DR.statusbar.borderBottom:SetPoint("BOTTOMRIGHT", DR.statusbar, "BOTTOMRIGHT", 0, 0)
+DR.statusbar.borderBottom:SetHeight(borderThickness)
+DR.statusbar.borderBottom:Hide()
+
+DR.statusbar.borderLeft = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5)
+DR.statusbar.borderLeft:SetTexture(borderPixel)
+DR.statusbar.borderLeft:SetPoint("TOPLEFT", DR.statusbar, "TOPLEFT", 0, -borderThickness)
+DR.statusbar.borderLeft:SetPoint("BOTTOMLEFT", DR.statusbar, "BOTTOMLEFT", 0, borderThickness)
+DR.statusbar.borderLeft:SetWidth(borderThickness)
+DR.statusbar.borderLeft:Hide()
+
+DR.statusbar.borderRight = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5)
+DR.statusbar.borderRight:SetTexture(borderPixel)
+DR.statusbar.borderRight:SetPoint("TOPRIGHT", DR.statusbar, "TOPRIGHT", 0, -borderThickness)
+DR.statusbar.borderRight:SetPoint("BOTTOMRIGHT", DR.statusbar, "BOTTOMRIGHT", 0, borderThickness)
+DR.statusbar.borderRight:SetWidth(borderThickness)
+DR.statusbar.borderRight:Hide()
+
 local tick_1 = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 1) -- start gaining accelerated vigor
 tick_1:SetAtlas(DefOptions.TickAtlas)
 tick_1:SetWidth(DefOptions.Width)
@@ -748,6 +779,7 @@ function DR.UpdateSpeedometerTheme()
 	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or 1
 	local options = SpeedometerCoverOptions[themeIndex] or SpeedometerCoverOptions[1]
 	local barOptions = SpeedometerBarOptions[themeIndex] or SpeedometerBarOptions[1]
+	local isMinimalist = (themeIndex == 3)
 
 	DR.statusbar:SetWidth(DragonRider_DB.speedometerWidth or 244)
 	DR.statusbar:SetHeight(DragonRider_DB.speedometerHeight or 24)
@@ -825,6 +857,23 @@ function DR.UpdateSpeedometerTheme()
 	DR.statusbar.CoverL:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
 	DR.statusbar.CoverR:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
 	DR.statusbar.CoverM:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
+
+	DR.statusbar.borderTop:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
+	DR.statusbar.borderBottom:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
+	DR.statusbar.borderLeft:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
+	DR.statusbar.borderRight:SetVertexColor(coverC.r, coverC.g, coverC.b, coverC.a)
+
+	if isMinimalist then
+		DR.statusbar.borderTop:Show()
+		DR.statusbar.borderBottom:Show()
+		DR.statusbar.borderLeft:Show()
+		DR.statusbar.borderRight:Show()
+	else
+		DR.statusbar.borderTop:Hide()
+		DR.statusbar.borderBottom:Hide()
+		DR.statusbar.borderLeft:Hide()
+		DR.statusbar.borderRight:Hide()
+	end
 
 	if options.LeftAtlas then
 		DR.statusbar.CoverL:SetAtlas(options.LeftAtlas)

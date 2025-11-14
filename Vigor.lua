@@ -40,6 +40,7 @@ local FLASH_PROGRESS = true
 local VigorColors = {
 	full = CreateColor(0.24, 0.84, 1.0, 1.0),
 	empty = CreateColor(0.3, 0.3, 0.3, 1.0),
+	empty = CreateColor(1.0, 1.0, 1.0, 1.0),
 	progress = CreateColor(1.0, 1.0, 1.0, 1.0),
 	spark = CreateColor(1.0, 1.0, 1.0, 0.9),
 	cover = CreateColor(0.4, 0.4, 0.4, 1.0),
@@ -352,6 +353,45 @@ local VigorOptions = {
 			Y = .2,
 		},
 	},
+	[8] = { -- Minimalist
+		Full = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+		},
+		Fill = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+		},
+		Progress = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+			Flipbook = nil,
+		},
+		Background = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+		},
+		Spark = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+		},
+		Mask = {
+			Texture = "Interface\\buttons\\white8x8",
+		},
+		Cover = {
+			Atlas = nil,
+			Texture = nil,
+			Desat = false,
+		},
+		Flash = {
+			Texture = "Interface\\buttons\\white8x8",
+			Desat = false,
+		},
+		Overlay = {
+			X = 0,
+			Y = 0,
+		},
+	},
 };
 
 local DecorOptions = {
@@ -408,11 +448,52 @@ local function CreateChargeBar(parent, index)
 	local bar = CreateFrame("Frame", "DRVigorBubble_"..index, parent)
 	bar:SetSize(BAR_WIDTH, BAR_HEIGHT)
 
+	local borderPixel = "Interface\\buttons\\white8x8"
+	local borderThickness = 1
+	
+	bar.borderTop = bar:CreateTexture(nil, "OVERLAY", nil, 5)
+	bar.borderTop:SetTexture(borderPixel)
+	bar.borderTop:SetPoint("TOPLEFT", bar, "TOPLEFT", 0, 0)
+	bar.borderTop:SetPoint("TOPRIGHT", bar, "TOPRIGHT", 0, 0)
+	bar.borderTop:SetHeight(borderThickness)
+	bar.borderTop:SetVertexColor(VigorColors.cover:GetRGBA())
+	bar.borderTop:Hide()
+
+	bar.borderBottom = bar:CreateTexture(nil, "OVERLAY", nil, 5)
+	bar.borderBottom:SetTexture(borderPixel)
+	bar.borderBottom:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
+	bar.borderBottom:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 0, 0)
+	bar.borderBottom:SetHeight(borderThickness)
+	bar.borderBottom:SetVertexColor(VigorColors.cover:GetRGBA())
+	bar.borderBottom:Hide()
+
+	bar.borderLeft = bar:CreateTexture(nil, "OVERLAY", nil, 5)
+	bar.borderLeft:SetTexture(borderPixel)
+	-- Anchor inside the top/bottom borders to avoid corner overlap
+	bar.borderLeft:SetPoint("TOPLEFT", bar, "TOPLEFT", 0, -borderThickness) 
+	bar.borderLeft:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, borderThickness)
+	bar.borderLeft:SetWidth(borderThickness)
+	bar.borderLeft:SetVertexColor(VigorColors.cover:GetRGBA())
+	bar.borderLeft:Hide()
+
+	bar.borderRight = bar:CreateTexture(nil, "OVERLAY", nil, 5)
+	bar.borderRight:SetTexture(borderPixel)
+	-- Anchor inside the top/bottom borders to avoid corner overlap
+	bar.borderRight:SetPoint("TOPRIGHT", bar, "TOPRIGHT", 0, -borderThickness)
+	bar.borderRight:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 0, borderThickness)
+	bar.borderRight:SetWidth(borderThickness)
+	bar.borderRight:SetVertexColor(VigorColors.cover:GetRGBA())
+	bar.borderRight:Hide()
+
 	local themeOptions = VigorOptions[1]
 
 	-- background frame
 	bar.bg = bar:CreateTexture(nil, "BACKGROUND", nil, 0)
-	bar.bg:SetAtlas(themeOptions.Background.Atlas)
+	if themeOptions.Background.Atlas then
+		bar.bg:SetAtlas(themeOptions.Background.Atlas)
+	elseif themeOptions.Background.Texture then
+		bar.bg:SetTexture(themeOptions.Background.Texture)
+	end
 	bar.bg:ClearAllPoints()
 	bar.bg:SetAllPoints(bar)
 	bar.bg:SetDrawLayer("BACKGROUND", 0)
@@ -420,14 +501,22 @@ local function CreateChargeBar(parent, index)
 
 	-- empty fill texture
 	bar.emptyFill = bar:CreateTexture(nil, "ARTWORK", nil, 1)
-	bar.emptyFill:SetAtlas(themeOptions.Fill.Atlas)
+	if themeOptions.Fill.Atlas then
+		bar.emptyFill:SetAtlas(themeOptions.Fill.Atlas)
+	elseif themeOptions.Fill.Texture then
+		bar.emptyFill:SetTexture(themeOptions.Fill.Texture)
+	end
 	bar.emptyFill:SetAllPoints(bar)
 	bar.emptyFill:SetDesaturated(themeOptions.Fill.Desat or true)
 	bar.emptyFill:SetVertexColor(VigorColors.full:GetRGBA())
 
 	-- full fill texture
 	bar.fullFill = bar:CreateTexture(nil, "ARTWORK", nil, 1)
-	bar.fullFill:SetAtlas(themeOptions.Full.Atlas)
+	if themeOptions.Full.Atlas then
+		bar.fullFill:SetAtlas(themeOptions.Full.Atlas)
+	elseif themeOptions.Full.Texture then
+		bar.fullFill:SetTexture(themeOptions.Full.Texture)
+	end
 	bar.fullFill:SetAllPoints(bar)
 	bar.fullFill:SetDesaturated(themeOptions.Full.Desat or false)
 	bar.fullFill:SetVertexColor(VigorColors.full:GetRGBA())
@@ -440,7 +529,11 @@ local function CreateChargeBar(parent, index)
 
 	-- animated fill texture, placed inside the clipping mask frame
 	bar.animFill = bar.clippingFrame:CreateTexture(nil, "ARTWORK", nil, 1)
-	bar.animFill:SetAtlas(themeOptions.Progress.Atlas)
+	if themeOptions.Progress.Atlas then
+		bar.animFill:SetAtlas(themeOptions.Progress.Atlas)
+	elseif themeOptions.Progress.Texture then
+		bar.animFill:SetTexture(themeOptions.Progress.Texture)
+	end
 	bar.animFill:SetSize(BAR_WIDTH, BAR_HEIGHT)
 	bar.animFillKey = "animFill" -- key for the animation group
 
@@ -473,15 +566,20 @@ local function CreateChargeBar(parent, index)
 	bar.animGroup = animGroup
 
 	-- animation for the fill texture
-	local flipAnim = animGroup:CreateAnimation("FlipBook")
-	bar.flipAnim = flipAnim -- Store reference for theme updates
-	flipAnim:SetChildKey(bar.animFillKey)
-	local flipbookOptions = themeOptions.Progress.Flipbook
-	flipAnim:SetDuration(flipbookOptions.Duration)
-	flipAnim:SetOrder(1)
-	flipAnim:SetFlipBookRows(flipbookOptions.Rows)
-	flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
-	flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
+	if themeOptions.Progress.Flipbook then
+		local flipAnim = animGroup:CreateAnimation("FlipBook")
+		bar.flipAnim = flipAnim
+		flipAnim:SetChildKey(bar.animFillKey)
+		local flipbookOptions = themeOptions.Progress.Flipbook
+		flipAnim:SetDuration(flipbookOptions.Duration)
+		flipAnim:SetOrder(1)
+		flipAnim:SetFlipBookRows(flipbookOptions.Rows)
+		flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
+		flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
+	else
+		-- For minimalist, just show static progress
+		bar.flipAnim = nil
+	end
 
 	animGroup:SetScript("OnPlay", function()
 		bar.clippingFrame:Show()
@@ -716,44 +814,78 @@ function DR.UpdateVigorLayout()
 	end
 end
 
+local function SetTextureOrAtlas(texture, options)
+	if options.Atlas then
+		texture:SetTexture(nil)
+		texture:SetAtlas(options.Atlas)
+	elseif options.Texture then
+		texture:SetAtlas(nil)
+		texture:SetTexture(options.Texture)
+	else
+		texture:SetTexture(nil)
+		texture:SetAtlas(nil)
+	end
+end
+
 function DR.UpdateVigorTheme()
 	local themeIndex = (DragonRider_DB and DragonRider_DB.themeVigor) or 1
 	local options = VigorOptions[themeIndex] or VigorOptions[1]
+	local isMinimalist = (themeIndex == 8)
 	local overlayOptions = options.Overlay or VigorOptions[1].Overlay
 
 	for i, bar in ipairs(vigorBar.bars) do
 		if bar then
-			-- Apply Textures and Desaturation
-			bar.bg:SetAtlas(options.Background.Atlas)
+
+			if isMinimalist then
+				bar.borderTop:Show()
+				bar.borderBottom:Show()
+				bar.borderLeft:Show()
+				bar.borderRight:Show()
+			else
+				bar.borderTop:Hide()
+				bar.borderBottom:Hide()
+				bar.borderLeft:Hide()
+				bar.borderRight:Hide()
+			end
+
+			-- Apply Textures and Desaturation using helper function
+			SetTextureOrAtlas(bar.bg, options.Background)
 			bar.bg:SetDesaturated(options.Background.Desat or false)
 			
-			bar.emptyFill:SetAtlas(options.Fill.Atlas)
+			SetTextureOrAtlas(bar.emptyFill, options.Fill)
 			bar.emptyFill:SetDesaturated(options.Fill.Desat or false)
 
-			bar.fullFill:SetAtlas(options.Full.Atlas)
+			SetTextureOrAtlas(bar.fullFill, options.Full)
 			bar.fullFill:SetDesaturated(options.Full.Desat or false)
 
-			bar.animFill:SetAtlas(options.Progress.Atlas)
+			SetTextureOrAtlas(bar.animFill, options.Progress)
 			bar.animFill:SetDesaturated(options.Progress.Desat or false)
 
-			bar.cover:SetAtlas(options.Cover.Atlas)
+			SetTextureOrAtlas(bar.cover, options.Cover)
 			bar.cover:SetDesaturated(options.Cover.Desat or false)
 
-			bar.sparkMask:SetAtlas(options.Mask.Atlas)
+			-- Handle mask (uses Texture or Atlas)
+			if options.Mask.Atlas then
+				bar.sparkMask:SetAtlas(options.Mask.Atlas)
+			elseif options.Mask.Texture then
+				bar.sparkMask:SetTexture(options.Mask.Texture)
+			end
 
-			bar.spark:SetAtlas(options.Spark.Atlas)
+			SetTextureOrAtlas(bar.spark, options.Spark)
 			bar.spark:SetDesaturated(options.Spark.Desat or false)
 
-			bar.flash:SetAtlas(options.Flash.Atlas)
+			SetTextureOrAtlas(bar.flash, options.Flash)
 			bar.flash:SetDesaturated(options.Flash.Desat or false)
 
-			-- Update Flipbook Animation
-			local flipbookOptions = options.Progress.Flipbook or VigorOptions[1].Progress.Flipbook
-			if bar.flipAnim then
-				bar.flipAnim:SetDuration(flipbookOptions.Duration)
-				bar.flipAnim:SetFlipBookRows(flipbookOptions.Rows)
-				bar.flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
-				bar.flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
+			-- Update Flipbook Animation (skip for minimalist)
+			if options.Progress.Flipbook then
+				local flipbookOptions = options.Progress.Flipbook
+				if bar.flipAnim then
+					bar.flipAnim:SetDuration(flipbookOptions.Duration)
+					bar.flipAnim:SetFlipBookRows(flipbookOptions.Rows)
+					bar.flipAnim:SetFlipBookColumns(flipbookOptions.Columns)
+					bar.flipAnim:SetFlipBookFrames(flipbookOptions.Frames)
+				end
 			end
 			
 			-- Update Overlay/Spark Clipping Frame positions
@@ -896,6 +1028,16 @@ local function UpdateChargeBars()
 		rE, gE, bE, aE = VigorColors.empty:GetRGBA()
 	end
 
+	local rBG, gBG, bBG, aBG
+	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.background then
+		rBG = DragonRider_DB.vigorBarColor.background.r
+		gBG = DragonRider_DB.vigorBarColor.background.g
+		bBG = DragonRider_DB.vigorBarColor.background.b
+		aBG = DragonRider_DB.vigorBarColor.background.a
+	else
+		rBG, gBG, bBG, aBG = VigorColors.background:GetRGBA()
+	end
+
 	local rS, gS, bS, aS
 	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.spark then
 		rS = DragonRider_DB.vigorBarColor.spark.r
@@ -945,9 +1087,17 @@ local function UpdateChargeBars()
 		local bar = vigorBar.bars[i]
 		if not bar then break end
 
+		bar.bg:SetVertexColor(rBG, gBG, bBG, aBG)
 		bar.spark:SetVertexColor(rS, gS, bS, aS)
 		bar.cover:SetVertexColor(rC, gC, bC, aC)
 		bar.flash:SetVertexColor(rFl, gFl, bFl, aFl)
+
+		if bar.borderTop then
+			bar.borderTop:SetVertexColor(rC, gC, bC, aC)
+			bar.borderBottom:SetVertexColor(rC, gC, bC, aC)
+			bar.borderLeft:SetVertexColor(rC, gC, bC, aC)
+			bar.borderRight:SetVertexColor(rC, gC, bC, aC)
+		end
 
 		if i <= current then -- fully charged
 			bar.fullFill:Show()

@@ -155,6 +155,12 @@ local defaultsTable = {
 			b=0.30,
 			a=1.00,
 		},
+		background = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=1.00,
+		},
 		progress = {
 			r=1.00,
 			g=1.00,
@@ -1095,6 +1101,7 @@ function DR.OnAddonLoaded()
 				container:Add(5, "[PH]"..L["Algari Silver"])
 				container:Add(6, "[PH]"..L["Default - Desaturated"])
 				container:Add(7, "[PH]"..L["Algari - Desaturated"])
+				container:Add(8, L["Minimalist"])
 				--container:Add(8, "[PH]"..L["Minimalist"].." [NYI]")
 				--container:Add(9, L["Alliance"])
 				--container:Add(10, L["Horde"])
@@ -1465,6 +1472,13 @@ function DR.OnAddonLoaded()
 			local key, subKey = "vigorBarColor", "empty"
 			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
 			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
+		end
+		do -- background
+			local key, subKey = "vigorBarColor", "background"
+			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Background"]
+			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Background"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
