@@ -131,8 +131,8 @@ local defaultsTable = {
 	vigorBarDirection = 1,			-- 1 for top-to-bottom / left-to-right growth
 									-- 2 for bottom-to-top / right-to-left growth
 	vigorWrap = 6,					-- How many bubbles before wrapping to a new row/column
-	vigorBarFillDirection = 1,		-- 1 for top-to-bottom / left-to-right growth
-									-- 2 for bottom-to-top / right-to-left growth
+	vigorBarFillDirection = 1,		-- 1 for vertical
+									-- 2 for horizontal
 	vigorSparkWidth = 32,
 	vigorSparkHeight = 12,
 	toggleFlashFull = true,
@@ -657,6 +657,7 @@ function DR.OnAddonLoaded()
 			DR.setPositions();
 			DR.UpdateSpeedometerTheme();
 			DR.UpdateVigorLayout();
+			DR.UpdateVigorFillDirection();
 			DR.UpdateVigorTheme();
 			DR.modelSetup();
 			DR.ToggleDecor();
@@ -1236,17 +1237,16 @@ function DR.OnAddonLoaded()
 			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
 
-		--[[ -- too much of a headache to bother for now
 		do
 			local variable = "vigorBarFillDirection"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorBarFillDirectionName"].." [NYI]"
+			local name = "[PH]"..L["VigorBarFillDirectionName"]
 			local tooltip = "[PH]"..L["VigorBarFillDirectionNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Direction_DownRight"])
-				container:Add(2, "[PH]"..L["Direction_UpLeft"])
+				container:Add(1, "[PH]"..L["Direction_Vertical"])
+				container:Add(2, "[PH]"..L["Direction_Horizontal"])
 				return container:GetData()
 			end
 
@@ -1254,6 +1254,7 @@ function DR.OnAddonLoaded()
 			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
 		end
 
+		--[[ -- too much of a headache to bother for now
 		do
 			local variable = "vigorSparkWidth"
 			local name = "[PH]"..L["VigorSparkWidthName"].." [NYI]"
@@ -1577,6 +1578,7 @@ function DR.OnAddonLoaded()
 			DR.modelSetup();
 			DR.ToggleDecor();
 			DR.UpdateVigorLayout();
+			DR.UpdateVigorFillDirection();
 			DR.UpdateVigorTheme();
 			DR.UpdateSpeedometerTheme();
 		end

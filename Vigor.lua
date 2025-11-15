@@ -537,29 +537,48 @@ local function CreateChargeBar(parent, index)
 	bar.animFill:SetSize(BAR_WIDTH, BAR_HEIGHT)
 	bar.animFillKey = "animFill" -- key for the animation group
 
-	if BAR_FILL_ORIENTATION == 1 then -- vertical
-		bar.clippingFrame:SetSize(BAR_WIDTH, 0)
-		if FILL_DIRECTION == 1 then -- bottom-to-top
-			bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
-			bar.clippingFrame:SetPoint("BOTTOMRIGHT", bar)
-			bar.animFill:SetPoint("BOTTOM", bar.clippingFrame, "BOTTOM")
-		else -- top-to-bottom
-			bar.clippingFrame:SetPoint("TOPLEFT", bar)
-			bar.clippingFrame:SetPoint("TOPRIGHT", bar)
-			bar.animFill:SetPoint("TOP", bar.clippingFrame, "TOP")
+	bar.fillOrientation = (DragonRider_DB and DragonRider_DB.vigorBarFillDirection) or BAR_FILL_ORIENTATION
+	bar.fillDirection = FILL_DIRECTION
+
+	function bar:UpdateFillAnchors()
+		bar.clippingFrame:ClearAllPoints()
+		bar.animFill:ClearAllPoints()
+		if bar.spark then
+			bar.spark:SetRotation(0) -- Reset rotation
 		end
-	elseif BAR_FILL_ORIENTATION == 2 then -- Horizontal
-		bar.clippingFrame:SetSize(0, BAR_HEIGHT)
-		if FILL_DIRECTION == 1 then -- left-to-right
-			bar.clippingFrame:SetPoint("TOPLEFT", bar)
-			bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
-			bar.animFill:SetPoint("LEFT", bar.clippingFrame, "LEFT")
-		else -- right-to-left
-			bar.clippingFrame:SetPoint("TOPRIGHT", bar)
-			bar.clippingFrame:SetPoint("BOTTOMRIGHT", bar)
-			bar.animFill:SetPoint("RIGHT", bar.clippingFrame, "RIGHT")
+
+		local currentWidth, currentHeight = bar:GetSize()
+
+		if bar.fillOrientation == 1 then -- vertical
+			bar.clippingFrame:SetWidth(currentWidth)
+			bar.clippingFrame:SetHeight(0)
+			if bar.fillDirection == 1 then -- bottom-to-top
+				bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
+				bar.clippingFrame:SetPoint("BOTTOMRIGHT", bar)
+				bar.animFill:SetPoint("BOTTOM", bar.clippingFrame, "BOTTOM")
+			else -- top-to-bottom
+				bar.clippingFrame:SetPoint("TOPLEFT", bar)
+				bar.clippingFrame:SetPoint("TOPRIGHT", bar)
+				bar.animFill:SetPoint("TOP", bar.clippingFrame, "TOP")
+			end
+		elseif bar.fillOrientation == 2 then -- horizontal
+			bar.clippingFrame:SetWidth(0)
+			bar.clippingFrame:SetHeight(currentHeight)
+			if bar.fillDirection == 1 then -- left-to-right
+				bar.clippingFrame:SetPoint("TOPLEFT", bar)
+				bar.clippingFrame:SetPoint("BOTTOMLEFT", bar)
+				bar.animFill:SetPoint("LEFT", bar.clippingFrame, "LEFT")
+			else -- right-to-left
+				bar.clippingFrame:SetPoint("TOPRIGHT", bar)
+				bar.clippingFrame:SetPoint("BOTTOMRIGHT", bar)
+				bar.animFill:SetPoint("RIGHT", bar.clippingFrame, "RIGHT")
+			end
 		end
+		
+		bar.animFill:SetSize(currentWidth, currentHeight)
 	end
+
+	bar:UpdateFillAnchors()
 
 	local animGroup = bar:CreateAnimationGroup()
 	animGroup:SetLooping("REPEAT")
@@ -671,22 +690,22 @@ local function CreateChargeBar(parent, index)
 
 		local currentWidth, currentHeight = bar:GetSize()
 
-		if BAR_FILL_ORIENTATION == 1 then -- Vertical
+		if bar.fillOrientation == 1 then -- Vertical
 			local fillHeight = currentHeight * percent
 			bar.clippingFrame:SetHeight(fillHeight)
 			-- position the spark at the top edge of the fill
 			bar.spark:ClearAllPoints()
-			local yOffset = (FILL_DIRECTION == 1 and 1 or -1) * fillHeight
-			local anchorPoint = (FILL_DIRECTION == 1 and "BOTTOM" or "TOP")
+			local yOffset = (bar.fillDirection == 1 and 1 or -1) * fillHeight
+			local anchorPoint = (bar.fillDirection == 1 and "BOTTOM" or "TOP")
 			bar.spark:SetPoint("CENTER", bar, anchorPoint, 0, yOffset)
 
-		elseif BAR_FILL_ORIENTATION == 2 then -- Horizontal
+		elseif bar.fillOrientation == 2 then -- Horizontal
 			local fillWidth = currentWidth * percent
 			bar.clippingFrame:SetWidth(fillWidth)
 			-- position the spark at the leading edge of the fill
 			bar.spark:ClearAllPoints()
-			local xOffset = (FILL_DIRECTION == 1 and 1 or -1) * fillWidth
-			local anchorPoint = (FILL_DIRECTION == 1 and "LEFT" or "RIGHT")
+			local xOffset = (bar.fillDirection == 1 and 1 or -1) * fillWidth
+			local anchorPoint = (bar.fillDirection == 1 and "LEFT" or "RIGHT")
 			bar.spark:SetPoint("CENTER", bar, anchorPoint, xOffset, 0)
 			bar.spark:SetRotation(math.rad(90))
 		end
@@ -744,10 +763,7 @@ function DR.UpdateVigorLayout()
 
 		for i, bar in ipairs(vigorBar.bars) do
 			bar:SetSize(bar_width, bar_height)
-			bar.animFill:SetSize(bar_width, bar_height)
-			if BAR_FILL_ORIENTATION == 1 then bar.clippingFrame:SetWidth(bar_width)
-			elseif BAR_FILL_ORIENTATION == 2 then bar.clippingFrame:SetHeight(bar_height)
-			end
+			bar:UpdateFillAnchors()
 			
 			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
 
@@ -783,10 +799,7 @@ function DR.UpdateVigorLayout()
 
 		for i, bar in ipairs(vigorBar.bars) do
 			bar:SetSize(bar_width, bar_height)
-			bar.animFill:SetSize(bar_width, bar_height)
-			if BAR_FILL_ORIENTATION == 1 then bar.clippingFrame:SetWidth(bar_width)
-			elseif BAR_FILL_ORIENTATION == 2 then bar.clippingFrame:SetHeight(bar_height)
-			end
+			bar:UpdateFillAnchors()
 			
 			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
 
@@ -824,6 +837,24 @@ local function SetTextureOrAtlas(texture, options)
 	else
 		texture:SetTexture(nil)
 		texture:SetAtlas(nil)
+	end
+end
+
+function DR.UpdateVigorFillDirection()
+	local barFillOrientation = (DragonRider_DB and DragonRider_DB.vigorBarFillDirection) or BAR_FILL_ORIENTATION
+	local fillDirection = FILL_DIRECTION
+
+	for i, bar in ipairs(vigorBar.bars) do
+		if bar then
+			bar.fillOrientation = barFillOrientation
+			bar.fillDirection = fillDirection
+			
+			bar:UpdateFillAnchors()
+			
+			if bar.progress then
+				bar:SetProgress(bar.progress)
+			end
+		end
 	end
 end
 
@@ -908,6 +939,7 @@ end
 
 DR.UpdateVigorLayout()
 DR.UpdateVigorTheme() -- Call after layout to apply the theme
+DR.UpdateVigorFillDirection() -- Call after layout and theme to apply fill direction
 
 
 -- side wings art
@@ -994,6 +1026,9 @@ local function UpdateChargeBars()
 	if not info then return end
 
 	local current = info.currentCharges or 0
+	if issecretvalue and issecretvalue(current) then
+		return
+	end
 	local max = info.maxCharges or MAX_CHARGES
 	local start = info.cooldownStartTime or 0
 	local duration = info.cooldownDuration or 0

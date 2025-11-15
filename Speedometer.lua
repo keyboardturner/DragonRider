@@ -555,9 +555,9 @@ DR.statusbar:SetValue(50)
 DR.statusbar:Hide()
 
 local borderPixel = "Interface\\buttons\\white8x8"
-local borderThickness = 2 -- Set pixel thickness (1 or 2)
+local borderThickness = 1
 
-DR.statusbar.borderTop = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5) -- High strata
+DR.statusbar.borderTop = DR.statusbar:CreateTexture(nil, "OVERLAY", nil, 5)
 DR.statusbar.borderTop:SetTexture(borderPixel)
 DR.statusbar.borderTop:SetPoint("TOPLEFT", DR.statusbar, "TOPLEFT", 0, 0)
 DR.statusbar.borderTop:SetPoint("TOPRIGHT", DR.statusbar, "TOPRIGHT", 0, 0)
