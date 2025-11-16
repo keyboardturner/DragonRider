@@ -133,8 +133,7 @@ local defaultsTable = {
 	vigorWrap = 6,					-- How many bubbles before wrapping to a new row/column
 	vigorBarFillDirection = 1,		-- 1 for vertical
 									-- 2 for horizontal
-	vigorSparkWidth = 32,
-	vigorSparkHeight = 12,
+	vigorSparkThickness = 12,
 	toggleFlashFull = true,
 	toggleFlashProgress = true,
 	modelTheme = 1,
@@ -663,9 +662,9 @@ function DR.OnAddonLoaded()
 			DR.ToggleDecor();
 		end
 
-		local category, layout = Settings.RegisterVerticalLayoutCategory("Dragon Rider")
+		local category, layout = Settings.RegisterVerticalLayoutCategory(L["DR_Title"])
 
-		local categorySpeedometer, layoutSpeedometer = Settings.RegisterVerticalLayoutSubcategory(category, L["ProgressBar"]);
+		local categorySpeedometer, layoutSpeedometer = Settings.RegisterVerticalLayoutSubcategory(category, L["Speedometer"]);
 
 		local categoryVigor, layoutVigor = Settings.RegisterVerticalLayoutSubcategory(category, L["Vigor"]);
 
@@ -673,7 +672,7 @@ function DR.OnAddonLoaded()
 
 		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(string.format(L["Version"], GetAddOnMetadata("DragonRider", "Version"))));
 
-		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["ProgressBar"])); -- moved to subcategory
+		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Speedometer"])); -- moved to subcategory
 
 		local CreateDropdown = Settings.CreateDropdown or Settings.CreateDropDown
 		local CreateCheckbox = Settings.CreateCheckbox or Settings.CreateCheckBox
@@ -753,7 +752,7 @@ function DR.OnAddonLoaded()
 				DragonridingPanelSkillsButtonMixin:OnClick();
 			end
 
-			local initializer = CreateSettingsButtonInitializer(L["OpenDragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"], true);
+			local initializer = CreateSettingsButtonInitializer(L["DragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"], true);
 			layout:AddInitializer(initializer);
 		end
 
@@ -788,8 +787,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleSpeedometer"
-			local name = "[PH]"..L["ToggleSpeedometer"]
-			local tooltip = "[PH]"..L["ToggleSpeedometerTT"]
+			local name = L["ToggleSpeedometer"]
+			local tooltip = L["ToggleSpeedometerTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -800,20 +799,20 @@ function DR.OnAddonLoaded()
 			local variable = "themeSpeed"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
 			local name = L["SpeedometerTheme"]
-			local tooltip = L["SpeedometerThemeTT"]
+			local tooltip = L["SpeedometerThemeTT"].."\n\n"..L["DesaturatedOptionTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, L["Default"])
-				container:Add(2, "[PH]"..L["Algari Gold"])
+				container:Add(2, L["ThemeAlgari_Gold"])
 				container:Add(3, L["Minimalist"])
 				container:Add(4, L["Alliance"])
 				container:Add(5, L["Horde"])
-				container:Add(6, "[PH]"..L["Algari Bronze"])
-				container:Add(7, "[PH]"..L["Algari Dark"])
-				container:Add(8, "[PH]"..L["Algari Silver"])
-				container:Add(9, "[PH]"..L["Default - Desaturated"])
-				container:Add(10, "[PH]"..L["Algari - Desaturated"])
+				container:Add(6, L["ThemeAlgari_Bronze"])
+				container:Add(7, L["ThemeAlgari_Dark"])
+				container:Add(8, L["ThemeAlgari_Silver"])
+				container:Add(9, L["ThemeDefault_Desaturated"])
+				container:Add(10, L["ThemeAlgari_Desaturated"])
 				return container:GetData()
 			end
 
@@ -823,8 +822,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleTopper"
-			local name = "[PH]"..L["ToggleTopper"]
-			local tooltip = "[PH]"..L["ToggleTopperTT"]
+			local name = L["ToggleTopper"]
+			local tooltip = L["ToggleTopperTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -833,8 +832,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleFooter"
-			local name = "[PH]"..L["ToggleFooter"]
-			local tooltip = "[PH]"..L["ToggleFooterTT"]
+			local name = L["ToggleFooter"]
+			local tooltip = L["ToggleFooterTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -861,9 +860,9 @@ function DR.OnAddonLoaded()
 		end
 
 		do
-			local variable = "speedometerPosX"
-			local name = L["SpeedPosXName"]
-			local tooltip = L["SpeedPosXTT"]
+			local variable = "speedometerPosX" -- Convert to Drag & Drop Later
+			local name = "[PH]"..L["SpeedPosXName"]
+			local tooltip = "[PH]"..L["SpeedPosXTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
@@ -876,9 +875,9 @@ function DR.OnAddonLoaded()
 		end
 
 		do
-			local variable = "speedometerPosY"
-			local name = L["SpeedPosYName"]
-			local tooltip = L["SpeedPosYTT"]
+			local variable = "speedometerPosY" -- Convert to Drag & Drop Later
+			local name = "[PH]"..L["SpeedPosYName"]
+			local tooltip = "[PH]"..L["SpeedPosYTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenHeight())
 			local maxValue = Round(GetScreenHeight())
@@ -892,8 +891,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedometerWidth"
-			local name = "[PH]"..L["speedometerWidthName"]
-			local tooltip = "[PH]"..L["speedometerWidthTT"]
+			local name = L["SpeedometerWidthName"]
+			local tooltip = L["SpeedometerWidthTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 100
 			local maxValue = 500
@@ -907,8 +906,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedometerHeight"
-			local name = "[PH]"..L["speedometerHeightName"]
-			local tooltip = "[PH]"..L["speedometerHeightTT"]
+			local name = L["SpeedometerHeightName"]
+			local tooltip = L["SpeedometerHeightTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 10
 			local maxValue = 100
@@ -977,24 +976,24 @@ function DR.OnAddonLoaded()
 		-- Speedometer Colors
 		do -- Low Speed Progress Bar Color
 			local key, subKey = "speedBarColor", "slow"
-			local name = L["ProgressBarColor"] .. " - " .. L["Low"]
-			local tooltip = L["ColorPickerLowProgTT"]
+			local name = L["SpeedometerBar_Slow_ColorPicker"]
+			local tooltip = L["SpeedometerBar_Slow_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Vigor Speed Progress Bar Color
 			local key, subKey = "speedBarColor", "vigor"
-			local name = L["ProgressBarColor"] .. " - " .. L["Vigor"] 
-			local tooltip = L["ColorPickerMidProgTT"]
+			local name = L["SpeedometerBar_Recharge_ColorPicker"]
+			local tooltip = L["SpeedometerBar_Recharge_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- High Speed Progress Bar Color
 			local key, subKey = "speedBarColor", "over"
-			local name = L["ProgressBarColor"] .. " - " .. L["High"]
-			local tooltip = L["ColorPickerHighProgTT"]
+			local name = L["SpeedometerBar_Over_ColorPicker"]
+			local tooltip = L["SpeedometerBar_Over_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
@@ -1002,64 +1001,64 @@ function DR.OnAddonLoaded()
 		-- Text Colors
 		do -- Low Speed Text Color
 			local key, subKey = "speedTextColor", "slow"
-			local name = L["UnitsColor"] .. " - " .. L["Low"]
-			local tooltip = L["ColorPickerLowTextTT"]
+			local name = L["SpeedometerText_Slow_ColorPicker"]
+			local tooltip = L["SpeedometerText_Slow_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Vigor Speed Text Color
 			local key, subKey = "speedTextColor", "vigor"
-			local name = L["UnitsColor"] .. " - " .. L["Vigor"]
-			local tooltip = L["ColorPickerMidTextTT"]
+			local name = L["SpeedometerText_Recharge_ColorPicker"]
+			local tooltip = L["SpeedometerText_Recharge_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- High Speed Text Color
 			local key, subKey = "speedTextColor", "over"
-			local name = L["UnitsColor"] .. " - " .. L["High"]
-			local tooltip = L["ColorPickerHighTextTT"]
+			local name = L["SpeedometerText_Over_ColorPicker"]
+			local tooltip = L["SpeedometerText_Over_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Speedometer Cover Color
 			local key, subKey = "speedBarColor", "cover"
-			local name = "[PH]"..L["SpeedometerCoverColor"]
-			local tooltip = "[PH]"..L["SpeedometerCoverColorTT"]
+			local name = L["SpeedometerCover_ColorPicker"]
+			local tooltip = L["SpeedometerCover_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Speedometer Tick Color
 			local key, subKey = "speedBarColor", "tick"
-			local name = "[PH]"..L["SpeedometerTickColor"]
-			local tooltip = "[PH]"..L["SpeedometerTickColorTT"]
+			local name = L["SpeedometerTick_ColorPicker"]
+			local tooltip = L["SpeedometerTick_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Speedometer Topper Color
 			local key, subKey = "speedBarColor", "topper"
-			local name = "[PH]"..L["SpeedometerTopperColor"]
-			local tooltip = "[PH]"..L["SpeedometerTopperColorTT"]
+			local name = L["SpeedometerTopper_ColorPicker"]
+			local tooltip = L["SpeedometerTopper_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Speedometer Footer Color
 			local key, subKey = "speedBarColor", "footer"
-			local name = "[PH]"..L["SpeedometerFooterColor"]
-			local tooltip = "[PH]"..L["SpeedometerFooterColorTT"]
+			local name = L["SpeedometerFooter_ColorPicker"]
+			local tooltip = L["SpeedometerFooter_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
 		do -- Speedometer Background Color
 			local key, subKey = "speedBarColor", "background"
-			local name = "[PH]"..L["SpeedometerBackgroundColor"]
-			local tooltip = "[PH]"..L["SpeedometerBackgroundColorTT"]
+			local name = L["SpeedometerBackground_ColorPicker"]
+			local tooltip = L["SpeedometerBackground_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
@@ -1079,8 +1078,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleVigor"
-			local name = "[PH]"..L["ToggleVigor"]
-			local tooltip = "[PH]"..L["ToggleVigorTT"]
+			local name = L["ToggleVigor"]
+			local tooltip = L["ToggleVigorTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1090,18 +1089,18 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "themeVigor"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorTheme"]
-			local tooltip = "[PH]"..L["VigorThemeTT"]
+			local name = L["VigorTheme"]
+			local tooltip = L["VigorThemeTT"].."\n\n"..L["DesaturatedOptionTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, L["Default"])
-				container:Add(2, "[PH]"..L["Algari Bronze"])
-				container:Add(3, "[PH]"..L["Algari Dark"])
-				container:Add(4, "[PH]"..L["Algari Gold"])
-				container:Add(5, "[PH]"..L["Algari Silver"])
-				container:Add(6, "[PH]"..L["Default - Desaturated"])
-				container:Add(7, "[PH]"..L["Algari - Desaturated"])
+				container:Add(2, L["ThemeAlgari_Bronze"])
+				container:Add(3, L["ThemeAlgari_Dark"])
+				container:Add(4, L["ThemeAlgari_Gold"])
+				container:Add(5, L["ThemeAlgari_Silver"])
+				container:Add(6, L["ThemeDefault_Desaturated"])
+				container:Add(7, L["ThemeAlgari_Desaturated"])
 				container:Add(8, L["Minimalist"])
 				--container:Add(8, "[PH]"..L["Minimalist"].." [NYI]")
 				--container:Add(9, L["Alliance"])
@@ -1114,7 +1113,7 @@ function DR.OnAddonLoaded()
 		end
 
 		do
-			local variable = "vigorPosX"
+			local variable = "vigorPosX" -- Convert to Drag & Drop Later
 			local name = "[PH]"..L["VigorPosXName"].." [NYI]"
 			local tooltip = L["VigorPosXNameTT"]
 			local defaultValue = defaultsTable[variable]
@@ -1129,7 +1128,7 @@ function DR.OnAddonLoaded()
 		end
 
 		do
-			local variable = "vigorPosY"
+			local variable = "vigorPosY" -- Convert to Drag & Drop Later
 			local name = "[PH]"..L["VigorPosYName"].." [NYI]"
 			local tooltip = "[PH]"..L["VigorPosYNameTT"]
 			local defaultValue = defaultsTable[variable]
@@ -1145,8 +1144,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarWidth"
-			local name = "[PH]"..L["VigorBarWidthName"]
-			local tooltip = "[PH]"..L["VigorBarWidthNameTT"]
+			local name = L["VigorBarWidthName"]
+			local tooltip = L["VigorBarWidthNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 1
 			local maxValue = 500
@@ -1160,8 +1159,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarHeight"
-			local name = "[PH]"..L["VigorBarHeightName"]
-			local tooltip = "[PH]"..L["VigorBarHeightNameTT"]
+			local name = L["VigorBarHeightName"]
+			local tooltip = L["VigorBarHeightNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 1
 			local maxValue = 500
@@ -1175,8 +1174,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarSpacing"
-			local name = "[PH]"..L["VigorBarSpacingName"]
-			local tooltip = "[PH]"..L["VigorBarSpacingNameTT"]
+			local name = L["VigorBarHeightName"]
+			local tooltip = L["VigorBarHeightNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
 			local maxValue = 100
@@ -1191,13 +1190,13 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "vigorBarOrientation"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorBarOrientationName"]
-			local tooltip = "[PH]"..L["VigorBarOrientationNameTT"]
+			local name = L["VigorBarOrientationName"]
+			local tooltip = L["VigorBarOrientationNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Orientation_Vertical"])
-				container:Add(2, "[PH]"..L["Orientation_Horizontal"])
+				container:Add(1, L["Orientation_Vertical"])
+				container:Add(2, L["Orientation_Horizontal"])
 				return container:GetData()
 			end
 
@@ -1208,13 +1207,13 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "vigorBarDirection"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorBarDirectionName"]
-			local tooltip = "[PH]"..L["VigorBarDirectionNameTT"]
+			local name = L["VigorBarDirectionName"]
+			local tooltip = L["VigorBarDirectionNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Direction_DownRight"])
-				container:Add(2, "[PH]"..L["Direction_UpLeft"])
+				container:Add(1, L["Direction_DownRight"])
+				container:Add(2, L["Direction_UpLeft"])
 				return container:GetData()
 			end
 
@@ -1224,7 +1223,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorWrap"
-			local name = "[PH]"..L["VigorWrapName"]
+			local name = L["VigorWrapName"]
 			local tooltip = L["VigorWrapNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 1
@@ -1240,13 +1239,13 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "vigorBarFillDirection"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["VigorBarFillDirectionName"]
-			local tooltip = "[PH]"..L["VigorBarFillDirectionNameTT"]
+			local name = L["VigorBarFillDirectionName"]
+			local tooltip = L["VigorBarFillDirectionNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Direction_Vertical"])
-				container:Add(2, "[PH]"..L["Direction_Horizontal"])
+				container:Add(1, L["Direction_Vertical"])
+				container:Add(2, L["Direction_Horizontal"])
 				return container:GetData()
 			end
 
@@ -1254,26 +1253,11 @@ function DR.OnAddonLoaded()
 			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
 		end
 
-		--[[ -- too much of a headache to bother for now
+		--[[
 		do
-			local variable = "vigorSparkWidth"
-			local name = "[PH]"..L["VigorSparkWidthName"].." [NYI]"
-			local tooltip = "[PH]"..L["VigorSparkWidthNameTT"]
-			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
-		end
-
-		do
-			local variable = "vigorSparkHeight"
-			local name = "[PH]"..L["VigorSparkHeightName"].." [NYI]"
-			local tooltip = "[PH]"..L["VigorSparkHeightNameTT"]
+			local variable = "vigorSparkThickness" -- NYI
+			local name = "[PH]"..L["VigorSparkThicknessName"].." [NYI]"
+			local tooltip = "[PH]"..L["VigorSparkThicknessNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -Round(GetScreenWidth())
 			local maxValue = Round(GetScreenWidth())
@@ -1288,8 +1272,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleFlashFull"
-			local name = "[PH]"..L["ToggleFlashFullName"]
-			local tooltip = "[PH]"..L["ToggleFlashFullNameTT"]
+			local name = L["ToggleFlashFullName"]
+			local tooltip = L["ToggleFlashFullNameTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1298,8 +1282,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "toggleFlashProgress"
-			local name = "[PH]"..L["ToggleFlashProgressName"]
-			local tooltip = "[PH]"..L["ToggleFlashProgressNameTT"]
+			local name = L["ToggleFlashProgressName"]
+			local tooltip = L["ToggleFlashProgressNameTT"]
 			local defaultValue = defaultsTable[variable]
 
 			local setting = RegisterSetting(variable, defaultValue, name);
@@ -1319,19 +1303,19 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "modelTheme"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["ModelThemeName"]
-			local tooltip = "[PH]"..L["ModelThemeNameTT"]
+			local name = L["ModelThemeName"]
+			local tooltip = L["ModelThemeNameTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Wind"])
-				container:Add(2, "[PH]"..L["Lightning"])
-				container:Add(3, "[PH]"..L["Fire Form"])
-				container:Add(4, "[PH]"..L["Arcane Form"])
-				container:Add(5, "[PH]"..L["Frost Form"])
-				container:Add(6, "[PH]"..L["Holy Form"])
-				container:Add(7, "[PH]"..L["Nature Form"])
-				container:Add(8, "[PH]"..L["Shadow Form"])
+				container:Add(1, L["ModelTheme_Wind"])
+				container:Add(2, L["ModelTheme_Lightning"])
+				container:Add(3, L["ModelTheme_FireForm"])
+				container:Add(4, L["ModelTheme_ArcaneForm"])
+				container:Add(5, L["ModelTheme_FrostForm"])
+				container:Add(6, L["ModelTheme_HolyForm"])
+				container:Add(7, L["ModelTheme_NatureForm"])
+				container:Add(8, L["ModelTheme_ShadowForm"])
 				return container:GetData()
 			end
 
@@ -1352,21 +1336,21 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "sideArtStyle"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = "[PH]"..L["SideArtStyleName"]
-			local tooltip = "[PH]"..L["SideArtStyleNameTT"].."\n\n"..L["DesaturatedOption"]
+			local name = L["SideArtStyleName"]
+			local tooltip = L["SideArtStyleNameTT"].."\n\n"..L["DesaturatedOptionTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH]"..L["Default"])
-				container:Add(2, "[PH]"..L["Algari Bronze"])
-				container:Add(3, "[PH]"..L["Algari Dark"])
-				container:Add(4, "[PH]"..L["Algari Gold"])
-				container:Add(5, "[PH]"..L["Algari Silver"])
-				container:Add(6, "[PH]"..L["Default - Desaturated"])
-				container:Add(7, "[PH]"..L["Algari - Desaturated"])
-				container:Add(8, "[PH]"..L["Gryphon - Desaturated"])
-				container:Add(9, "[PH]"..L["Wyvern - Desaturated"])
-				container:Add(10, "[PH]"..L["Dragon - Desaturated"])
+				container:Add(1, L["Default"])
+				container:Add(2, L["ThemeAlgari_Bronze"])
+				container:Add(3, L["ThemeAlgari_Dark"])
+				container:Add(4, L["ThemeAlgari_Gold"])
+				container:Add(5, L["ThemeAlgari_Silver"])
+				container:Add(6, L["ThemeDefault_Desaturated"])
+				container:Add(7, L["ThemeAlgari_Desaturated"])
+				container:Add(8, L["ThemeGryphon_Desaturated"])
+				container:Add(9, L["ThemeWyvern_Desaturated"])
+				container:Add(10, L["ThemeDragon_Desaturated"])
 				return container:GetData()
 			end
 
@@ -1376,7 +1360,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtPosX"
-			local name = "[PH]"..L["SideArtPosX"]
+			local name = L["SideArtPosX"]
 			local tooltip = L["SideArtPosXTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
@@ -1391,7 +1375,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtPosY"
-			local name = "[PH]"..L["SideArtPosY"]
+			local name = L["SideArtPosY"]
 			local tooltip = L["SideArtPosYTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
@@ -1406,7 +1390,7 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtRot"
-			local name = "[PH]"..L["SideArtRot"]
+			local name = L["SideArtRot"]
 			local tooltip = L["SideArtRotTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
@@ -1421,8 +1405,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "sideArtSize"
-			local name = "[PH]"..L["SideArtScale"]
-			local tooltip = L["SideArtPosYTT"]
+			local name = L["SideArtScale"]
+			local tooltip = L["SideArtScaleTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = .5
 			local maxValue = 2
@@ -1464,57 +1448,57 @@ function DR.OnAddonLoaded()
 		-- Vigor Colors
 		do -- full
 			local key, subKey = "vigorBarColor", "full"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Full"]
+			local name = L["VigorBar_Full_ColorPicker"]
+			local tooltip = L["VigorBar_Full_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- empty
 			local key, subKey = "vigorBarColor", "empty"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Empty"]
-			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
-		end
-		do -- background
-			local key, subKey = "vigorBarColor", "background"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Background"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Background"]
+			local name = L["VigorBar_Empty_ColorPicker"]
+			local tooltip = L["VigorBar_Empty_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- progress
 			local key, subKey = "vigorBarColor", "progress"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Progress"]
-			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
-		end
-		do -- spark
-			local key, subKey = "vigorBarColor", "spark"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Spark"]
+			local name = L["VigorBar_Progress_ColorPicker"]
+			local tooltip = L["VigorBar_Progress_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- cover
 			local key, subKey = "vigorBarColor", "cover"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Cover"]
+			local name = L["VigorBarCover_ColorPicker"]
+			local tooltip = L["VigorBarCover_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
-		do -- decor
-			local key, subKey = "vigorBarColor", "decor"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Decor"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Decor"]
+		do -- background
+			local key, subKey = "vigorBarColor", "background"
+			local name = L["VigorBarBackground_ColorPicker"]
+			local tooltip = L["VigorBarBackground_ColorPickerTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
+		end
+		do -- spark
+			local key, subKey = "vigorBarColor", "spark"
+			local name = L["VigorBarSpark_ColorPicker"]
+			local tooltip = L["VigorBarSpark_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
 		do -- flash
 			local key, subKey = "vigorBarColor", "flash"
-			local name = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
-			local tooltip = "[PH]"..L["VigorColor"] .. " - " .. "[PH]"..L["Flash"]
+			local name = L["VigorBarFlash_ColorPicker"]
+			local tooltip = L["VigorBarFlash_ColorPickerTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
+		end
+		do -- decor
+			local key, subKey = "vigorBarColor", "decor"
+			local name = L["VigorBarDecor_ColorPicker"]
+			local tooltip = L["VigorBarDecor_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
