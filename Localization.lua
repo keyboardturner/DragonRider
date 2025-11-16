@@ -602,7 +602,7 @@ if LOCALE == "deDE" then
 	L["ColorPickerLowTextTT"] = "Wählen Sie eine benutzerdefinierte Text-Farbe für die niedrigen Geschwindigkeitsbereich des Tacho. Diese wird dargestellt, wenn der Spieler keinen Elan generiert." -- Deprecated
 	L["ColorPickerMidTextTT"] = "Wählen Sie eine benutzerdefinierte Text-Farbe für den normalen Geschwindigkeitsbereich des Tachos. Diese wird dargestellt, wenn der Spieler Elan generiert." -- Deprecated
 	L["ColorPickerHighTextTT"] = "Wählen Sie eine benutzerdefinierte Text-Farbe für die hohen Geschwindigkeitsbereich des Tachos. Diese wird dargestellt, wenn der Spieler Elan generiert, als auch sich mit einer Geschwindigkeit über dem normalen Geschwindigkeitsbereich fortbewegt." -- Deprecated
-	L["DragonridingTalents"] = "Himmelsreiten – Fertigkeiten und Freischaltungen" -- Changed in 11.2.7
+	L["DragonridingTalents"] = "Himmelsreiten - Fertigkeiten und Freischaltungen" -- Changed in 11.2.7
 	L["OpenDragonridingTalents"] = "Himmelsreiten - Fertigkeiten und Freischaltungen" -- Changed in 11.2.7
 	L["OpenDragonridingTalentsTT"] = "Öffnet die Fertigkeiten und Freischaltungen für das Himmelsreiten." -- Changed in 11.2.7
 	L["SideArtName"] = "Seitenkunst"
@@ -767,15 +767,15 @@ if LOCALE == "deDE" then
 	L["ToggleVigorTT"] = "Zeigt die 6 Vigor-Ladungen an."
 
 	-- Themes
-	L["ThemeAlgari_Gold"] = "Algari – Gold"
-	L["ThemeAlgari_Bronze"] = "Algari – Bronze"
-	L["ThemeAlgari_Dark"] = "Algari – Dunkel"
-	L["ThemeAlgari_Silver"] = "Algari – Silber"
-	L["ThemeDefault_Desaturated"] = "Standard – Entsättigt"
-	L["ThemeAlgari_Desaturated"] = "Algari – Entsättigt"
-	L["ThemeGryphon_Desaturated"] = "Greif – Entsättigt"
-	L["ThemeWyvern_Desaturated"] = "Wyvern – Entsättigt"
-	L["ThemeDragon_Desaturated"] = "Drache – Entsättigt"
+	L["ThemeAlgari_Gold"] = "Algari - Gold"
+	L["ThemeAlgari_Bronze"] = "Algari - Bronze"
+	L["ThemeAlgari_Dark"] = "Algari - Dunkel"
+	L["ThemeAlgari_Silver"] = "Algari - Silber"
+	L["ThemeDefault_Desaturated"] = "Standard - Entsättigt"
+	L["ThemeAlgari_Desaturated"] = "Algari - Entsättigt"
+	L["ThemeGryphon_Desaturated"] = "Greif - Entsättigt"
+	L["ThemeWyvern_Desaturated"] = "Wyvern - Entsättigt"
+	L["ThemeDragon_Desaturated"] = "Drache - Entsättigt"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "Wind"
@@ -1007,15 +1007,15 @@ if LOCALE == "frFR" then
 	L["ToggleVigorTT"] = "Active l’affichage des 6 charges de Vigueur."
 
 	-- Themes
-	L["ThemeAlgari_Gold"] = "Algari – Or"
-	L["ThemeAlgari_Bronze"] = "Algari – Bronze"
-	L["ThemeAlgari_Dark"] = "Algari – Sombre"
-	L["ThemeAlgari_Silver"] = "Algari – Argent"
-	L["ThemeDefault_Desaturated"] = "Par défaut – Désaturé"
-	L["ThemeAlgari_Desaturated"] = "Algari – Désaturé"
-	L["ThemeGryphon_Desaturated"] = "Griffon – Désaturé"
-	L["ThemeWyvern_Desaturated"] = "Wyrm – Désaturé"
-	L["ThemeDragon_Desaturated"] = "Dragon – Désaturé"
+	L["ThemeAlgari_Gold"] = "Algari - Or"
+	L["ThemeAlgari_Bronze"] = "Algari - Bronze"
+	L["ThemeAlgari_Dark"] = "Algari - Sombre"
+	L["ThemeAlgari_Silver"] = "Algari - Argent"
+	L["ThemeDefault_Desaturated"] = "Par défaut - Désaturé"
+	L["ThemeAlgari_Desaturated"] = "Algari - Désaturé"
+	L["ThemeGryphon_Desaturated"] = "Griffon - Désaturé"
+	L["ThemeWyvern_Desaturated"] = "Wyrm - Désaturé"
+	L["ThemeDragon_Desaturated"] = "Dragon - Désaturé"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "Vent"
@@ -1246,15 +1246,15 @@ if LOCALE == "itIT" then
 	L["ToggleVigorTT"] = "Mostra le 6 cariche di Vigore."
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "Algari – Oro"
-	L["ThemeAlgari_Bronze"] = "Algari – Bronzo"
-	L["ThemeAlgari_Dark"] = "Algari – Scuro"
-	L["ThemeAlgari_Silver"] = "Algari – Argento"
-	L["ThemeDefault_Desaturated"] = "Predefinito – Desaturato"
-	L["ThemeAlgari_Desaturated"] = "Algari – Desaturato"
-	L["ThemeGryphon_Desaturated"] = "Grifone – Desaturato"
-	L["ThemeWyvern_Desaturated"] = "Viverna – Desaturato"
-	L["ThemeDragon_Desaturated"] = "Drago – Desaturato"
+	L["ThemeAlgari_Gold"] = "Algari - Oro"
+	L["ThemeAlgari_Bronze"] = "Algari - Bronzo"
+	L["ThemeAlgari_Dark"] = "Algari - Scuro"
+	L["ThemeAlgari_Silver"] = "Algari - Argento"
+	L["ThemeDefault_Desaturated"] = "Predefinito - Desaturato"
+	L["ThemeAlgari_Desaturated"] = "Algari - Desaturato"
+	L["ThemeGryphon_Desaturated"] = "Grifone - Desaturato"
+	L["ThemeWyvern_Desaturated"] = "Viverna - Desaturato"
+	L["ThemeDragon_Desaturated"] = "Drago - Desaturato"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "Vento"
@@ -1486,15 +1486,15 @@ if LOCALE == "ptBR" then
 	L["ToggleVigorTT"] = "Mostra as 6 barras de Vigor associadas às habilidades de impulso."
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "Algari – Dourado"
-	L["ThemeAlgari_Bronze"] = "Algari – Bronze"
-	L["ThemeAlgari_Dark"] = "Algari – Escuro"
-	L["ThemeAlgari_Silver"] = "Algari – Prateado"
-	L["ThemeDefault_Desaturated"] = "Padrão – Dessaturado"
-	L["ThemeAlgari_Desaturated"] = "Algari – Dessaturado"
-	L["ThemeGryphon_Desaturated"] = "Grifo – Dessaturado"
-	L["ThemeWyvern_Desaturated"] = "Dracônico – Dessaturado"
-	L["ThemeDragon_Desaturated"] = "Dragão – Dessaturado"
+	L["ThemeAlgari_Gold"] = "Algari - Dourado"
+	L["ThemeAlgari_Bronze"] = "Algari - Bronze"
+	L["ThemeAlgari_Dark"] = "Algari - Escuro"
+	L["ThemeAlgari_Silver"] = "Algari - Prateado"
+	L["ThemeDefault_Desaturated"] = "Padrão - Dessaturado"
+	L["ThemeAlgari_Desaturated"] = "Algari - Dessaturado"
+	L["ThemeGryphon_Desaturated"] = "Grifo - Dessaturado"
+	L["ThemeWyvern_Desaturated"] = "Dracônico - Dessaturado"
+	L["ThemeDragon_Desaturated"] = "Dragão - Dessaturado"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "Vento"
@@ -1728,15 +1728,15 @@ if LOCALE == "ruRU" then
 	L["ToggleVigorTT"] = "Показать 6 ячеек бодрости."
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "Алгари – Золотой"
-	L["ThemeAlgari_Bronze"] = "Алгари – Бронзовый"
-	L["ThemeAlgari_Dark"] = "Алгари – Тёмный"
-	L["ThemeAlgari_Silver"] = "Алгари – Серебряный"
-	L["ThemeDefault_Desaturated"] = "По умолчанию – Обесцвеченный"
-	L["ThemeAlgari_Desaturated"] = "Алгари – Обесцвеченный"
-	L["ThemeGryphon_Desaturated"] = "Грифон – Обесцвеченный"
-	L["ThemeWyvern_Desaturated"] = "Виверна – Обесцвеченная"
-	L["ThemeDragon_Desaturated"] = "Дракон – Обесцвеченный"
+	L["ThemeAlgari_Gold"] = "Алгари - Золотой"
+	L["ThemeAlgari_Bronze"] = "Алгари - Бронзовый"
+	L["ThemeAlgari_Dark"] = "Алгари - Тёмный"
+	L["ThemeAlgari_Silver"] = "Алгари - Серебряный"
+	L["ThemeDefault_Desaturated"] = "По умолчанию - Обесцвеченный"
+	L["ThemeAlgari_Desaturated"] = "Алгари - Обесцвеченный"
+	L["ThemeGryphon_Desaturated"] = "Грифон - Обесцвеченный"
+	L["ThemeWyvern_Desaturated"] = "Виверна - Обесцвеченная"
+	L["ThemeDragon_Desaturated"] = "Дракон - Обесцвеченный"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "Ветер"
@@ -1968,15 +1968,15 @@ if LOCALE == "koKR" then
 	L["ToggleVigorTT"] = "6칸 활력 패널을 표시합니다."
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "알가리 – 골드"
-	L["ThemeAlgari_Bronze"] = "알가리 – 브론즈"
-	L["ThemeAlgari_Dark"] = "알가리 – 다크"
-	L["ThemeAlgari_Silver"] = "알가리 – 실버"
-	L["ThemeDefault_Desaturated"] = "기본값 – 탈채색"
-	L["ThemeAlgari_Desaturated"] = "알가리 – 탈채색"
-	L["ThemeGryphon_Desaturated"] = "그리폰 – 탈채색"
-	L["ThemeWyvern_Desaturated"] = "와이번 – 탈채색"
-	L["ThemeDragon_Desaturated"] = "드래곤 – 탈채색"
+	L["ThemeAlgari_Gold"] = "알가리 - 골드"
+	L["ThemeAlgari_Bronze"] = "알가리 - 브론즈"
+	L["ThemeAlgari_Dark"] = "알가리 - 다크"
+	L["ThemeAlgari_Silver"] = "알가리 - 실버"
+	L["ThemeDefault_Desaturated"] = "기본값 - 탈채색"
+	L["ThemeAlgari_Desaturated"] = "알가리 - 탈채색"
+	L["ThemeGryphon_Desaturated"] = "그리폰 - 탈채색"
+	L["ThemeWyvern_Desaturated"] = "와이번 - 탈채색"
+	L["ThemeDragon_Desaturated"] = "드래곤 - 탈채색"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "바람"
@@ -2210,15 +2210,15 @@ if LOCALE == "zhCN" then
 	L["ToggleVigorTT"] = "显示6格活力面板。"
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "阿加里 – 金色"
-	L["ThemeAlgari_Bronze"] = "阿加里 – 青铜"
-	L["ThemeAlgari_Dark"] = "阿加里 – 深色"
-	L["ThemeAlgari_Silver"] = "阿加里 – 银色"
-	L["ThemeDefault_Desaturated"] = "默认 – 去饱和"
-	L["ThemeAlgari_Desaturated"] = "阿加里 – 去饱和"
-	L["ThemeGryphon_Desaturated"] = "狮鹫 – 去饱和"
-	L["ThemeWyvern_Desaturated"] = "双足飞龙 – 去饱和"
-	L["ThemeDragon_Desaturated"] = "巨龙 – 去饱和"
+	L["ThemeAlgari_Gold"] = "阿加里 - 金色"
+	L["ThemeAlgari_Bronze"] = "阿加里 - 青铜"
+	L["ThemeAlgari_Dark"] = "阿加里 - 深色"
+	L["ThemeAlgari_Silver"] = "阿加里 - 银色"
+	L["ThemeDefault_Desaturated"] = "默认 - 去饱和"
+	L["ThemeAlgari_Desaturated"] = "阿加里 - 去饱和"
+	L["ThemeGryphon_Desaturated"] = "狮鹫 - 去饱和"
+	L["ThemeWyvern_Desaturated"] = "双足飞龙 - 去饱和"
+	L["ThemeDragon_Desaturated"] = "巨龙 - 去饱和"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "风"
@@ -2450,15 +2450,15 @@ if LOCALE == "zhTW" then
 	L["ToggleVigorTT"] = "顯示6格活力面板。"
 	
 	-- Themes
-	L["ThemeAlgari_Gold"] = "阿加里 – 金色"
-	L["ThemeAlgari_Bronze"] = "阿加里 – 青銅"
-	L["ThemeAlgari_Dark"] = "阿加里 – 深色"
-	L["ThemeAlgari_Silver"] = "阿加里 – 銀色"
-	L["ThemeDefault_Desaturated"] = "預設 – 降低飽和度"
-	L["ThemeAlgari_Desaturated"] = "阿加里 – 降低飽和度"
-	L["ThemeGryphon_Desaturated"] = "獅鷲 – 降低飽和度"
-	L["ThemeWyvern_Desaturated"] = "雙足飛龍 – 降低飽和度"
-	L["ThemeDragon_Desaturated"] = "巨龍 – 降低飽和度"
+	L["ThemeAlgari_Gold"] = "阿加里 - 金色"
+	L["ThemeAlgari_Bronze"] = "阿加里 - 青銅"
+	L["ThemeAlgari_Dark"] = "阿加里 - 深色"
+	L["ThemeAlgari_Silver"] = "阿加里 - 銀色"
+	L["ThemeDefault_Desaturated"] = "預設 - 降低飽和度"
+	L["ThemeAlgari_Desaturated"] = "阿加里 - 降低飽和度"
+	L["ThemeGryphon_Desaturated"] = "獅鷲 - 降低飽和度"
+	L["ThemeWyvern_Desaturated"] = "雙足飛龍 - 降低飽和度"
+	L["ThemeDragon_Desaturated"] = "巨龍 - 降低飽和度"
 
 	-- Model Themes
 	L["ModelTheme_Wind"] = "風"
