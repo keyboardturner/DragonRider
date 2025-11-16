@@ -194,7 +194,7 @@ if LOCALE == "enUS" then
 	L["SpeedometerBar_Over_ColorPicker"] = "Speedometer Over Speed Color"
 	L["SpeedometerBar_Over_ColorPickerTT"] = "Pick a color for speeds displayed on the Speedometer bar when above the maximum natural gliding speed (indicated by the 2nd tick at 65%)."
 	L["SpeedometerText_Slow_ColorPicker"] = "Speedometer Text Low Speed Color"
-	L["SpeedometerText_Slow_ColorPickerTT"] = "Pick a color f1or speeds displayed by the Speedometer text when slow."
+	L["SpeedometerText_Slow_ColorPickerTT"] = "Pick a color for speeds displayed by the Speedometer text when slow."
 	L["SpeedometerText_Recharge_ColorPicker"] = "Speedometer Text Recharge Speed Color"
 	L["SpeedometerText_Recharge_ColorPickerTT"] = "Pick a color for speeds displayed by the Speedometer text when Skyriding Charges recover at an accelerated rate (indicated by the Thrill of the Skies buff)."
 	L["SpeedometerText_Over_ColorPicker"] = "Speedometer Text Over Speed Color"
