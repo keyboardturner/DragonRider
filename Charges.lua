@@ -6,139 +6,227 @@ local _, L = ...
 local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1")
 
 ---------------------------------------------------------------------------------------------------------------
--- Charges
+-- Static Charges
 ---------------------------------------------------------------------------------------------------------------
 
-DR.charge = CreateFrame("Frame")
+DR.charge = CreateFrame("Frame", nil, DR.vigorBar)
+DR.charge:SetAllPoints(DR.vigorBar)
 DR.charge:RegisterEvent("UNIT_AURA")
 DR.charge:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 
-function DR:chargeSetup(number)
-	if UIWidgetPowerBarContainerFrame and UIWidgetPowerBarContainerFrame.widgetFrames then
-		--DR.SetUpChargePos(number)
-		if UIWidgetPowerBarContainerFrame.widgetFrames[5140] then -- gold tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5143] then -- silver tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Silver_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5144] then -- bronze tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Bronze_Cover.blp")
-		elseif UIWidgetPowerBarContainerFrame.widgetFrames[5145] then -- dark tex
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Dark_Cover.blp")
-		elseif C_UnitAuras.GetPlayerAuraBySpellID(418590) then -- default fallback, buff exists, not stormrider
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-		else
-			DR.charge[number].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
-			DR.charge[number].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-			DR.charge[number]:Hide();
-		end
-	end
-end
+local MAX_CHARGE_FRAMES = 10
+local MAX_VIGOR_BARS = 6
+local CHARGE_SIZE = 32 -- probably needs to be a slider option in the future
+local PADDING = -10 -- static charge distance from vigor (also probably needs to be an option)
 
-function DR.SetUpChargePos(i)
-	-- This function now only handles relative positioning for charges 2 through 10
-	if i ~= 1 then
-		if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-			DR.charge[i]:SetPoint("CENTER", DR.charge[i-1], 30.5, 0)
-		else
-			DR.charge[i]:SetPoint("CENTER", DR.charge[i-1], 26.75, 0)
-		end
-	end
-	if DR.charge[6] then
-		if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-			DR.charge[6]:SetPoint("CENTER", DR.charge[1], 0, -30)
-		else
-			DR.charge[6]:SetPoint("CENTER", DR.charge[1], 0, -33)
-		end
-	end
-end
+-- vigor bar defaults
+local BAR_WIDTH_DEFAULT = 32
+local BAR_HEIGHT_DEFAULT = 32
+local BAR_SPACING_DEFAULT = 10
+local DEFAULT_ORIENTATION = 2
+local DEFAULT_VIGOR_WRAP = 6
 
-for i = 1, 10 do
-	DR.charge[i] = CreateFrame("Frame", nil, UIParent)
-	DR.charge[i]:SetSize(25,25)
+local TexturePath = "Interface\\AddOns\\DragonRider\\Textures\\"
 
-	DR.charge[i].texBase = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 0)
-	DR.charge[i].texBase:SetAllPoints(DR.charge[i])
-	DR.charge[i].texBase:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Empty.blp")
+local ChargeOptions = {
+	[1] = { -- default - gold
+		Base = TexturePath.."Points_Gold_Empty",
+		Cover = TexturePath.."Points_Gold_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = false,
+	},
+	[2] = { -- algari bronze
+		Base = TexturePath.."Points_Bronze_Empty",
+		Cover = TexturePath.."Points_Bronze_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = false,
+	},
+	[3] = { -- algari dark
+		Base = TexturePath.."Points_Dark_Empty",
+		Cover = TexturePath.."Points_Dark_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = false,
+	},
+	[4] = { -- algari gold
+		Base = TexturePath.."Points_Gold_Empty",
+		Cover = TexturePath.."Points_Gold_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = false,
+	},
+	[5] = { -- algari silver
+		Base = TexturePath.."Points_Silver_Empty",
+		Cover = TexturePath.."Points_Silver_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = false,
+	},
+	[6] = { -- default - desat
+		Base = TexturePath.."Points_Silver_Empty",
+		Cover = TexturePath.."Points_Silver_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = true,
+	},
+	[7] = { -- algari - desat
+		Base = TexturePath.."Points_Silver_Empty",
+		Cover = TexturePath.."Points_Silver_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = true,
+	},
+	[8] = { -- minimalist - desat
+		Base = TexturePath.."Points_Silver_Empty",
+		Cover = TexturePath.."Points_Silver_Cover",
+		Fill = TexturePath.."Points_Fill",
+		Desat = true,
+	},
+};
+
+for i = 1, MAX_CHARGE_FRAMES do
+	DR.charge[i] = CreateFrame("Frame", "DragonRider_StaticCharge_"..i, DR.charge)
+	DR.charge[i]:SetSize(CHARGE_SIZE, CHARGE_SIZE)
+	DR.charge[i]:SetFrameLevel(5)
+	
+	DR.charge[i].texBase = DR.charge[i]:CreateTexture(nil, "BACKGROUND", nil, 0)
+	DR.charge[i].texBase:SetAllPoints()
 	DR.charge[i].texFill = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 1)
-	DR.charge[i].texFill:SetAllPoints(DR.charge[i])
-	DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp")
+	DR.charge[i].texFill:SetAllPoints()
+	DR.charge[i].texFill:Hide()
 	DR.charge[i].texCover = DR.charge[i]:CreateTexture(nil, "OVERLAY", nil, 2)
-	DR.charge[i].texCover:SetAllPoints(DR.charge[i])
-	DR.charge[i].texCover:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Gold_Cover.blp")
-
-	DR.charge[i].texFill:Hide();
+	DR.charge[i].texCover:SetAllPoints()
+	DR.charge[i]:Hide()
 end
 
-function DR.UpdateChargePositions(anchorFrame)
-	if not anchorFrame then return end
+function DR:chargeSetup(number)
+	local charge = DR.charge[number]
+	if not charge then return end
 
-	DR.charge[1]:SetParent(anchorFrame)
-	DR.charge[1]:ClearAllPoints()
+	local themeVigor = (DragonRider_DB and DragonRider_DB.themeVigor) or 1
+	local options = ChargeOptions[themeVigor] or ChargeOptions[1]
 
-	if C_UnitAuras.GetPlayerAuraBySpellID(417888) then
-		DR.charge[1]:SetPoint("TOPLEFT", anchorFrame, "TOPLEFT", 45, 8)
-	else
-		DR.charge[1]:SetPoint("TOPLEFT", anchorFrame, "TOPLEFT", 31, 14)
+	charge.texBase:SetTexture(options.Base)
+	charge.texCover:SetTexture(options.Cover)
+	charge.texFill:SetTexture(options.Fill)
+
+	local desat = options.Desat or false
+	charge.texBase:SetDesaturated(desat)
+	charge.texCover:SetDesaturated(desat)
+	charge.texFill:SetDesaturated(desat)
+
+	local rF, gF, bF, aF = 1, 1, 1, 1
+	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.full then
+		rF = DragonRider_DB.vigorBarColor.full.r
+		gF = DragonRider_DB.vigorBarColor.full.g
+		bF = DragonRider_DB.vigorBarColor.full.b
+		aF = DragonRider_DB.vigorBarColor.full.a
 	end
-	DR.charge[1]:SetScale(1.5625)
+	charge.texFill:SetVertexColor(rF, gF, bF, aF)
 
-	for i = 1, 10 do
-		DR.SetUpChargePos(i)
-		DR:chargeSetup(i) -- Update textures
-		if C_UnitAuras.GetPlayerAuraBySpellID(418590) and DragonRider_DB.lightningRush then
-			DR.charge[i]:Show();
-		else
-			DR.charge[i]:Hide();
+	local rE, gE, bE, aE = 1, 1, 1, 1
+	if DragonRider_DB and DragonRider_DB.vigorBarColor and  DragonRider_DB.vigorBarColor.background then
+		rE = DragonRider_DB.vigorBarColor.background.r
+		gE = DragonRider_DB.vigorBarColor.background.g
+		bE = DragonRider_DB.vigorBarColor.background.b
+		aE = DragonRider_DB.vigorBarColor.background.a
+	end
+	charge.texBase:SetVertexColor(rE, gE, bE, aE)
+
+	local rC, gC, bC, aC = 1, 1, 1, 1
+	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.cover then
+		rC = DragonRider_DB.vigorBarColor.cover.r
+		gC = DragonRider_DB.vigorBarColor.cover.g
+		bC = DragonRider_DB.vigorBarColor.cover.b
+		aC = DragonRider_DB.vigorBarColor.cover.a
+	end
+	charge.texCover:SetVertexColor(rC, gC, bC, aC)
+end
+
+
+function DR.UpdateChargePositions()
+	for i = 1, MAX_CHARGE_FRAMES do
+		if DR.charge[i] then DR.charge[i]:Hide() end
+	end
+
+	if not DR.vigorBar or not DR.vigorBar.bars or not DragonRider_DB or not LibAdvFlight then
+		return
+	end
+
+	local bar_spacing = (DragonRider_DB.vigorBarSpacing) or BAR_SPACING_DEFAULT
+	local orientation = (DragonRider_DB.vigorBarOrientation) or DEFAULT_ORIENTATION
+	local vigorWrap = (DragonRider_DB.vigorWrap and DragonRider_DB.vigorWrap > 0 and DragonRider_DB.vigorWrap) or DEFAULT_VIGOR_WRAP
+
+	if not DR.vigorBar:IsShown() or not LibAdvFlight.HasLightningRush() or orientation == 1 then
+		return
+	end
+
+	for i = 1, MAX_VIGOR_BARS - 1 do
+		local top_charge = DR.charge[i]
+		local bottom_charge = DR.charge[i + (MAX_VIGOR_BARS - 1)]
+		
+		if top_charge and bottom_charge and DR.vigorBar.bars[i] and DR.vigorBar.bars[i+1] then
+			
+			local row_i = math.floor((i - 1) / vigorWrap)
+			local row_i_plus_1 = math.floor(i / vigorWrap)
+
+			if row_i == row_i_plus_1 then
+				DR:chargeSetup(i)
+				DR:chargeSetup(i + (MAX_VIGOR_BARS - 1))
+				
+				-- Definitely need to change this in the future, it doesn't handle the rows/columns very well atm
+				top_charge:ClearAllPoints()
+				top_charge:SetPoint("CENTER", DR.vigorBar.bars[i], "TOPRIGHT", bar_spacing / 2, (CHARGE_SIZE / 2) + PADDING)
+				
+				bottom_charge:ClearAllPoints()
+				bottom_charge:SetPoint("CENTER", DR.vigorBar.bars[i], "BOTTOMRIGHT", bar_spacing / 2, -(CHARGE_SIZE / 2) - PADDING)
+				
+				top_charge:Show()
+				bottom_charge:Show()
+			end
 		end
 	end
 end
 
-function DR.toggleCharges(self, event, arg1)
-	if event == "UNIT_AURA" and arg1 == "player" then
-		if C_UnitAuras.GetPlayerAuraBySpellID(418590) then
-			local chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(418590).applications
-			for i = 1,10 do
-				-- DR:chargeSetup(i) -- No need to call this here anymore, let UpdateChargePositions handle it
-				if i <= chargeCount then
-					DR.charge[i].texFill:Show();
-				else
-					DR.charge[i].texFill:Hide();
+
+function DR.charge:OnEvent(event, ...)
+	if event == "UNIT_AURA" then
+		local unit = select(1, ...)
+		if unit == "player" then
+			DR.UpdateChargePositions() 
+			
+			local chargeCount = 0
+			if C_UnitAuras.GetPlayerAuraBySpellID(418590) then
+				chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(418590).applications
+			end
+			
+			for i = 1, MAX_VIGOR_BARS - 1 do 
+				local top_charge = DR.charge[i]
+				local bottom_charge = DR.charge[i + (MAX_VIGOR_BARS - 1)]
+
+				if top_charge and top_charge.texFill then
+					if i <= chargeCount then 
+						top_charge.texFill:Show()
+					else
+						top_charge.texFill:Hide()
+					end
+				end
+
+				if bottom_charge and bottom_charge.texFill then
+					if (i + 5) <= chargeCount then 
+						bottom_charge.texFill:Show()
+					else
+						bottom_charge.texFill:Hide()
+					end
 				end
 			end
-			-- DR.setPositions(); -- This creates a potential loop, let setPositions call the update
-		else
-			for i = 1,10 do
-				DR.charge[i].texFill:Hide();
-			end
-			-- DR.setPositions();
 		end
 	end
+	
 	if event == "SPELL_UPDATE_COOLDOWN" then
-
-	if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
-			local isEnabled, startTime, modRate, duration
-			if C_Spell.GetSpellCooldown then
-				isEnabled, startTime, modRate, duration = C_Spell.GetSpellCooldown(418592).isEnabled, C_Spell.GetSpellCooldown(418592).startTime, C_Spell.GetSpellCooldown(418592).modRate, C_Spell.GetSpellCooldown(418592).duration
-			else
-				isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
-			end
-			if ( startTime > 0 and duration > 0) then
-				local cdLeft = startTime + duration - GetTime()
-				for i = 1,10 do
-					DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill_CD.blp");
-				end
-			else
-				for i = 1,10 do
-					DR.charge[i].texFill:SetTexture("Interface\\AddOns\\DragonRider\\Textures\\Points_Fill.blp");
-				end
-			end
+		local isEnabled, startTime, modRate, duration
+		if C_Spell.GetSpellCooldown then
+			local cooldownInfo = C_Spell.GetSpellCooldown(418592)
+			isEnabled, startTime, modRate, duration = cooldownInfo.isEnabled, cooldownInfo.startTime, cooldownInfo.modRate, cooldownInfo.duration
+		else
+			isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
 		end
 	end
 end
 
-DR.charge:SetScript("OnEvent", DR.toggleCharges)
+DR.charge:SetScript("OnEvent", DR.charge.OnEvent)

@@ -351,7 +351,7 @@ function DR.setPositions()
 	DR.vigorBar:SetPoint("CENTER", 0, 0) -- Center on the parent anchor
 	
 	-- Position Static Charges
-	DR.UpdateChargePositions(ParentFrame)
+	DR.UpdateChargePositions()
 	
 	-- Handle Side Art Alpha
 	local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
@@ -1174,8 +1174,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "vigorBarSpacing"
-			local name = L["VigorBarHeightName"]
-			local tooltip = L["VigorBarHeightNameTT"]
+			local name = L["VigorBarSpacingName"]
+			local tooltip = L["VigorBarSpacingNameTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
 			local maxValue = 100
@@ -1565,6 +1565,7 @@ function DR.OnAddonLoaded()
 			DR.UpdateVigorFillDirection();
 			DR.UpdateVigorTheme();
 			DR.UpdateSpeedometerTheme();
+			DR.UpdateChargePositions()
 		end
 
 		local function OnAdvFlyEnd()

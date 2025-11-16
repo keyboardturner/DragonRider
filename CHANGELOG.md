@@ -1,4 +1,4 @@
-# 0.6.4
+# 1.0.0
 
 11.2.7 has removed the vigor bar. Dragon Rider has now implemented its own custom Vigor bar, now with additional color settings, size, wrapping, row/column, spacing, and orientation options.
 
