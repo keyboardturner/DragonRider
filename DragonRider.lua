@@ -12,7 +12,7 @@ DR.CurrencyToRaceMap = {}
 
 local defaultsTable = {
 	toggleModels = true,
-	speedometerPosPoint = 1,
+	speedometerPosPoint = 1, -- deprecated
 	speedometerPosX = 0, -- deprecated, moved to position
 	speedometerPosY = 5, -- deprecated, moved to position
 	position = {
@@ -333,14 +333,44 @@ local function CreateEditOverlay(targetFrame, frameName)
 		SaveFramePosition(frameName)
 	end)
 
+	local function CreateNudgeButton(ANCHORPOINT, RELATIVETO, ANCHORRELATIVE, xOffset, yOffset, rotation, dirX, dirY)
+		local btn = CreateFrame("Button", nil, editFrame)
+		btn:SetSize(24, 33)
+		btn:SetPoint(ANCHORPOINT, RELATIVETO, ANCHORRELATIVE, xOffset, yOffset) 
+		
+		btn:SetNormalAtlas("shop-header-arrow")
+		btn:GetNormalTexture():SetRotation(rotation)
+		btn:SetHighlightAtlas("shop-header-arrow-hover")
+		btn:GetHighlightTexture():SetRotation(rotation)
+		btn:SetPushedAtlas("shop-header-arrow-pressed")
+		btn:GetPushedTexture():SetRotation(rotation)
+		
+		btn:SetScript("OnClick", function()
+			local point, relativeTo, relativePoint, xOfs, yOfs = targetFrame:GetPoint()
+			if not xOfs then xOfs = 0 end
+			if not yOfs then yOfs = 0 end
+			
+			targetFrame:ClearAllPoints()
+			targetFrame:SetPoint(point, UIParent, relativePoint, xOfs + dirX, yOfs + dirY)
+			SaveFramePosition(frameName)
+		end)
+	end
+
 	local Dropdown = CreateFrame("DropdownButton", nil, editFrame, "WowStyle1DropdownTemplate")
 	Dropdown:SetDefaultText(Settings.GetCategory(DR.SettingsCategoryID).name or "DragonRider")
 	if frameName == "Speedometer" then
 		Dropdown:SetPoint("BOTTOM", editFrame, "TOP", 0, -2)
+		CreateNudgeButton("BOTTOM",	Dropdown,	"TOP",		0,		0,		-math.pi / 2,		0,		1)	-- UP 90 - math.pi / 2
+		CreateNudgeButton("TOP",	editFrame,	"BOTTOM",	0,		0,		math.pi / 2,		0,		-1)	-- DOWN -90 - -math.pi / 2
 	elseif frameName == "Vigor" then
 		Dropdown:SetPoint("TOP", editFrame, "BOTTOM", 0, -2)
+		CreateNudgeButton("BOTTOM",	editFrame,	"TOP",		0,		0,		-math.pi / 2,		0,		1)	-- UP 90 - math.pi / 2
+		CreateNudgeButton("TOP",	Dropdown,	"BOTTOM",	0,		0,		math.pi / 2,		0,		-1)	-- DOWN -90 - -math.pi / 2
 	end
 	Dropdown:SetSize(150, 30)
+	
+	CreateNudgeButton("RIGHT",	editFrame,	"LEFT",		0,		0,		0,					-1,		0)	-- LEFT  0 - 0
+	CreateNudgeButton("LEFT",	editFrame,	"RIGHT",	0,		0,		math.pi,			1,		0)	-- RIGHT 180 - math.pi
 	
 	Dropdown:SetupMenu(function(dropdown, rootDescription)
 		rootDescription:CreateButton(L["LockFrame"], function()
@@ -930,25 +960,6 @@ function DR.OnAddonLoaded()
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categorySpeedometer, setting, tooltip)
-		end
-
-		do
-			local variable = "speedometerPosPoint"
-			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
-			local name = L["SpeedPosPointName"]
-			local tooltip = L["SpeedPosPointTT"]
-
-			local function GetOptions()
-				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Top"])
-				container:Add(2, L["Bottom"])
-				container:Add(3, L["Left"])
-				container:Add(4, L["Right"])
-				return container:GetData()
-			end
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip);
 		end
 
 		do
