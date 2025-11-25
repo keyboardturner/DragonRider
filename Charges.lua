@@ -189,7 +189,7 @@ function DR.charge:OnEvent(event, ...)
 		local unit = select(1, ...)
 		if unit == "player" then
 			DR.UpdateChargePositions() 
-			if GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then return end
+			if GetRestrictedActionStatus and GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then return end
 			local chargeCount = 0
 			local spellAura = C_UnitAuras.GetPlayerAuraBySpellID(418590)
 			if issecretvalue and issecretvalue(spellAura) then
