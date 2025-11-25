@@ -868,7 +868,14 @@ function DR.OnAddonLoaded()
 		do -- dragonriding talents 
 			local function OnButtonClick()
 				CloseWindows();
-				DragonridingPanelSkillsButtonMixin:OnClick();
+				GenericTraitUI_LoadUI();
+				if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
+					GenericTraitFrame:SetSystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
+				else
+					GenericTraitFrame:SetConfigIDBySystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
+				end
+				GenericTraitFrame:SetTreeID(Constants.MountDynamicFlightConsts.TREE_ID);
+				ToggleFrame(GenericTraitFrame);
 			end
 
 			local initializer = CreateSettingsButtonInitializer(L["DragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"], true);

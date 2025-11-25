@@ -685,7 +685,14 @@ DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -5
 DR.mainFrame.OpenTalentsButton:SetSize(150, 26);
 DR.mainFrame.OpenTalentsButton:SetText(L["DragonridingTalents"]);
 DR.mainFrame.OpenTalentsButton:SetScript("OnClick", function(self)
-	DragonridingPanelSkillsButtonMixin:OnClick();
+	GenericTraitUI_LoadUI();
+	if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
+		GenericTraitFrame:SetSystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
+	else
+		GenericTraitFrame:SetConfigIDBySystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
+	end
+	GenericTraitFrame:SetTreeID(Constants.MountDynamicFlightConsts.TREE_ID);
+	ToggleFrame(GenericTraitFrame);
 end);
 DR.mainFrame.OpenTalentsButton:SetScript("OnEnter", function(self)
 	GameTooltip:SetOwner(self, "ANCHOR_TOP");
