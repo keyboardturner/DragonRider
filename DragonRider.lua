@@ -13,8 +13,22 @@ DR.CurrencyToRaceMap = {}
 local defaultsTable = {
 	toggleModels = true,
 	speedometerPosPoint = 1,
-	speedometerPosX = 0,
-	speedometerPosY = 5,
+	speedometerPosX = 0, -- deprecated, moved to position
+	speedometerPosY = 5, -- deprecated, moved to position
+	position = {
+		speedometer = {
+			point = "CENTER",
+			relativePoint = "CENTER",
+			xOfs = 0,
+			yOfs = -140,
+		},
+		vigor = {
+			point = "CENTER",
+			relativePoint = "CENTER",
+			xOfs = 0,
+			yOfs = -200,
+		},
+	},
 	speedometerWidth = 244,
 	speedometerHeight = 24,
 	speedometerScale = 1,
@@ -122,8 +136,8 @@ local defaultsTable = {
 	muteVigorSound = false,
 	themeSpeed = 1, -- default
 	themeVigor = 1, -- default
-	vigorPosX = 0,
-	vigorPosY = -200,
+	vigorPosX = 0, -- deprecated, moved to position
+	vigorPosY = -200, -- deprecated, moved to position
 	vigorBarWidth = 32,
 	vigorBarHeight = 32,
 	vigorBarSpacing = 10,
@@ -240,6 +254,148 @@ function DR.DragonRidingZoneCheck()
 	end
 end
 
+DR.EditFrames = {}
+DR.IsEditMode = false
+
+local function SaveFramePosition(frameName)
+	if not DragonRider_DB then DragonRider_DB = {} end
+	if not DragonRider_DB.position then DragonRider_DB.position = {} end
+	
+	if frameName == "Speedometer" then
+		local point, relativeTo, relativePoint, xOfs, yOfs = DR.statusbar:GetPoint()
+		DragonRider_DB.position.speedometer = {
+			point = point,
+			relativePoint = relativePoint,
+			xOfs = xOfs,
+			yOfs = yOfs
+		}
+	elseif frameName == "Vigor" then
+		local point, relativeTo, relativePoint, xOfs, yOfs = DR.vigorBar:GetPoint()
+		DragonRider_DB.position.vigor = {
+			point = point,
+			relativePoint = relativePoint,
+			xOfs = xOfs,
+			yOfs = yOfs
+		}
+	end
+end
+
+local function LoadFramePosition(frameName)
+	if not DragonRider_DB or not DragonRider_DB.position then return end
+	
+	if frameName == "Speedometer" and DragonRider_DB.position.speedometer then
+		local pos = DragonRider_DB.position.speedometer
+		DR.statusbar:ClearAllPoints()
+		DR.statusbar:SetPoint(pos.point, UIParent, pos.relativePoint, pos.xOfs, pos.yOfs)
+	elseif frameName == "Vigor" and DragonRider_DB.position.vigor then
+		local pos = DragonRider_DB.position.vigor
+		DR.vigorBar:ClearAllPoints()
+		DR.vigorBar:SetPoint(pos.point, UIParent, pos.relativePoint, pos.xOfs, pos.yOfs)
+	end
+end
+
+local function CreateEditOverlay(targetFrame, frameName)
+	if not targetFrame then return end
+	
+	local editFrame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate")
+	editFrame:SetFrameStrata("DIALOG")
+	editFrame:SetFrameLevel(600)
+	local edgeOffSet = 20
+	editFrame:SetPoint("TOPLEFT", targetFrame, "TOPLEFT", -edgeOffSet, edgeOffSet)
+	editFrame:SetPoint("BOTTOMRIGHT", targetFrame, "BOTTOMRIGHT", edgeOffSet, -edgeOffSet)
+	editFrame:Hide()
+	
+	local backdropInfo = {
+		bgFile = "interface\\editmode\\editmodeuihighlightbackground",
+		edgeFile = "Interface\\Buttons\\WHITE8X8",
+		edgeSize = 2,
+		insets = { left = 1, right = 1, top = 1, bottom = 1, },
+	}
+	editFrame:SetBackdrop(backdropInfo)
+	editFrame:SetBackdropColor(0, 1, 0, 0.3)
+	editFrame:SetBackdropBorderColor(0.227, 0.773, 1.00, 1)
+
+	editFrame.Label = editFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	editFrame.Label:SetPoint("CENTER", 0, 0)
+	editFrame.Label:SetText(frameName)
+
+	editFrame:EnableMouse(true)
+	editFrame:SetMovable(true)
+	editFrame:SetClampedToScreen(true)
+	editFrame:RegisterForDrag("LeftButton")
+	
+	editFrame:SetScript("OnDragStart", function(self)
+		targetFrame:StartMoving()
+	end)
+	
+	editFrame:SetScript("OnDragStop", function(self)
+		targetFrame:StopMovingOrSizing()
+		SaveFramePosition(frameName)
+	end)
+
+	local Dropdown = CreateFrame("DropdownButton", nil, editFrame, "WowStyle1DropdownTemplate")
+	Dropdown:SetDefaultText(Settings.GetCategory(DR.SettingsCategoryID).name or "DragonRider")
+	if frameName == "Speedometer" then
+		Dropdown:SetPoint("BOTTOM", editFrame, "TOP", 0, -2)
+	elseif frameName == "Vigor" then
+		Dropdown:SetPoint("TOP", editFrame, "BOTTOM", 0, -2)
+	end
+	Dropdown:SetSize(150, 30)
+	
+	Dropdown:SetupMenu(function(dropdown, rootDescription)
+		rootDescription:CreateButton("Lock Frames", function()
+			DR.ToggleEditMode(false)
+		end)
+		
+		rootDescription:CreateButton(RESET_TO_DEFAULT, function()
+			if frameName == "Speedometer" then
+				if DragonRider_DB.position and DragonRider_DB.position.speedometer then
+					DragonRider_DB.position.speedometer = CopyTable(defaultsTable.position.speedometer)
+				end
+			elseif frameName == "Vigor" then
+				if DragonRider_DB.position and DragonRider_DB.position.vigor then
+					DragonRider_DB.position.vigor = CopyTable(defaultsTable.position.vigor)
+				end
+			end
+			DR.setPositions()
+		end)
+	end)
+
+	DR.EditFrames[frameName] = editFrame
+end
+
+function DR.ToggleEditMode(enable)
+	DR.IsEditMode = enable 
+
+	if not DR.EditFrames["Speedometer"] and DR.statusbar then
+		CreateEditOverlay(DR.statusbar, "Speedometer")
+	end
+	if not DR.EditFrames["Vigor"] and DR.vigorBar then
+		CreateEditOverlay(DR.vigorBar, "Vigor")
+	end
+
+	if enable then
+		DR.statusbar:Show()
+		DR.statusbar:SetAlpha(1)
+		DR.vigorBar:Show()
+		DR.vigorBar:SetAlpha(1)
+		
+		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Show() end
+		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Show() end
+		
+		DR.statusbar:SetMovable(true)
+		DR.vigorBar:SetMovable(true)
+	else
+		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Hide() end
+		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Hide() end
+		
+		DR.statusbar:SetMovable(false)
+		DR.vigorBar:SetMovable(false)
+		
+		DR.UpdateSettingsFramePositions()
+	end
+end
+
 LibAdvFlight.RegisterCallback(LibAdvFlight.Events.VIGOR_CHANGED, DR.vigorCounter);
 
 DR.EventsList = CreateFrame("Frame")
@@ -261,105 +417,40 @@ DR.EventsList:SetScript("OnEvent", function(self, event, ...)
 	end
 end);
 
-
-function DR.GetWidgetAlpha()
-	if UIWidgetPowerBarContainerFrame then
-		return UIWidgetPowerBarContainerFrame:GetAlpha()
-	end
-end
-
-function DR.GetVigorValueExact()
-	if UnitPower("player", Enum.PowerType.AlternateMount) and C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460) then
-		local fillCurrent = (UnitPower("player", Enum.PowerType.AlternateMount) + (C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillValue*.01) )
-		--local fillMin = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).fillMax
-		local fillMax = C_UIWidgetManager.GetFillUpFramesWidgetVisualizationInfo(4460).numTotalFrames
-		return fillCurrent, fillMax
-	end
-end
-
--- ugly hack fix for the vigor widget not disappearing when it should
-LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_DISABLED, function()
-	for _, v in ipairs(DR.WidgetFrameIDs) do
-		C_Timer.After(1, function()
-			local f = UIWidgetPowerBarContainerFrame.widgetFrames[v];
-			if f and f:IsShown() then
-				f:Hide();
-			end
-		end);
-	end
-end);
-
-function DR.SetupVigorToolip()
-	EmbeddedItemTooltip:HookScript("OnShow", function(self)
-		if not DragonRider_DB.showtooltip then
-			for _, v in pairs(DR.WidgetFrameIDs) do
-				local f = UIWidgetPowerBarContainerFrame.widgetFrames[v];
-				if f then
-					if self:GetOwner() == f then
-						self:Hide();
-					end
-				end
-			end
-		end
-	end);
-end
-
-local ParentFrame = CreateFrame("Frame", nil, UIParent)
-ParentFrame:SetPoint("TOPLEFT", UIWidgetPowerBarContainerFrame, "TOPLEFT")
-ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame, "BOTTOMRIGHT")
--- this should solve that weird "moving" thing, the widget adjusts its size based on children
-
-
 function DR.setPositions()
-	if SettingsPanel:IsShown() then return end
+	if SettingsPanel:IsShown() and not DR.IsEditMode then return end
+	
 	if DragonRider_DB.DynamicFOV == true then
 		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 1)
 	elseif DragonRider_DB.DynamicFOV == false then
 		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 0)
 	end
-
-	-- Setup ParentFrame anchor
-	ParentFrame:ClearAllPoints()
-	ParentFrame:SetScale(UIWidgetPowerBarContainerFrame:GetScale()) -- because some of you are rescaling this thing...... the "moving vigor bar" was your fault.
-	ParentFrame:SetPoint("TOPLEFT", UIWidgetPowerBarContainerFrame, "TOPLEFT")
-	ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame, "BOTTOMRIGHT")
-	for k, v in pairs(DR.WidgetFrameIDs) do
-		if UIWidgetPowerBarContainerFrame.widgetFrames[v] and UIWidgetPowerBarContainerFrame.widgetFrames[v]:IsShown() then
-			ParentFrame:ClearAllPoints()
-			ParentFrame:SetPoint("TOPLEFT", UIWidgetPowerBarContainerFrame.widgetFrames[v], "TOPLEFT")
-			ParentFrame:SetPoint("BOTTOMRIGHT", UIWidgetPowerBarContainerFrame.widgetFrames[v], "BOTTOMRIGHT")
-		end
+	
+	DR.statusbar:SetParent(UIParent)
+	DR.statusbar:ClearAllPoints()
+	
+	if DragonRider_DB.position and DragonRider_DB.position.speedometer then
+		LoadFramePosition("Speedometer")
+	else
+		local xOfs = defaultsTable.position.vigor.xOfs
+		local yOfs = defaultsTable.position.vigor.yOfs
+		DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", xOfs, yOfs)
 	end
-
-	-- Position Speedometer
-	DR.statusbar:ClearAllPoints();
-	local point, relPoint, xOff, yOff = "BOTTOM", "TOP", DragonRider_DB.speedometerPosX, DragonRider_DB.speedometerPosY
-	if DragonRider_DB.speedometerPosPoint == 2 then
-		point, relPoint = "TOP", "BOTTOM"
-	elseif DragonRider_DB.speedometerPosPoint == 3 then
-		point, relPoint = "RIGHT", "LEFT"
-	elseif DragonRider_DB.speedometerPosPoint == 4 then
-		point, relPoint = "LEFT", "RIGHT"
-	end
-	DR.statusbar:SetPoint(point, ParentFrame, relPoint, xOff, yOff);
-	DR.statusbar:SetScale(DragonRider_DB.speedometerScale)
+	
 	DR.glide:SetFont(STANDARD_TEXT_FONT, DragonRider_DB.speedTextScale)
 	
-	-- Position Custom Vigor Bar
-	DR.vigorBar:SetParent(ParentFrame)
+	DR.vigorBar:SetParent(UIParent)
 	DR.vigorBar:ClearAllPoints()
-	DR.vigorBar:SetPoint("CENTER", 0, 0) -- Center on the parent anchor
 	
-	-- Position Static Charges
-	DR.UpdateChargePositions()
-	
-	-- Handle Side Art Alpha
-	local PowerBarChildren = {UIWidgetPowerBarContainerFrame:GetChildren()}
-	if PowerBarChildren[3] ~= nil then
-		for _, child in ipairs({PowerBarChildren[3]:GetRegions()}) do
-			child:SetAlpha(DragonRider_DB.sideArt and 1 or 0)
-		end
+	if DragonRider_DB.position and DragonRider_DB.position.vigor then
+		LoadFramePosition("Vigor")
+	else
+		local xOfs = defaultsTable.position.vigor.xOfs
+		local yOfs = defaultsTable.position.vigor.yOfs
+		DR.vigorBar:SetPoint("CENTER", UIParent, "CENTER", xOfs, yOfs)
 	end
+	
+	DR.UpdateChargePositions()
 end
 
 function DR.clearPositions()
@@ -524,6 +615,7 @@ local function CreateColorPickerButtonForSetting(category, setting, tooltip)
 end
 
 function DR.UpdateSettingsFramePositions(categoryID)
+	if DR.IsEditMode then return end
 	if SettingsPanel and SettingsPanel:IsShown() then -- and SettingsPanel.selectedCategory and SettingsPanel.selectedCategory.ID == categoryID -- need to find the actual currently selected thing
 		DR.vigorBar:SetFrameStrata("DIALOG");
 		DR.statusbar:SetFrameStrata("DIALOG");
@@ -563,15 +655,6 @@ function DR.UpdateSettingsFramePositions(categoryID)
 end
 
 function DR.OnAddonLoaded()
-	--[[ -- hiding code test
-	if event == "UPDATE_UI_WIDGET" then
-		if UIWidgetPowerBarContainerFrame and UIWidgetPowerBarContainerFrame.widgetFrames[4460] then
-			if (UIWidgetPowerBarContainerFrame.widgetFrames[4460]:IsShown()) then
-				UIWidgetPowerBarContainerFrame.widgetFrames[4460]:Hide()
-			end
-		end
-	end
-	]]
 
 	do
 		local realmKey = GetRealmName()
@@ -663,6 +746,7 @@ function DR.OnAddonLoaded()
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory(L["DR_Title"])
+		DR.SettingsCategoryID = category.ID
 
 		local categorySpeedometer, layoutSpeedometer = Settings.RegisterVerticalLayoutSubcategory(category, L["Speedometer"]);
 
@@ -754,6 +838,17 @@ function DR.OnAddonLoaded()
 
 			local initializer = CreateSettingsButtonInitializer(L["DragonridingTalents"], L["DragonridingTalents"], OnButtonClick, L["OpenDragonridingTalentsTT"], true);
 			layout:AddInitializer(initializer);
+		end
+
+		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Move Frames"] or "Move Frames"));
+
+		do
+			local function OnButtonClick()
+				DR.ToggleEditMode(true);
+			end
+			local btnText = L["Unlock Frames"] or "Unlock Frames"
+			local btnTT = L["UnlockFramesTT"] or "Unlock frames for drag and drop positioning."
+			layout:AddInitializer(CreateSettingsButtonInitializer(btnText, btnText, OnButtonClick, btnTT, true));
 		end
 
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(RESET));
@@ -857,36 +952,6 @@ function DR.OnAddonLoaded()
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip);
-		end
-
-		do
-			local variable = "speedometerPosX" -- Convert to Drag & Drop Later
-			local name = "[PH]"..L["SpeedPosXName"]
-			local tooltip = "[PH]"..L["SpeedPosXTT"]
-			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip);
-		end
-
-		do
-			local variable = "speedometerPosY" -- Convert to Drag & Drop Later
-			local name = "[PH]"..L["SpeedPosYName"]
-			local tooltip = "[PH]"..L["SpeedPosYTT"]
-			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenHeight())
-			local maxValue = Round(GetScreenHeight())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
 		end
 
 		do
@@ -1110,36 +1175,6 @@ function DR.OnAddonLoaded()
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateDropdown(categoryVigor, setting, GetOptions, tooltip)
-		end
-
-		do
-			local variable = "vigorPosX" -- Convert to Drag & Drop Later
-			local name = "[PH]"..L["VigorPosXName"].." [NYI]"
-			local tooltip = L["VigorPosXNameTT"]
-			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
-		end
-
-		do
-			local variable = "vigorPosY" -- Convert to Drag & Drop Later
-			local name = "[PH]"..L["VigorPosYName"].." [NYI]"
-			local tooltip = "[PH]"..L["VigorPosYNameTT"]
-			local defaultValue = defaultsTable[variable]
-			local minValue = -Round(GetScreenWidth())
-			local maxValue = Round(GetScreenWidth())
-			local step = 1
-
-			local setting = RegisterSetting(variable, defaultValue, name);
-			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
-			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
-			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
 
 		do
@@ -1615,8 +1650,6 @@ function DR.OnAddonLoaded()
 		end
 
 		C_Timer.NewTicker(0.1, OnUpdate);
-
-		DR.SetupVigorToolip();
 	end
 end
 

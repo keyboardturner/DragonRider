@@ -745,14 +745,14 @@ function DR.updateSpeed()
 		MAX_BAR_VALUE = 85;
 	end
 	
-    local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or 1
+	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or 1
 	local options = SpeedometerCoverOptions[themeIndex] or SpeedometerCoverOptions[1]
 	local yOffset = options.TickYOffset or 0
 
-    DR.statusbar.tick_1:ClearAllPoints()
-    DR.statusbar.tick_2:ClearAllPoints()
-    DR.statusbar.tick_1:SetPoint("TOP", DR.statusbar, "TOPLEFT", (THRESHOLD_HIGH / MAX_BAR_VALUE) * DR.statusbar:GetWidth(), yOffset)
-    DR.statusbar.tick_2:SetPoint("TOP", DR.statusbar, "TOPLEFT", (THRESHOLD_LOW / MAX_BAR_VALUE) * DR.statusbar:GetWidth(), yOffset)
+	DR.statusbar.tick_1:ClearAllPoints()
+	DR.statusbar.tick_2:ClearAllPoints()
+	DR.statusbar.tick_1:SetPoint("TOP", DR.statusbar, "TOPLEFT", (THRESHOLD_HIGH / MAX_BAR_VALUE) * DR.statusbar:GetWidth(), yOffset)
+	DR.statusbar.tick_2:SetPoint("TOP", DR.statusbar, "TOPLEFT", (THRESHOLD_LOW / MAX_BAR_VALUE) * DR.statusbar:GetWidth(), yOffset)
 
 	DR.statusbar:SetMinMaxValues(MIN_BAR_VALUE, MAX_BAR_VALUE);
 	local textColor;
@@ -1048,7 +1048,7 @@ DR.fadeOutBar:SetDuration(.1) -- Duration of the fade out animation
 
 -- Set scripts for when animations start and finish
 DR.fadeOutBarGroup:SetScript("OnFinished", function()
-	if LibAdvFlight.IsAdvFlying() or DR.DriveUtils.IsDriving() then
+	if DR.IsEditMode or LibAdvFlight.IsAdvFlying() or DR.DriveUtils.IsDriving() then
 		return
 	end
 	DR.statusbar:ClearAllPoints();
@@ -1071,6 +1071,8 @@ end
 
 -- Function to hide the frame with a fade out animation
 function DR.HideWithFadeBar()
+	if DR.IsEditMode then return end
+	
 	if SettingsPanel:IsShown() then return end
 	DR.fadeOutBarGroup:Stop(); -- Stop any ongoing animations
 	DR.fadeOutBarGroup:Play(); -- Play the fade out animation
