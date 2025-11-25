@@ -343,7 +343,7 @@ local function CreateEditOverlay(targetFrame, frameName)
 	Dropdown:SetSize(150, 30)
 	
 	Dropdown:SetupMenu(function(dropdown, rootDescription)
-		rootDescription:CreateButton("Lock Frames", function()
+		rootDescription:CreateButton(L["LockFrame"], function()
 			DR.ToggleEditMode(false)
 		end)
 		
@@ -375,24 +375,23 @@ function DR.ToggleEditMode(enable)
 	end
 
 	if enable then
-		DR.statusbar:Show()
-		DR.statusbar:SetAlpha(1)
-		DR.vigorBar:Show()
-		DR.vigorBar:SetAlpha(1)
+		DR.statusbar:Show();
+		DR.statusbar:SetAlpha(1);
+		DR.vigorBar:Show();
+		DR.vigorBar:SetAlpha(1);
 		
-		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Show() end
-		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Show() end
+		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Show(); end
+		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Show(); end
 		
-		DR.statusbar:SetMovable(true)
-		DR.vigorBar:SetMovable(true)
+		DR.statusbar:SetMovable(true);
+		DR.vigorBar:SetMovable(true);
 	else
-		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Hide() end
-		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Hide() end
+		if DR.EditFrames["Speedometer"] then DR.EditFrames["Speedometer"]:Hide(); end
+		if DR.EditFrames["Vigor"] then DR.EditFrames["Vigor"]:Hide(); end
 		
-		DR.statusbar:SetMovable(false)
-		DR.vigorBar:SetMovable(false)
-		
-		DR.UpdateSettingsFramePositions()
+		DR.statusbar:SetMovable(false);
+		DR.vigorBar:SetMovable(false);
+		DR.HideWithFadeBar();
 	end
 end
 
@@ -614,9 +613,11 @@ local function CreateColorPickerButtonForSetting(category, setting, tooltip)
 	return initializer;
 end
 
-function DR.UpdateSettingsFramePositions(categoryID)
-	if DR.IsEditMode then return end
-	if SettingsPanel and SettingsPanel:IsShown() then -- and SettingsPanel.selectedCategory and SettingsPanel.selectedCategory.ID == categoryID -- need to find the actual currently selected thing
+local function SettingsTempFunction(_, args)
+	--DevTools_Dump(args) -- debug
+	local bingus = args;
+	if bingus and bingus.ID and (bingus.ID == DR.SettingsCategoryID or (bingus.parentCategory and bingus.parentCategory.ID == DR.SettingsCategoryID)) and SettingsPanel and SettingsPanel:IsShown() then
+		if DR.IsEditMode then return end
 		DR.vigorBar:SetFrameStrata("DIALOG");
 		DR.statusbar:SetFrameStrata("DIALOG");
 		DR.vigorBar:ClearAllPoints()
@@ -634,18 +635,11 @@ function DR.UpdateSettingsFramePositions(categoryID)
 		DR.statusbar:SetFrameStrata("MEDIUM");
 		DR.vigorBar:SetFrameStrata("MEDIUM");
 
-		DR.setPositions()
-		DR.UpdateSpeedometerTheme()
+		
+		DR.HideWithFadeBar();
+		DR.setPositions();
+		DR.UpdateSpeedometerTheme();
 
-		if LibAdvFlight.IsAdvFlying() or DR.DriveUtils.IsDriving() then
-			DR.ShowWithFadeBar()
-		elseif LibAdvFlight.IsAdvFlyEnabled() then
-			DR.HideWithFadeBar()
-		else
-			DR.statusbar:Hide()
-		end
-
-		-- Handle Vigor visibility
 		if DragonRider_DB.toggleVigor and LibAdvFlight.IsAdvFlyEnabled() then
 			DR.vigorBar:Show()
 		else
@@ -653,6 +647,9 @@ function DR.UpdateSettingsFramePositions(categoryID)
 		end
 	end
 end
+
+EventRegistry:RegisterCallback('Settings.CategoryChanged', SettingsTempFunction)
+EventRegistry:RegisterCallback('SettingsPanel.OnHide', SettingsTempFunction)
 
 function DR.OnAddonLoaded()
 
@@ -840,14 +837,14 @@ function DR.OnAddonLoaded()
 			layout:AddInitializer(initializer);
 		end
 
-		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Move Frames"] or "Move Frames"));
+		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Move Frames"]));
 
 		do
 			local function OnButtonClick()
 				DR.ToggleEditMode(true);
 			end
-			local btnText = L["Unlock Frames"] or "Unlock Frames"
-			local btnTT = L["UnlockFramesTT"] or "Unlock frames for drag and drop positioning."
+			local btnText = L["UnlockFrame"]
+			local btnTT = L["UnlockFrame"]
 			layout:AddInitializer(CreateSettingsButtonInitializer(btnText, btnText, OnButtonClick, btnTT, true));
 		end
 
@@ -1540,10 +1537,6 @@ function DR.OnAddonLoaded()
 
 		Settings.RegisterAddOnCategory(categoryVigor)
 
-
-		SettingsPanel:HookScript("OnShow", function() DR.UpdateSettingsFramePositions(category.ID) end);
-		SettingsPanel:HookScript("OnHide", function() DR.UpdateSettingsFramePositions(category.ID) end);
-		EventRegistry:RegisterCallback("Settings.CategoryChanged", function() DR.UpdateSettingsFramePositions(category.ID) end);
 
 		function DragonRider_OnAddonCompartmentClick(addonName, buttonName, menuButtonFrame)
 			if buttonName == "RightButton" then

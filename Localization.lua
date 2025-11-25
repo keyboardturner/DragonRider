@@ -185,6 +185,8 @@ if LOCALE == "enUS" then
 	L["SpeedometerWidthTT"] = "Adjust the width of the Speedometer frame."
 	L["SpeedometerHeightName"] = "Speedometer Height"
 	L["SpeedometerHeightTT"] = "Adjust the height of the Speedometer frame."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Speedometer Low Speed Color"
@@ -425,6 +427,8 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["SpeedometerWidthTT"] = "Ajusta la anchura del marco del velocímetro."
 	L["SpeedometerHeightName"] = "Altura del velocímetro"
 	L["SpeedometerHeightTT"] = "Ajusta la altura del marco del velocímetro."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Color de velocidad baja del velocímetro"
@@ -666,6 +670,8 @@ if LOCALE == "deDE" then
 	L["SpeedometerWidthTT"] = "Passt die Breite des Rahmens der Geschwindigkeitsanzeige an."
 	L["SpeedometerHeightName"] = "Höhe der Geschwindigkeitsanzeige"
 	L["SpeedometerHeightTT"] = "Passt die Höhe des Rahmens der Geschwindigkeitsanzeige an."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Farbe für niedrige Geschwindigkeit"
@@ -906,6 +912,8 @@ if LOCALE == "frFR" then
 	L["SpeedometerWidthTT"] = "Ajuste la largeur du cadre du vélocimètre."
 	L["SpeedometerHeightName"] = "Hauteur du vélocimètre"
 	L["SpeedometerHeightTT"] = "Ajuste la hauteur du cadre du vélocimètre."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Couleur de vitesse basse"
@@ -1145,6 +1153,8 @@ if LOCALE == "itIT" then
 	L["SpeedometerWidthTT"] = "Regola la larghezza del telaio del tachimetro."
 	L["SpeedometerHeightName"] = "Altezza del tachimetro"
 	L["SpeedometerHeightTT"] = "Regola l’altezza del telaio del tachimetro."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Colore: velocità bassa"
@@ -1385,6 +1395,8 @@ if LOCALE == "ptBR" then
 	L["SpeedometerWidthTT"] = "Ajusta a largura da moldura do velocímetro."
 	L["SpeedometerHeightName"] = "Altura do velocímetro"
 	L["SpeedometerHeightTT"] = "Ajusta a altura da moldura do velocímetro."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Cor: velocidade baixa"
@@ -1627,6 +1639,8 @@ if LOCALE == "ruRU" then
 	L["SpeedometerWidthTT"] = "Настроить ширину рамки спидометра."
 	L["SpeedometerHeightName"] = "Высота спидометра"
 	L["SpeedometerHeightTT"] = "Настроить высоту рамки спидометра."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Цвет: низкая скорость"
@@ -1867,6 +1881,8 @@ if LOCALE == "koKR" then
 	L["SpeedometerWidthTT"] = "속도계 프레임 너비를 설정합니다."
 	L["SpeedometerHeightName"] = "속도계 높이"
 	L["SpeedometerHeightTT"] = "속도계 프레임 높이를 설정합니다."
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "느린 속도 색상"
@@ -2109,6 +2125,8 @@ if LOCALE == "zhCN" then
 	L["SpeedometerWidthTT"] = "设置速度表框架宽度。"
 	L["SpeedometerHeightName"] = "速度表高度"
 	L["SpeedometerHeightTT"] = "设置速度表框架高度。"
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速颜色"
@@ -2349,6 +2367,8 @@ if LOCALE == "zhTW" then
 	L["SpeedometerWidthTT"] = "設定速度表框架寬度。"
 	L["SpeedometerHeightName"] = "速度表高度"
 	L["SpeedometerHeightTT"] = "設定速度表框架高度。"
+	L["LockFrame"] = LOCK_FRAME
+	L["UnlockFrame"] = UNLOCK_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速顏色"
