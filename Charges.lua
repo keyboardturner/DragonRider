@@ -191,8 +191,12 @@ function DR.charge:OnEvent(event, ...)
 			DR.UpdateChargePositions() 
 			
 			local chargeCount = 0
-			if C_UnitAuras.GetPlayerAuraBySpellID(418590) then
-				chargeCount = C_UnitAuras.GetPlayerAuraBySpellID(418590).applications
+			local spellAura = C_UnitAuras.GetPlayerAuraBySpellID(418590)
+			if issecretvalue and issecretvalue(spellAura) then
+				return
+			end
+			if spellAura then
+				chargeCount = spellAura.applications
 			end
 			
 			for i = 1, MAX_VIGOR_BARS - 1 do 
@@ -222,6 +226,9 @@ function DR.charge:OnEvent(event, ...)
 		local isEnabled, startTime, modRate, duration
 		if C_Spell.GetSpellCooldown then
 			local cooldownInfo = C_Spell.GetSpellCooldown(418592)
+			if issecretvalue and issecretvalue(cooldownInfo) then
+				return
+			end
 			isEnabled, startTime, modRate, duration = cooldownInfo.isEnabled, cooldownInfo.startTime, cooldownInfo.modRate, cooldownInfo.duration
 		else
 			isEnabled, startTime, modRate, duration = GetSpellCooldown(418592)
