@@ -74,6 +74,7 @@ end
 
 local CAR_SPELL_ID = 460013;
 function DR.DriveUtils.IsDriving()
+	if GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then return end
 	local aura = C_UnitAuras.GetPlayerAuraBySpellID(CAR_SPELL_ID);
 	return aura and true or false;
 end
@@ -721,7 +722,10 @@ function DR.updateSpeed()
 	if not LibAdvFlight.IsAdvFlyEnabled() then
 		forwardSpeed = DR.DriveUtils.GetSmoothedSpeed()
 	end
-	local racing = C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID)
+	local racing
+	if not GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then 
+		racing = C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID)
+	end
 
 	local THRESHOLD_HIGH;
 	local THRESHOLD_LOW;
