@@ -96,33 +96,33 @@ end
 local scheduledCDTimer = nil
 
 function DriveUI.TurboSpellsOnCD()
-    local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
-    for k, v in pairs(TurboVehicleSpells) do
-        if k == TurboSpell then
-            local isEnabled, startTime, modRate, duration
-            if C_Spell.GetSpellCooldown then
-                local cd = C_Spell.GetSpellCooldown(v)
-                isEnabled, startTime, modRate, duration = cd.isEnabled, cd.startTime, cd.modRate, cd.duration
-            else
-                isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
-            end
+	local TurboVal, TurboSpell = DriveUI.CheckTraitEngine()
+	for k, v in pairs(TurboVehicleSpells) do
+		if k == TurboSpell then
+			local isEnabled, startTime, modRate, duration
+			if C_Spell.GetSpellCooldown then
+				local cd = C_Spell.GetSpellCooldown(v)
+				isEnabled, startTime, modRate, duration = cd.isEnabled, cd.startTime, cd.modRate, cd.duration
+			else
+				isEnabled, startTime, modRate, duration = GetSpellCooldown(v)
+			end
 
-            if startTime > 0 and duration > 0 then
-                local cdLeft = startTime + duration - GetTime()
+			if startTime > 0 and duration > 0 then
+				local cdLeft = startTime + duration - GetTime()
 
-                if not scheduledCDTimer then
-                    scheduledCDTimer = C_Timer.NewTimer(cdLeft, function()
-                        DriveUI.UpdateBars()
-                        scheduledCDTimer = nil
-                    end)
-                end
+				if not scheduledCDTimer then
+					scheduledCDTimer = C_Timer.NewTimer(cdLeft, function()
+						DriveUI.UpdateBars()
+						scheduledCDTimer = nil
+					end)
+				end
 
-                return true
-            else
-                return false
-            end
-        end
-    end
+				return true
+			else
+				return false
+			end
+		end
+	end
 end
 
 

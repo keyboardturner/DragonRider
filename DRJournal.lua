@@ -682,7 +682,7 @@ DR.mainFrame:SetScript("OnEvent", DR.mainFrame.WorldQuestHandler)
 
 DR.mainFrame.OpenTalentsButton = CreateFrame("Button", nil, DR.mainFrame, "SharedButtonTemplate")
 DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -5, -25);
-DR.mainFrame.OpenTalentsButton:SetSize(150, 26);
+DR.mainFrame.OpenTalentsButton:SetSize(180, 26);
 DR.mainFrame.OpenTalentsButton:SetText(L["DragonridingTalents"]);
 DR.mainFrame.OpenTalentsButton:SetScript("OnClick", function(self)
 	GenericTraitUI_LoadUI();
@@ -1045,7 +1045,7 @@ function DR.mainFrame.DoPopulationStuff()
 		stormText:SetJustifyV("TOP")
 
 		DR.mainFrame.multiplayerRace = CreateFrame("Button", nil, DR.mainFrame)
-		DR.mainFrame.multiplayerRace:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -165, -25);
+		DR.mainFrame.multiplayerRace:SetPoint("RIGHT", DR.mainFrame.OpenTalentsButton, "LEFT", -10, 0);
 		DR.mainFrame.multiplayerRace:SetParent(DR.mainFrame)
 		DR.mainFrame.multiplayerRace:SetSize(25,25)
 		DR.mainFrame.multiplayerRace.tex = DR.mainFrame.multiplayerRace:CreateTexture()
