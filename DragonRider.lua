@@ -446,14 +446,22 @@ DR.EventsList:SetScript("OnEvent", function(self, event, ...)
 	end
 end);
 
+function DR.SetCVars()
+	if LibAdvFlight.IsAdvFlying() then return end
+	if DragonRider_DB.DynamicFOV == true then
+		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 1)
+		C_CVar.SetCVar("DriveDynamicFOVEnabled", 1)
+	elseif DragonRider_DB.DynamicFOV == false then
+		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 0)
+		C_CVar.SetCVar("DriveDynamicFOVEnabled", 0)
+		
+	end
+end
+
 function DR.setPositions()
 	if SettingsPanel:IsShown() and not DR.IsEditMode then return end
 	
-	if DragonRider_DB.DynamicFOV == true then
-		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 1)
-	elseif DragonRider_DB.DynamicFOV == false then
-		C_CVar.SetCVar("AdvFlyingDynamicFOVEnabled", 0)
-	end
+	C_Timer.After(2, DR.SetCVars)
 	
 	DR.statusbar:SetParent(UIParent)
 	DR.statusbar:ClearAllPoints()
@@ -848,7 +856,7 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "DynamicFOV"
 			local name = L["DynamicFOV"]
-			local tooltip = L["DynamicFOVTT"]
+			local tooltip = L["DynamicFOVNewTT"] .. "\n\n\124cFFFF0000" .. L["DynamicFOV_CaveatTT"].."\124r"
 			local defaultValue = true
 
 			local setting = RegisterSetting(variable, defaultValue, name);

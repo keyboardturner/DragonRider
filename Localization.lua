@@ -187,6 +187,8 @@ if LOCALE == "enUS" then
 	L["SpeedometerHeightTT"] = "Adjust the height of the Speedometer frame."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Requires closing the settings and landing for this to take effect.\n\nIncompatible with the \"Motion Sickness\" setting."
+	L["DynamicFOVNewTT"] = "Enables adjustment of camera field of view based on gliding and D.R.I.V.E. speed."
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Speedometer Low Speed Color"
@@ -429,6 +431,8 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["SpeedometerHeightTT"] = "Ajusta la altura del marco del velocímetro."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Requiere cerrar la configuración y aterrizar para que surta efecto.\n\nIncompatible con el ajuste de \"Cinetosis\" / \"Mareo\"."
+	L["DynamicFOVNewTT"] = "Activa el ajuste del campo de visión de la cámara según el planeo y la velocidad de M.O.T.O.R. / C.A.R.R.O."
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Color de velocidad baja del velocímetro"
@@ -672,6 +676,8 @@ if LOCALE == "deDE" then
 	L["SpeedometerHeightTT"] = "Passt die Höhe des Rahmens der Geschwindigkeitsanzeige an."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Erfordert das Schließen der Einstellungen und eine Landung, damit dies wirksam wird.\n\nNicht kompatibel mit der Einstellung „Bewegungskrankheit“."
+	L["DynamicFOVNewTT"] = "Aktiviert die Anpassung des Kamerasichtfelds basierend auf Gleiten und F.A.H.R.E.N.-Geschwindigkeit."
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Farbe für niedrige Geschwindigkeit"
@@ -914,6 +920,8 @@ if LOCALE == "frFR" then
 	L["SpeedometerHeightTT"] = "Ajuste la hauteur du cadre du vélocimètre."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Nécessite de fermer les options et d’atterrir pour prendre effet.\n\nIncompatible avec le réglage « Cinétose »."
+	L["DynamicFOVNewTT"] = "Active l’ajustement du champ de vision de la caméra selon le vol plané et la vitesse V.R.O.U.M."
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Couleur de vitesse basse"
@@ -1155,6 +1163,8 @@ if LOCALE == "itIT" then
 	L["SpeedometerHeightTT"] = "Regola l’altezza del telaio del tachimetro."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Richiede di chiudere le impostazioni e atterrare affinché abbia effetto.\n\nIncompatibile con l’impostazione \"Chinetosi\"."
+	L["DynamicFOVNewTT"] = "Abilita la regolazione del campo visivo della telecamera in base al volo planato e alla velocità G.U.I.D.A."
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Colore: velocità bassa"
@@ -1397,6 +1407,8 @@ if LOCALE == "ptBR" then
 	L["SpeedometerHeightTT"] = "Ajusta a altura da moldura do velocímetro."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "É necessário fechar as configurações e pousar para que tenha efeito.\n\nIncompatível com a opção \"Vertigem de movimento\"."
+	L["DynamicFOVNewTT"] = "Ativa o ajuste do campo de visão da câmera baseado no planar e na velocidade V.R.U.M.M."
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Cor: velocidade baixa"
@@ -1641,6 +1653,8 @@ if LOCALE == "ruRU" then
 	L["SpeedometerHeightTT"] = "Настроить высоту рамки спидометра."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "Требуется закрыть настройки и приземлиться, чтобы изменения вступили в силу.\n\nНесовместимо с параметром «Укачивание»."
+	L["DynamicFOVNewTT"] = "Включает настройку поля зрения камеры в зависимости от планирования и скорости РАЗГОН"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Цвет: низкая скорость"
@@ -1883,6 +1897,8 @@ if LOCALE == "koKR" then
 	L["SpeedometerHeightTT"] = "속도계 프레임 높이를 설정합니다."
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "효과를 적용하려면 설정을 닫고 착지해야 합니다.\n\n\"멀미 방지\" 설정과 호환되지 않습니다."
+	L["DynamicFOVNewTT"] = "활공 및 고.속.주.행 속도에 따라 카메라 시야각을 조정합니다."
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "느린 속도 색상"
@@ -2127,6 +2143,8 @@ if LOCALE == "zhCN" then
 	L["SpeedometerHeightTT"] = "设置速度表框架高度。"
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "需要关闭设置并着陆后才能生效。\n\n与“动态眩晕”选项不兼容."
+	L["DynamicFOVNewTT"] = "根据滑翔和 D.R.I.V.E. 速度调整相机视野。"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速颜色"
@@ -2369,6 +2387,8 @@ if LOCALE == "zhTW" then
 	L["SpeedometerHeightTT"] = "設定速度表框架高度。"
 	L["LockFrame"] = LOCK_FRAME
 	L["UnlockFrame"] = UNLOCK_FRAME
+	L["DynamicFOV_CaveatTT"] = "需要關閉設定並著陸後才會生效。\n\n與「畫面暈眩」設定不相容。"
+	L["DynamicFOVNewTT"] = "依據滑翔與 D.R.I.V.E. 速度調整相機視野。"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速顏色"
