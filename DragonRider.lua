@@ -133,6 +133,9 @@ local defaultsTable = {
 	fadeVigor = false, -- this is now deprecated
 	fadeSpeed = true,  -- this is now deprecated
 	lightningRush = true,
+	staticChargeOffset = -10,
+	staticChargeSpacing = 10,
+	staticChargeSize = 36,
 	muteVigorSound = false,
 	themeSpeed = 1, -- default
 	themeVigor = 1, -- default
@@ -778,6 +781,7 @@ function DR.OnAddonLoaded()
 			DR.UpdateVigorTheme();
 			DR.modelSetup();
 			DR.ToggleDecor();
+			DR.UpdateChargePositions();
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory(L["DR_Title"])
@@ -852,6 +856,53 @@ function DR.OnAddonLoaded()
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
 		end
+		
+		do
+			local variable = "staticChargeOffset"
+			local name = "[PH]"..L["StaticChargeOffset"].."[NYI]"
+			local tooltip = "[PH]"..L["StaticChargeOffsetTT"].."[NYI]"
+			local defaultValue = defaultsTable[variable]
+			local minValue = -30
+			local maxValue = 100
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(category, setting, options, tooltip)
+		end
+
+		do
+			local variable = "staticChargeSpacing"
+			local name = "[PH]"..L["StaticChargeSpacing"].."[NYI]"
+			local tooltip = "[PH]"..L["StaticChargeSpacingTT"].."[NYI]"
+			local defaultValue = defaultsTable[variable]
+			local minValue = -15
+			local maxValue = 100
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(category, setting, options, tooltip)
+		end
+
+		do
+			local variable = "staticChargeSize"
+			local name = "[PH]"..L["StaticChargeSize"].."[NYI]"
+			local tooltip = "[PH]"..L["StaticChargeSizeTT"].."[NYI]"
+			local defaultValue = defaultsTable[variable]
+			local minValue = 10
+			local maxValue = 50
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(category, setting, options, tooltip)
+		end
+
+		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SETTING_GROUP_ACCESSIBILITY));
 
 		do
 			local variable = "DynamicFOV"
@@ -1480,6 +1531,7 @@ function DR.OnAddonLoaded()
 			Settings.CreateSlider(categoryVigor, setting, options, tooltip);
 		end
 
+		--[[
 		do
 			local variable = "showtooltip"
 			local name = L["ShowVigorTooltip"].." [NYI]"
@@ -1489,6 +1541,7 @@ function DR.OnAddonLoaded()
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categoryVigor, setting, tooltip)
 		end
+		]]
 
 		do
 			local variable = "muteVigorSound"

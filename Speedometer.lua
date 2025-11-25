@@ -950,8 +950,7 @@ function DR.UpdateSpeedometerTheme()
 	elseif options.BackgroundLeftTexture then
 		DR.statusbar.BGL:SetTexture(options.BackgroundLeftTexture)
 	else
-		DR.statusbar.BGL:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-		DR.statusbar.BGL:SetVertexColor(.0, .0, .0, .8)
+		DR.statusbar.BGL:SetTexture("Interface\\buttons\\white8x8")
 	end
 	
 	if options.BackgroundRightAtlas then
@@ -959,8 +958,7 @@ function DR.UpdateSpeedometerTheme()
 	elseif options.BackgroundRightTexture then
 		DR.statusbar.BGR:SetTexture(options.BackgroundRightTexture)
 	else
-		DR.statusbar.BGR:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-		DR.statusbar.BGR:SetVertexColor(.0, .0, .0, .8)
+		DR.statusbar.BGR:SetTexture("Interface\\buttons\\white8x8")
 	end
 
 	if options.BackgroundMiddleAtlas then
@@ -968,14 +966,13 @@ function DR.UpdateSpeedometerTheme()
 	elseif options.BackgroundMiddleTexture then
 		DR.statusbar.BGM:SetTexture(options.BackgroundMiddleTexture)
 	else
-		DR.statusbar.BGM:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-		DR.statusbar.BGM:SetVertexColor(.0, .0, .0, .8)
+		DR.statusbar.BGM:SetTexture("Interface\\buttons\\white8x8")
 	end
 	
 	if not options.BackgroundLeftAtlas and not options.BackgroundLeftTexture then
 		DR.statusbar.BGL:SetWidth(0)
 		DR.statusbar.BGR:SetWidth(0)
-		DR.statusbar.BGM:SetAllPoints(DR.statusbar)
+		--DR.statusbar.BGM:SetAllPoints(DR.statusbar)
 	end
 	
 	DR.statusbar.Topper:ClearAllPoints()

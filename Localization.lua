@@ -189,6 +189,9 @@ if LOCALE == "enUS" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Requires closing the settings and landing for this to take effect.\n\nIncompatible with the \"Motion Sickness\" setting."
 	L["DynamicFOVNewTT"] = "Enables adjustment of camera field of view based on gliding and D.R.I.V.E. speed."
+	L["StaticChargeOffset"] = "Static Charge Offset"
+	L["StaticChargeSpacing"] = "Static Charge Spacing"
+	L["StaticChargeSize"] = "Static Charge Size"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Speedometer Low Speed Color"
@@ -433,6 +436,9 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Requiere cerrar la configuración y aterrizar para que surta efecto.\n\nIncompatible con el ajuste de \"Cinetosis\" / \"Mareo\"."
 	L["DynamicFOVNewTT"] = "Activa el ajuste del campo de visión de la cámara según el planeo y la velocidad de M.O.T.O.R. / C.A.R.R.O."
+	L["StaticChargeOffset"] = "Desplazamiento de Carga estática"
+	L["StaticChargeSpacing"] = "Espaciado de Carga estática"
+	L["StaticChargeSize"] = "Tamaño de Carga estática"
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Color de velocidad baja del velocímetro"
@@ -678,6 +684,9 @@ if LOCALE == "deDE" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Erfordert das Schließen der Einstellungen und eine Landung, damit dies wirksam wird.\n\nNicht kompatibel mit der Einstellung „Bewegungskrankheit“."
 	L["DynamicFOVNewTT"] = "Aktiviert die Anpassung des Kamerasichtfelds basierend auf Gleiten und F.A.H.R.E.N.-Geschwindigkeit."
+	L["StaticChargeOffset"] = "Versatz der Statischen Aufladung"
+	L["StaticChargeSpacing"] = "Abstand der Statischen Aufladung"
+	L["StaticChargeSize"] = "Größe der Statischen Aufladung"
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Farbe für niedrige Geschwindigkeit"
@@ -922,6 +931,9 @@ if LOCALE == "frFR" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Nécessite de fermer les options et d’atterrir pour prendre effet.\n\nIncompatible avec le réglage « Cinétose »."
 	L["DynamicFOVNewTT"] = "Active l’ajustement du champ de vision de la caméra selon le vol plané et la vitesse V.R.O.U.M."
+	L["StaticChargeOffset"] = "Décalage de la charge statique"
+	L["StaticChargeSpacing"] = "Espacement de la charge statique"
+	L["StaticChargeSize"] = "Taille de la charge statique"
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Couleur de vitesse basse"
@@ -1050,7 +1062,7 @@ if LOCALE == "frFR" then
 return end
 
 if LOCALE == "itIT" then
-	-- French translations go here
+	-- Italian translations go here
 	L["Vigor"] = "Vigore"
 	L["Speedometer"] = "Tachimetro"
 	L["ToggleModelsName"] = "Mostra modelli di vigore"
@@ -1165,6 +1177,9 @@ if LOCALE == "itIT" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Richiede di chiudere le impostazioni e atterrare affinché abbia effetto.\n\nIncompatibile con l’impostazione \"Chinetosi\"."
 	L["DynamicFOVNewTT"] = "Abilita la regolazione del campo visivo della telecamera in base al volo planato e alla velocità G.U.I.D.A."
+	L["StaticChargeOffset"] = "Offset della Carica Statica"
+	L["StaticChargeSpacing"] = "Spaziatura della Carica Statica"
+	L["StaticChargeSize"] = "Dimensione della Carica Statica"
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Colore: velocità bassa"
@@ -1409,6 +1424,9 @@ if LOCALE == "ptBR" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "É necessário fechar as configurações e pousar para que tenha efeito.\n\nIncompatível com a opção \"Vertigem de movimento\"."
 	L["DynamicFOVNewTT"] = "Ativa o ajuste do campo de visão da câmera baseado no planar e na velocidade V.R.U.M.M."
+	L["StaticChargeOffset"] = "Deslocamento da Carga Estática"
+	L["StaticChargeSpacing"] = "Espaçamento da Carga Estática"
+	L["StaticChargeSize"] = "Tamanho da Carga Estática"
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Cor: velocidade baixa"
@@ -1655,6 +1673,9 @@ if LOCALE == "ruRU" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "Требуется закрыть настройки и приземлиться, чтобы изменения вступили в силу.\n\nНесовместимо с параметром «Укачивание»."
 	L["DynamicFOVNewTT"] = "Включает настройку поля зрения камеры в зависимости от планирования и скорости РАЗГОН"
+	L["StaticChargeOffset"] = "Смещение Статического разряда"
+	L["StaticChargeSpacing"] = "Интервал Статического разряда"
+	L["StaticChargeSize"] = "Размер Статического разряда"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Цвет: низкая скорость"
@@ -1899,6 +1920,9 @@ if LOCALE == "koKR" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "효과를 적용하려면 설정을 닫고 착지해야 합니다.\n\n\"멀미 방지\" 설정과 호환되지 않습니다."
 	L["DynamicFOVNewTT"] = "활공 및 고.속.주.행 속도에 따라 카메라 시야각을 조정합니다."
+	L["StaticChargeOffset"] = "전하 충전 위치"
+	L["StaticChargeSpacing"] = "전하 충전 간격"
+	L["StaticChargeSize"] = "전하 충전 크기"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "느린 속도 색상"
@@ -2145,6 +2169,9 @@ if LOCALE == "zhCN" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "需要关闭设置并着陆后才能生效。\n\n与“动态眩晕”选项不兼容."
 	L["DynamicFOVNewTT"] = "根据滑翔和 D.R.I.V.E. 速度调整相机视野。"
+	L["StaticChargeOffset"] = "静电充能偏移"
+	L["StaticChargeSpacing"] = "静电充能间距"
+	L["StaticChargeSize"] = "静电充能大小"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速颜色"
@@ -2389,6 +2416,9 @@ if LOCALE == "zhTW" then
 	L["UnlockFrame"] = UNLOCK_FRAME
 	L["DynamicFOV_CaveatTT"] = "需要關閉設定並著陸後才會生效。\n\n與「畫面暈眩」設定不相容。"
 	L["DynamicFOVNewTT"] = "依據滑翔與 D.R.I.V.E. 速度調整相機視野。"
+	L["StaticChargeOffset"] = "静电充能偏移"
+	L["StaticChargeSpacing"] = "静电充能间距"
+	L["StaticChargeSize"] = "静电充能大小"
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速顏色"
