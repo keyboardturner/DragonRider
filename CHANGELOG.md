@@ -1,6 +1,64 @@
 # 1.0.0
 
-11.2.7 has removed the vigor bar. Dragon Rider has now implemented its own custom Vigor bar, now with additional color settings, size, wrapping, row/column, spacing, and orientation options.
+11.2.7 has removed the vigor bar. Dragon Rider has now implemented its own custom Vigor bar with various options:
+
+ - Option to toggle the Vigor bar
+
+ - Vigor themes
+   * Default - Colored and Desaturated
+   * Algari - Bronze, Dark, Gold, Silver, and Desaturated
+   * Minimalist
+ 
+  - Vigor Charge Height, Width, and Spacing
+
+ - Vigor Charge Orientation
+   * Vertical and Horizontal
+
+ - Vigor Charge Growth Direction
+   * Top-to-Bottom / Left-to-Right, and Bottom-to-Top / Right-to-Left
+
+ - Vigor Charge Limit Wrapping
+
+ - Vigor Charge Fill Direction
+   * Vertical and Horizontal
+
+ - Vigor Progress Flash
+   * Flash on Full or on Progress
+
+ - New Vigor Models added and existing models now separate models from the theme:
+   * Wind, Lightning, Fire Form, Arcane Form, Frost Form, Holy Form, Nature Form, and Shadow Form
+
+ - New Side Art added and existing Side Art now has separate from the theme:
+   * Default - Colored and Desaturated
+   * Algari - Bronze, Dark, Gold, Silver, and Desaturated
+   * Gryphon - Desaturated
+   * Wyvern - Desaturated
+   * Dragon - Desaturated
+
+ - Side Art now has horizontal and vertical positioning, rotation, and scale sliders
+
+ - Vigor fill chime sound re-implemented, and an option to disable it has been added.
+
+ - Vigor Color Pickers:
+   * Full, Empty, Recharge, Cover, Background, Spark, Flash, and Side Art
+
+Static Charges are no longer entirely preset to the Vigor bar, however will adopt the same theme as the Vigor bar. The following options have been added:
+
+ - Static Charge Offset from Vigor Bar, Spacing, Width, and Height
+
+Accessibility option for Dynamic FOV now adjusts both the D.R.I.V.E. and skyriding systems (for technical reasons, the old setting can't be adjusted without the other).
+
+The Speedometer now has several new options, as well as color pickers:
+
+ - A Show Speedometer option has been added to allow completely hiding the speedometer.
+
+ - Options to toggle the Top / Bottom artwork in the Speedometer (theme-specific)
+
+ - Speedometer no longer uses scale, instead allowing to adjust the width and height independently
+
+ - Speedometer Color Pickers added:
+
+   * Cover, Tick, Top, Bottom, and Background
 
 # 0.6.3
 
