@@ -221,7 +221,7 @@ function DR.UpdateChargePositions()
 		if DR.charge[i] then DR.charge[i]:Hide() end
 	end
 
-	if not DR.vigorBar or not DR.vigorBar:IsShown() or not DragonRider_DB or not LibAdvFlight or not LibAdvFlight.HasLightningRush() then
+	if not DR.vigorBar or not DR.vigorBar:IsShown() or not DragonRider_DB or not LibAdvFlight or not LibAdvFlight.HasLightningRush() or not DragonRider_DB.lightningRush then
 		return
 	end
 
