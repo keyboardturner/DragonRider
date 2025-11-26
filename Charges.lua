@@ -16,13 +16,12 @@ DR.charge:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 
 local MAX_CHARGE_FRAMES = 10
 local MAX_VIGOR_BARS = 6
-local CHARGE_SIZE_DEFAULT = 32
-local PADDING_DEFAULT = 5
+local CHARGE_WIDTH_DEFAULT = 36
+local CHARGE_HEIGHT_DEFAULT = 36
+local PADDING_DEFAULT = -10
+local CHARGE_SPACING_DEFAULT = 5.5
 
 -- vigor bar defaults
-local BAR_WIDTH_DEFAULT = 32
-local BAR_HEIGHT_DEFAULT = 32
-local BAR_SPACING_DEFAULT = 10
 local DEFAULT_ORIENTATION = 2
 local DEFAULT_VIGOR_WRAP = 6
 
@@ -90,7 +89,7 @@ local ChargeOptions = {
 
 for i = 1, MAX_CHARGE_FRAMES do
 	DR.charge[i] = CreateFrame("Frame", "DragonRider_StaticCharge_"..i, DR.charge)
-	DR.charge[i]:SetSize(CHARGE_SIZE_DEFAULT, CHARGE_SIZE_DEFAULT)
+	DR.charge[i]:SetSize(CHARGE_WIDTH_DEFAULT, CHARGE_HEIGHT_DEFAULT)
 	DR.charge[i]:SetFrameLevel(5)
 	
 	-- Create Borders (Hidden by default, used for Minimalist)
@@ -249,8 +248,9 @@ function DR.UpdateChargePositions()
 		end
 	end
 
-	local chargeSize = (DragonRider_DB.staticChargeSize) or CHARGE_SIZE_DEFAULT
-	local chargeSpacing = (DragonRider_DB.staticChargeSpacing) or 2
+	local chargeWidth = (DragonRider_DB.staticChargeWidth) or CHARGE_WIDTH_DEFAULT
+	local chargeHeight = (DragonRider_DB.staticChargeHeight) or CHARGE_HEIGHT_DEFAULT
+	local chargeSpacing = (DragonRider_DB.staticChargeSpacing) or CHARGE_SPACING_DEFAULT
 	local chargeOffset = (DragonRider_DB.staticChargeOffset) or PADDING_DEFAULT
 	
 	for i = 1, 5 do
@@ -258,13 +258,13 @@ function DR.UpdateChargePositions()
 		local charge2 = DR.charge[i + 5]
 		
 		if charge1 and charge2 then
-			charge1:SetSize(chargeSize, chargeSize)
-			charge2:SetSize(chargeSize, chargeSize)
+			charge1:SetSize(chargeWidth, chargeHeight)
+			charge2:SetSize(chargeWidth, chargeHeight)
 			
 			charge1:ClearAllPoints()
 			charge2:ClearAllPoints()
 
-			local centerOffset = (i - 3) * (chargeSize + chargeSpacing)
+			local centerOffset = (i - 3) * (chargeWidth + chargeSpacing)
 
 			if showTopBottom then
 				charge1:SetPoint("BOTTOM", DR.vigorBar, "TOP", centerOffset, chargeOffset)

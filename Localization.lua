@@ -191,7 +191,13 @@ if LOCALE == "enUS" then
 	L["DynamicFOVNewTT"] = "Enables adjustment of camera field of view based on gliding and D.R.I.V.E. speed."
 	L["StaticChargeOffset"] = "Static Charge Offset"
 	L["StaticChargeSpacing"] = "Static Charge Spacing"
-	L["StaticChargeSize"] = "Static Charge Size"
+	L["StaticChargeWidth"] = "Static Charge Width"
+	L["StaticChargeHeight"] = "Static Charge Height"
+	L["StaticChargeWidthTT"] = "Adjust the width of Static Charges."
+	L["StaticChargeHeightTT"] = "Adjust the height of Static Charges."
+	L["StaticChargeSpacingTT"] = "Adjust the spacing of Static Charges."
+	L["StaticChargeOffsetTT"] = "Adjust the offset of Static Charges."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Speedometer Low Speed Color"
@@ -439,6 +445,13 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["StaticChargeOffset"] = "Desplazamiento de Carga estática"
 	L["StaticChargeSpacing"] = "Espaciado de Carga estática"
 	L["StaticChargeSize"] = "Tamaño de Carga estática"
+	L["StaticChargeWidth"] = "Ancho de Carga estática"
+	L["StaticChargeHeight"] = "Alto de Carga estática"
+	L["StaticChargeWidthTT"] = "Ajusta el ancho de las Cargas estáticas."
+	L["StaticChargeHeightTT"] = "Ajusta el alto de las Cargas estáticas."
+	L["StaticChargeSpacingTT"] = "Ajusta el espaciado de las Cargas estáticas."
+	L["StaticChargeOffsetTT"] = "Ajusta el desplazamiento de las Cargas estáticas."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Color de velocidad baja del velocímetro"
@@ -687,6 +700,13 @@ if LOCALE == "deDE" then
 	L["StaticChargeOffset"] = "Versatz der Statischen Aufladung"
 	L["StaticChargeSpacing"] = "Abstand der Statischen Aufladung"
 	L["StaticChargeSize"] = "Größe der Statischen Aufladung"
+	L["StaticChargeWidth"] = "Breite der Statischen Aufladung"
+	L["StaticChargeHeight"] = "Höhe der Statischen Aufladung"
+	L["StaticChargeWidthTT"] = "Passt die Breite der Statischen Aufladungen an."
+	L["StaticChargeHeightTT"] = "Passt die Höhe der Statischen Aufladungen an."
+	L["StaticChargeSpacingTT"] = "Passt den Abstand der Statischen Aufladungen an."
+	L["StaticChargeOffsetTT"] = "Passt den Versatz der Statischen Aufladungen an."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Farbe für niedrige Geschwindigkeit"
@@ -934,6 +954,13 @@ if LOCALE == "frFR" then
 	L["StaticChargeOffset"] = "Décalage de la charge statique"
 	L["StaticChargeSpacing"] = "Espacement de la charge statique"
 	L["StaticChargeSize"] = "Taille de la charge statique"
+	L["StaticChargeWidth"] = "Largeur de la charge statique"
+	L["StaticChargeHeight"] = "Hauteur de la charge statique"
+	L["StaticChargeWidthTT"] = "Ajuste la largeur des charges statiques."
+	L["StaticChargeHeightTT"] = "Ajuste la hauteur des charges statiques."
+	L["StaticChargeSpacingTT"] = "Ajuste l'espacement des charges statiques."
+	L["StaticChargeOffsetTT"] = "Ajuste le décalage des charges statiques."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Couleur de vitesse basse"
@@ -1180,6 +1207,13 @@ if LOCALE == "itIT" then
 	L["StaticChargeOffset"] = "Offset della Carica Statica"
 	L["StaticChargeSpacing"] = "Spaziatura della Carica Statica"
 	L["StaticChargeSize"] = "Dimensione della Carica Statica"
+	L["StaticChargeWidth"] = "Larghezza della Carica Statica"
+	L["StaticChargeHeight"] = "Altezza della Carica Statica"
+	L["StaticChargeWidthTT"] = "Regola la larghezza delle Cariche Statiche."
+	L["StaticChargeHeightTT"] = "Regola l'altezza delle Cariche Statiche."
+	L["StaticChargeSpacingTT"] = "Regola la spaziatura delle Cariche Statiche."
+	L["StaticChargeOffsetTT"] = "Regola l'offset delle Cariche Statiche."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Colore: velocità bassa"
@@ -1427,6 +1461,13 @@ if LOCALE == "ptBR" then
 	L["StaticChargeOffset"] = "Deslocamento da Carga Estática"
 	L["StaticChargeSpacing"] = "Espaçamento da Carga Estática"
 	L["StaticChargeSize"] = "Tamanho da Carga Estática"
+	L["StaticChargeWidth"] = "Largura da Carga Estática"
+	L["StaticChargeHeight"] = "Altura da Carga Estática"
+	L["StaticChargeWidthTT"] = "Ajusta a largura das Cargas Estáticas."
+	L["StaticChargeHeightTT"] = "Ajusta a altura das Cargas Estáticas."
+	L["StaticChargeSpacingTT"] = "Ajusta o espaçamento das Cargas Estáticas."
+	L["StaticChargeOffsetTT"] = "Ajusta o deslocamento das Cargas Estáticas."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors
 	L["SpeedometerBar_Slow_ColorPicker"] = "Cor: velocidade baixa"
@@ -1676,6 +1717,13 @@ if LOCALE == "ruRU" then
 	L["StaticChargeOffset"] = "Смещение Статического разряда"
 	L["StaticChargeSpacing"] = "Интервал Статического разряда"
 	L["StaticChargeSize"] = "Размер Статического разряда"
+	L["StaticChargeWidth"] = "Ширина Статического разряда"
+	L["StaticChargeHeight"] = "Высота Статического разряда"
+	L["StaticChargeWidthTT"] = "Настройка ширины Статических разрядов."
+	L["StaticChargeHeightTT"] = "Настройка высоты Статических разрядов."
+	L["StaticChargeSpacingTT"] = "Настройка интервала между Статическими разрядами."
+	L["StaticChargeOffsetTT"] = "Настройка смещения Статических разрядов."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "Цвет: низкая скорость"
@@ -1923,6 +1971,13 @@ if LOCALE == "koKR" then
 	L["StaticChargeOffset"] = "전하 충전 위치"
 	L["StaticChargeSpacing"] = "전하 충전 간격"
 	L["StaticChargeSize"] = "전하 충전 크기"
+	L["StaticChargeWidth"] = "전하 충전 너비"
+	L["StaticChargeHeight"] = "전하 충전 높이"
+	L["StaticChargeWidthTT"] = "전하 충전의 너비를 조정합니다."
+	L["StaticChargeHeightTT"] = "전하 충전의 높이를 조정합니다."
+	L["StaticChargeSpacingTT"] = "전하 충전 간격을 조정합니다."
+	L["StaticChargeOffsetTT"] = "전하 충전 위치를 조정합니다."
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "느린 속도 색상"
@@ -2172,6 +2227,13 @@ if LOCALE == "zhCN" then
 	L["StaticChargeOffset"] = "静电充能偏移"
 	L["StaticChargeSpacing"] = "静电充能间距"
 	L["StaticChargeSize"] = "静电充能大小"
+	L["StaticChargeWidth"] = "静电充能宽度"
+	L["StaticChargeHeight"] = "静电充能高度"
+	L["StaticChargeWidthTT"] = "调整静电充能的宽度。"
+	L["StaticChargeHeightTT"] = "调整静电充能的高度。"
+	L["StaticChargeSpacingTT"] = "调整静电充能的间距。"
+	L["StaticChargeOffsetTT"] = "调整静电充能的偏移。"
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速颜色"
@@ -2419,6 +2481,13 @@ if LOCALE == "zhTW" then
 	L["StaticChargeOffset"] = "静电充能偏移"
 	L["StaticChargeSpacing"] = "静电充能间距"
 	L["StaticChargeSize"] = "静电充能大小"
+	L["StaticChargeWidth"] = "靜電能量寬度"
+	L["StaticChargeHeight"] = "靜電能量高度"
+	L["StaticChargeWidthTT"] = "調整靜電能量的寬度。"
+	L["StaticChargeHeightTT"] = "調整靜電能量的高度。"
+	L["StaticChargeSpacingTT"] = "調整靜電能量的間距。"
+	L["StaticChargeOffsetTT"] = "調整靜電能量的偏移。"
+	L["MoveFrame"] = MOVE_FRAME
 
 	-- Speedometer Colors - replacing previous color picker text
 	L["SpeedometerBar_Slow_ColorPicker"] = "慢速顏色"

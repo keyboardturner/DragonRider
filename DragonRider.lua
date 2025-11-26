@@ -35,52 +35,52 @@ local defaultsTable = {
 	speedValUnits = 1,
 	speedBarColor = {
 		slow = {
-			r=0.77,
-			g=0.38,
-			b=0.00,
-			a=1.00,
+			r = 0.77,
+			g = 0.38,
+			b = 0.00,
+			a = 1.00,
 		},
 		vigor = {
-			r=0/255,
-			g=144/255,
-			b=155/255,
-			a=1.00,
+			r = 0,
+			g = 0.56,
+			b = 0.61,
+			a = 1.00,
 		},
 		over = {
-			r=168/255,
-			g=77/255,
-			b=195/255,
-			a=1.00,
+			r = 0.66,
+			g = 0.30,
+			b = 0.76,
+			a = 1.00,
 		},
 		cover = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		tick = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		topper = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		footer = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		background = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=0.80,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 0.80,
 		},
 		--spark = { -- NYI
 		--	r=1.00,
@@ -91,22 +91,22 @@ local defaultsTable = {
 	},
 	speedTextColor = {
 		slow = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		vigor = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		over = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 	},
 	speedTextScale = 12,
@@ -134,8 +134,9 @@ local defaultsTable = {
 	fadeSpeed = true,  -- this is now deprecated
 	lightningRush = true,
 	staticChargeOffset = -10,
-	staticChargeSpacing = 10,
-	staticChargeSize = 36,
+	staticChargeSpacing = 5.5,
+	staticChargeWidth = 36,
+	staticChargeHeight = 36,
 	muteVigorSound = false,
 	themeSpeed = 1, -- default
 	themeVigor = 1, -- default
@@ -160,52 +161,52 @@ local defaultsTable = {
 	toggleFooter = true,
 	vigorBarColor = {
 		full = {
-			r=0.24,
-			g=0.84,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		empty = {
-			r=0.30,
-			g=0.30,
-			b=0.30,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 0.00,
 		},
 		background = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		progress = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		spark = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=0.90,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 0.90,
 		},
 		cover = {
-			r=0.40,
-			g=0.40,
-			b=0.40,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		flash = {
-			r=1.00,
-			g=1.00,
-			b=1.00,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 		decor = {
-			r=0.40,
-			g=0.40,
-			b=0.40,
-			a=1.00,
+			r = 1.00,
+			g = 1.00,
+			b = 1.00,
+			a = 1.00,
 		},
 	},
 };
@@ -315,12 +316,13 @@ local function CreateEditOverlay(targetFrame, frameName)
 		insets = { left = 1, right = 1, top = 1, bottom = 1, },
 	}
 	editFrame:SetBackdrop(backdropInfo)
-	editFrame:SetBackdropColor(0, 1, 0, 0.3)
+	editFrame:SetBackdropColor(1, 1, 1, 1)
 	editFrame:SetBackdropBorderColor(0.227, 0.773, 1.00, 1)
 
 	editFrame.Label = editFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	editFrame.Label:SetPoint("CENTER", 0, 0)
 	editFrame.Label:SetText(frameName)
+    editFrame.Label:SetFontHeight(17.5)
 
 	editFrame:EnableMouse(true)
 	editFrame:SetMovable(true)
@@ -845,6 +847,17 @@ function DR.OnAddonLoaded()
 
 		--layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Vigor"])); -- moved to subcategory
 
+		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["MoveFrame"]));
+
+		do
+			local function OnButtonClick()
+				DR.ToggleEditMode(true);
+			end
+			local btnText = L["UnlockFrame"]
+			local btnTT = L["UnlockFrame"]
+			layout:AddInitializer(CreateSettingsButtonInitializer(btnText, btnText, OnButtonClick, btnTT, true));
+		end
+
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(SPECIAL));
 
 		do
@@ -856,15 +869,15 @@ function DR.OnAddonLoaded()
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(category, setting, tooltip)
 		end
-		
+
 		do
 			local variable = "staticChargeOffset"
-			local name = "[PH]"..L["StaticChargeOffset"].."[NYI]"
-			local tooltip = "[PH]"..L["StaticChargeOffsetTT"].."[NYI]"
+			local name = L["StaticChargeOffset"]
+			local tooltip = L["StaticChargeOffsetTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -30
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
@@ -874,12 +887,12 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "staticChargeSpacing"
-			local name = "[PH]"..L["StaticChargeSpacing"].."[NYI]"
-			local tooltip = "[PH]"..L["StaticChargeSpacingTT"].."[NYI]"
+			local name = L["StaticChargeSpacing"]
+			local tooltip = L["StaticChargeSpacingTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = -15
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
@@ -888,13 +901,28 @@ function DR.OnAddonLoaded()
 		end
 
 		do
-			local variable = "staticChargeSize"
-			local name = "[PH]"..L["StaticChargeSize"].."[NYI]"
-			local tooltip = "[PH]"..L["StaticChargeSizeTT"].."[NYI]"
+			local variable = "staticChargeWidth"
+			local name = L["StaticChargeWidth"]
+			local tooltip = L["StaticChargeWidthTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 10
-			local maxValue = 50
-			local step = 1
+			local maxValue = 100
+			local step = .5
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(category, setting, options, tooltip)
+		end
+
+		do
+			local variable = "staticChargeHeight"
+			local name = L["StaticChargeHeight"]
+			local tooltip = L["StaticChargeHeightTT"]
+			local defaultValue = defaultsTable[variable]
+			local minValue = 10
+			local maxValue = 100
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
@@ -933,17 +961,6 @@ function DR.OnAddonLoaded()
 			layout:AddInitializer(initializer);
 		end
 
-		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["Move Frames"]));
-
-		do
-			local function OnButtonClick()
-				DR.ToggleEditMode(true);
-			end
-			local btnText = L["UnlockFrame"]
-			local btnTT = L["UnlockFrame"]
-			layout:AddInitializer(CreateSettingsButtonInitializer(btnText, btnText, OnButtonClick, btnTT, true));
-		end
-
 		layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(RESET));
 
 		StaticPopupDialogs["DRAGONRIDER_RESET_SETTINGS"] = {
@@ -951,9 +968,36 @@ function DR.OnAddonLoaded()
 			button1 = YES,
 			button2 = NO,
 			OnAccept = function()
+				-- preserve the race data scores
+				local savedRaceData = DragonRider_DB.raceData
+				local savedCollector = DragonRider_DB.raceDataCollector
+
 				DragonRider_DB = CopyTable(defaultsTable);
+
+				DragonRider_DB.raceData = savedRaceData
+				DragonRider_DB.raceDataCollector = savedCollector
+
 				DR.vigorCounter();
 				DR.setPositions();
+				DR.UpdateSpeedometerTheme();
+				DR.UpdateVigorLayout();
+				DR.UpdateVigorFillDirection();
+				DR.UpdateVigorTheme();
+				DR.modelSetup();
+				DR.ToggleDecor();
+				DR.UpdateChargePositions();
+				
+				if DragonRider_DB.toggleVigor and LibAdvFlight.IsAdvFlyEnabled() then
+					DR.vigorBar:Show()
+				else
+					DR.vigorBar:Hide()
+				end
+				
+				if DragonRider_DB.toggleSpeedometer then
+					DR.ShowWithFadeBar()
+				else
+					DR.statusbar:Hide()
+				end
 			end,
 			timeout = 0,
 			whileDead = true,
@@ -1035,7 +1079,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = 100
 			local maxValue = 500
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
@@ -1050,7 +1094,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = 10
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
@@ -1256,9 +1300,9 @@ function DR.OnAddonLoaded()
 			local name = L["VigorBarWidthName"]
 			local tooltip = L["VigorBarWidthNameTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = 1
-			local maxValue = 500
-			local step = 1
+			local minValue = 10
+			local maxValue = 200
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
@@ -1271,9 +1315,9 @@ function DR.OnAddonLoaded()
 			local name = L["VigorBarHeightName"]
 			local tooltip = L["VigorBarHeightNameTT"]
 			local defaultValue = defaultsTable[variable]
-			local minValue = 1
-			local maxValue = 500
-			local step = 1
+			local minValue = 10
+			local maxValue = 200
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
@@ -1288,7 +1332,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
@@ -1474,7 +1518,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
@@ -1489,7 +1533,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = -100
 			local maxValue = 100
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
@@ -1504,7 +1548,7 @@ function DR.OnAddonLoaded()
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
 			local maxValue = 360
-			local step = 1
+			local step = .5
 
 			local setting = RegisterSetting(variable, defaultValue, name);
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step);
