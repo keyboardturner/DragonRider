@@ -1026,10 +1026,14 @@ function DR.ToggleDecor()
 	end
 end
 
-
+local function GetRGBA(colorTbl, fallbackTbl)
+	local c = (DragonRider_DB and DragonRider_DB.vigorBarColor and colorTbl) or fallbackTbl
+	if not c then return 1, 1, 1, 1 end
+	return c.r, c.g, c.b, c.a or 1
+end
 
 local function UpdateChargeBars()
-	
+
 	local info = C_Spell.GetSpellCharges(SPELL_ID)
 	if not info then return end
 
@@ -1041,89 +1045,17 @@ local function UpdateChargeBars()
 	local start = info.cooldownStartTime or 0
 	local duration = info.cooldownDuration or 0
 
-	local rF, gF, bF, aF
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.full then
-		rF = DragonRider_DB.vigorBarColor.full.r
-		gF = DragonRider_DB.vigorBarColor.full.g
-		bF = DragonRider_DB.vigorBarColor.full.b
-		aF = DragonRider_DB.vigorBarColor.full.a
-	else
-		rF, gF, bF, aF = VigorColors.full:GetRGBA()
-	end
-
-	local rP, gP, bP, aP
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.progress then
-		rP = DragonRider_DB.vigorBarColor.progress.r
-		gP = DragonRider_DB.vigorBarColor.progress.g
-		bP = DragonRider_DB.vigorBarColor.progress.b
-		aP = DragonRider_DB.vigorBarColor.progress.a
-	else
-		rP, gP, bP, aP = VigorColors.progress:GetRGBA()
-	end
-
-	local rE, gE, bE, aE
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.empty then
-		rE = DragonRider_DB.vigorBarColor.empty.r
-		gE = DragonRider_DB.vigorBarColor.empty.g
-		bE = DragonRider_DB.vigorBarColor.empty.b
-		aE = DragonRider_DB.vigorBarColor.empty.a
-	else
-		rE, gE, bE, aE = VigorColors.empty:GetRGBA()
-	end
-
-	local rBG, gBG, bBG, aBG
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.background then
-		rBG = DragonRider_DB.vigorBarColor.background.r
-		gBG = DragonRider_DB.vigorBarColor.background.g
-		bBG = DragonRider_DB.vigorBarColor.background.b
-		aBG = DragonRider_DB.vigorBarColor.background.a
-	else
-		rBG, gBG, bBG, aBG = VigorColors.background:GetRGBA()
-	end
-
-	local rS, gS, bS, aS
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.spark then
-		rS = DragonRider_DB.vigorBarColor.spark.r
-		gS = DragonRider_DB.vigorBarColor.spark.g
-		bS = DragonRider_DB.vigorBarColor.spark.b
-		aS = DragonRider_DB.vigorBarColor.spark.a
-	else
-		rS, gS, bS, aS = VigorColors.cover:GetRGBA()
-	end
-
-	local rC, gC, bC, aC
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.cover then
-		rC = DragonRider_DB.vigorBarColor.cover.r
-		gC = DragonRider_DB.vigorBarColor.cover.g
-		bC = DragonRider_DB.vigorBarColor.cover.b
-		aC = DragonRider_DB.vigorBarColor.cover.a
-	else
-		rC, gC, bC, aC = VigorColors.cover:GetRGBA()
-	end
-
-	local rFl, gFl, bFl, aFl
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.flash then
-		rFl = DragonRider_DB.vigorBarColor.flash.r
-		gFl = DragonRider_DB.vigorBarColor.flash.g
-		bFl = DragonRider_DB.vigorBarColor.flash.b
-		aFl = DragonRider_DB.vigorBarColor.flash.a
-	else
-		rFl, gFl, bFl, aFl = VigorColors.cover:GetRGBA()
-	end
-
-	local rD, gD, bD, aD
-	if DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.decor then
-		rD = DragonRider_DB.vigorBarColor.decor.r
-		gD = DragonRider_DB.vigorBarColor.decor.g
-		bD = DragonRider_DB.vigorBarColor.decor.b
-		aD = DragonRider_DB.vigorBarColor.decor.a
-	else
-		rD, gD, bD, aD = VigorColors.cover:GetRGBA()
-	end
-
+	local rF, gF, bF, aF = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.full, VigorColors.full)
+	local rP, gP, bP, aP = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.progress, VigorColors.progress)
+	local rE, gE, bE, aE = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.empty, VigorColors.empty)
+	local rBG, gBG, bBG, aBG = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.background, VigorColors.background)
+	local rS, gS, bS, aS = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.spark, VigorColors.spark)
+	local rC, gC, bC, aC = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.cover, VigorColors.cover)
+	local rFl, gFl, bFl, aFl = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.flash, VigorColors.flash)
+	local rD, gD, bD, aD = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.decor, VigorColors.decor)
 
 	for i = 1, 2 do
-		vigorBar.decor[i].texture:SetVertexColor(rD, gD, bD, aD)
+		if vigorBar.decor[i] then vigorBar.decor[i].texture:SetVertexColor(rD, gD, bD, aD) end
 	end
 
 	for i = 1, MAX_CHARGES do
@@ -1144,10 +1076,14 @@ local function UpdateChargeBars()
 
 		if i <= current then -- fully charged
 			bar.fullFill:Show()
+			
+			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
+			bar.clippingFrame:Hide()
+			
 			bar.emptyFill:Hide()
 			--bar.fullFill:SetDesaturated(false)
 			bar.fullFill:SetVertexColor(rF, gF, bF, aF)
-			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
+			bar.fullFill:SetAlpha(1) 
 			bar:SetProgress(1)
 
 			-- stop progress flash if it was running
@@ -1165,10 +1101,12 @@ local function UpdateChargeBars()
 			bar.isFull = false -- mark as not full
 			bar.fullFill:Hide()
 			bar.emptyFill:Hide()
+			bar.clippingFrame:Show()
+			
 			if not bar.animGroup:IsPlaying() then bar.animGroup:Play() end
 
 			local elapsed = GetTime() - start
-			local progress = math.min(elapsed / duration, 1)
+			local progress = math.max(0.001, math.min(elapsed / duration, 1))
 			bar.animFill:SetVertexColor(rP, gP, bP, aP)
 			bar:SetProgress(progress)
 
@@ -1190,6 +1128,7 @@ local function UpdateChargeBars()
 			bar.emptyFill:SetDesaturated(true)
 			bar.emptyFill:SetVertexColor(rE, gE, bE, aE)
 			if bar.animGroup:IsPlaying() then bar.animGroup:Stop() end
+			bar.clippingFrame:Hide()
 			bar:SetProgress(0)
 
 			-- stop any flashes
