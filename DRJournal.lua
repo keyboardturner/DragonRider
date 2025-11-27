@@ -686,11 +686,7 @@ DR.mainFrame.OpenTalentsButton:SetSize(180, 26);
 DR.mainFrame.OpenTalentsButton:SetText(L["DragonridingTalents"]);
 DR.mainFrame.OpenTalentsButton:SetScript("OnClick", function(self)
 	GenericTraitUI_LoadUI();
-	if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_WAR_WITHIN then
-		GenericTraitFrame:SetSystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
-	else
-		GenericTraitFrame:SetConfigIDBySystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
-	end
+	GenericTraitFrame:SetConfigIDBySystemID(Constants.MountDynamicFlightConsts.TRAIT_SYSTEM_ID);
 	GenericTraitFrame:SetTreeID(Constants.MountDynamicFlightConsts.TREE_ID);
 	ToggleFrame(GenericTraitFrame);
 end);
