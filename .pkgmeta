@@ -8,7 +8,7 @@ embedded-libraries:
 
 externals:
   Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
-  Libs/LibAdvFlight-1.0: https://github.com/Ghostopheles/LibAdvFlight
+  Libs/LibAdvFlight: https://github.com/Ghostopheles/LibAdvFlight
 
 ignore:
   - Libs/*/*.rockspec
