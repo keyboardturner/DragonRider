@@ -1,3 +1,7 @@
+# 1.0.3
+
+Potentially fixe a calamity that occurred upon a new install
+
 # 1.0.2
 
 Adjusted model frame strata layer - should now be correctly tied to the vigor bars
