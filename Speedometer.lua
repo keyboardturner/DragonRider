@@ -543,8 +543,8 @@ local DefBarOptions = SpeedometerBarOptions[1]
 
 DR.statusbar = CreateFrame("StatusBar", "DragonRider_Speedometer", UIParent)
 DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-DR.statusbar:SetWidth(defaultsTable.speedometerWidth)
-DR.statusbar:SetHeight(defaultsTable.speedometerHeight)
+DR.statusbar:SetWidth(244)
+DR.statusbar:SetHeight(24)
 DR.statusbar:SetStatusBarTexture(DefBarOptions.BarTexture)
 DR.statusbar:GetStatusBarTexture():SetHorizTile(false)
 DR.statusbar:GetStatusBarTexture():SetVertTile(false)
