@@ -1,8 +1,10 @@
-local DragonRider, DR = ...
-local _, L = ...
+local _, DR = ...
+
+local L = DR.L
 
 --A purposeful global variable for other addons
 DragonRider_API = DR
+local defaultsTable = DR.defaultsTable
 
 ---@type LibAdvFlight
 local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1");

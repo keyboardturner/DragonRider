@@ -1,5 +1,7 @@
 local _, DR = ...
 
+local L = DR.L
+
 local PLACEHOLDER = "[PH]"
 
 -- icon file IDs for WQ Locations 

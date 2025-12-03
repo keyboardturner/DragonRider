@@ -1,5 +1,6 @@
 local _, DR = ...
-local _, L = ...
+
+local L = DR.L
 
 local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1");
 
