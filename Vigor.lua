@@ -1273,7 +1273,6 @@ end
 for i = 1, MAX_CHARGES do
 	DR.modelScene[i] = CreateFrame("ModelScene", nil, vigorBar.bars[i])
 	DR.modelScene[i]:SetAllPoints()
-	DR.modelScene[i]:SetFrameStrata("HIGH")
 	DR.modelScene[i]:SetFrameLevel(vigorBar.bars[i]:GetFrameLevel() + 5)
 	DR.modelScene[i]:SetSize(43,43)
 
