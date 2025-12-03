@@ -1,3 +1,11 @@
+# 1.0.2
+
+Adjusted model frame strata layer - should now be correctly tied to the vigor bars
+
+# 1.0.1
+
+Fix to missing library issue
+
 # 1.0.0
 
 11.2.7 has removed the vigor bar. Dragon Rider has now implemented its own custom Vigor bar with various options:
