@@ -1,9 +1,6 @@
 local _, DR = ...
 
 local L = DR.L
-
---A purposeful global variable for other addons
-DragonRider_API = DR
 local defaultsTable = DR.defaultsTable
 
 ---@type LibAdvFlight
@@ -546,8 +543,8 @@ local DefBarOptions = SpeedometerBarOptions[1]
 
 DR.statusbar = CreateFrame("StatusBar", "DragonRider_Speedometer", UIParent)
 DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-DR.statusbar:SetWidth(DragonRider_DB.speedometerWidth or 244)
-DR.statusbar:SetHeight(DragonRider_DB.speedometerHeight or 24)
+DR.statusbar:SetWidth(defaultsTable.speedometerWidth)
+DR.statusbar:SetHeight(defaultsTable.speedometerHeight)
 DR.statusbar:SetStatusBarTexture(DefBarOptions.BarTexture)
 DR.statusbar:GetStatusBarTexture():SetHorizTile(false)
 DR.statusbar:GetStatusBarTexture():SetVertTile(false)

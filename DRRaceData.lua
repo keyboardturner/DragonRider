@@ -1,6 +1,7 @@
 local _, DR = ...
 
 local L = DR.L
+local defaultsTable = DR.defaultsTable
 
 local PLACEHOLDER = "[PH]"
 
