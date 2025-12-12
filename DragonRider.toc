@@ -48,6 +48,7 @@
 ## LoadSavedVariablesFirst: 1
 ## SavedVariables: DragonRider_DB
 
+Libs/LibStub/LibStub.lua
 Libs/LibAdvFlight/lib.xml
 
 Templates/SettingsTemplates.xml

@@ -1,3 +1,7 @@
+# 1.0.4
+
+properly load libstub in the toc wumbo
+
 # 1.0.3
 
 Potentially fixe a calamity that occurred upon a new install
