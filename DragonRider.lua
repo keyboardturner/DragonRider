@@ -1342,6 +1342,7 @@ function DR.OnAddonLoaded()
 				local container = Settings.CreateControlTextContainer()
 				container:Add(1, L["Orientation_Vertical"])
 				container:Add(2, L["Orientation_Horizontal"])
+				container:Add(3, "[PH] "..L["Radial"])
 				return container:GetData()
 			end
 

@@ -763,6 +763,21 @@ local function CreateChargeBar(parent, index)
 		--bar:SetAlpha(0.6 + 0.4 * percent)
 	end
 
+	local frameRotGroup = bar:CreateAnimationGroup()
+	local frameRotAnim = frameRotGroup:CreateAnimation("Rotation")
+	frameRotAnim:SetOrder(1)
+	frameRotAnim:SetDuration(0)
+	frameRotAnim:SetEndDelay(2147483647)
+	bar.frameRotGroup = frameRotGroup
+	bar.frameRotAnim = frameRotAnim
+
+	function bar:SetFrameRotation(degrees)
+		self.frameRotGroup:Stop()
+		
+		self.frameRotAnim:SetDegrees(degrees or 0)
+		self.frameRotGroup:Play()
+	end
+
 	-- initialize
 	bar:SetProgress(0)
 	bar.isFull = false
@@ -796,7 +811,39 @@ function DR.UpdateVigorLayout()
 	local wrap = math.min(vigorWrap, MAX_CHARGES)
 	if wrap <= 0 then wrap = MAX_CHARGES end
 
-	if orientation == 1 then -- Vertical layout
+	if orientation == 3 then -- Radial / Hexagonal layout
+		local radius = bar_width + bar_spacing
+		local totalSize = (radius * 2) + bar_width
+		vigorBar:SetSize(totalSize, totalSize)
+
+		local startAngle = 90 
+		local angleStep = 60 
+
+		for i, bar in ipairs(vigorBar.bars) do
+			bar:SetSize(bar_width, bar_height)
+			bar:ClearAllPoints()
+
+			local angle
+			if direction == 1 then
+				angle = startAngle - ((i - 1) * angleStep)
+			else
+				angle = startAngle + ((i - 1) * angleStep)
+			end
+			
+			bar.radialAngle = angle 
+
+			local rad = math.rad(angle)
+			local x = math.cos(rad) * radius
+			local y = math.sin(rad) * radius
+			
+			bar:SetPoint("CENTER", vigorBar, "CENTER", x, y)
+			
+			bar:SetFrameRotation(angle - 90)
+
+			if bar.progress then bar:SetProgress(bar.progress) end
+		end
+
+	elseif orientation == 1 then -- Vertical layout
 		local numCols = math.ceil(MAX_CHARGES / wrap)
 		local numRowsOnLongestCol = wrap
 
@@ -809,7 +856,8 @@ function DR.UpdateVigorLayout()
 			bar:UpdateFillAnchors()
 			
 			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
-
+			bar:SetFrameRotation(0)
+			
 			bar:ClearAllPoints()
 			local col = math.floor((i - 1) / wrap)
 			local row = (i - 1) % wrap
@@ -845,6 +893,7 @@ function DR.UpdateVigorLayout()
 			bar:UpdateFillAnchors()
 			
 			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
+			bar:SetFrameRotation(0)
 
 			bar:ClearAllPoints()
 			local row = math.floor((i - 1) / wrap)
@@ -855,7 +904,7 @@ function DR.UpdateVigorLayout()
 			local rowWidth = (numBarsInThisRow * bar_width) + (math.max(0, numBarsInThisRow - 1) * bar_spacing)
 			local xOffset = (totalWidth - rowWidth) / 2
 
-			if direction == 1 then -- top-to-bottom rows, left-to-right bars
+			if direction == 1 then -- top-to-bottom rows, left-to-right bars 
 				local x = xOffset + col * (bar_width + bar_spacing)
 				local y = -(row * (bar_height + bar_spacing))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)
