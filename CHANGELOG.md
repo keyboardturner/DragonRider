@@ -1,3 +1,9 @@
+# 1.0.5
+
+Early iteration of custom vigor and speedometer theme testing
+
+Added secret value checks for Midnight beta
+
 # 1.0.4
 
 properly load libstub in the toc wumbo
