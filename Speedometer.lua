@@ -73,7 +73,7 @@ end
 
 local CAR_SPELL_ID = 460013;
 function DR.DriveUtils.IsDriving()
-	if GetRestrictedActionStatus and GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then return end
+	if C_Secrets and C_Secrets.ShouldSpellCooldownBeSecret(CAR_SPELL_ID) then return end
 	local aura = C_UnitAuras.GetPlayerAuraBySpellID(CAR_SPELL_ID);
 	return aura and true or false;
 end
@@ -722,7 +722,7 @@ function DR.updateSpeed()
 		forwardSpeed = DR.DriveUtils.GetSmoothedSpeed()
 	end
 	local racing
-	if GetRestrictedActionStatus and not GetRestrictedActionStatus(Enum.RestrictedActionType.SecretCooldowns) then 
+	if C_Secrets and not C_Secrets.ShouldSpellCooldownBeSecret(DRAGON_RACE_AURA_ID) then
 		racing = C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID)
 	end
 
