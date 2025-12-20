@@ -1,3 +1,9 @@
+# 1.0.6
+
+Edited Surge Forward as the "check" spell for vigor charges (PTR 1 12.0.0 now has whitelisted spells, skyward ascent wasn't whitelisted yet)
+
+Added 12.0.1 toc for Midnight beta
+
 # 1.0.5
 
 Early iteration of custom vigor and speedometer theme testing
