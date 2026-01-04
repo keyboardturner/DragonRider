@@ -1,3 +1,7 @@
+# 1.0.7
+
+Added a "Settings" tab to the Dragon Rider journal to make opening the settings accessible from the journal.
+
 # 1.0.6
 
 Edited Surge Forward as the "check" spell for vigor charges (PTR 1 12.0.0 now has whitelisted spells, skyward ascent wasn't whitelisted yet)
