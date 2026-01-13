@@ -1,3 +1,7 @@
+# 1.0.8
+
+Made the Timerunner Stats tooltip available to non-timerunners on the journal portrait when holding shift.
+
 # 1.0.7
 
 Added a "Settings" tab to the Dragon Rider journal to make opening the settings accessible from the journal.
