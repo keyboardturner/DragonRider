@@ -1,3 +1,7 @@
+# 1.0.9
+
+Updates to zhCN localization (thanks to Maple Saint)
+
 # 1.0.8
 
 Made the Timerunner Stats tooltip available to non-timerunners on the journal portrait when holding shift.
