@@ -1,3 +1,7 @@
+# 1.1.0
+
+Made "Unlock Frame" button move the movable widgets to their saved location. The settings will close when unlocking the movable widgets, and re-open upon locking (does not function in combat).
+
 # 1.0.9
 
 Updates to zhCN localization (thanks to Maple Saint)
