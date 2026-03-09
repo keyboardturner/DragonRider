@@ -809,7 +809,7 @@ function DR.UpdateVigorLayout()
 			bar:UpdateFillAnchors()
 			
 			-- Removed overlay/spark frame positioning, will be handled by UpdateVigorTheme
-
+			
 			bar:ClearAllPoints()
 			local col = math.floor((i - 1) / wrap)
 			local row = (i - 1) % wrap
@@ -855,7 +855,7 @@ function DR.UpdateVigorLayout()
 			local rowWidth = (numBarsInThisRow * bar_width) + (math.max(0, numBarsInThisRow - 1) * bar_spacing)
 			local xOffset = (totalWidth - rowWidth) / 2
 
-			if direction == 1 then -- top-to-bottom rows, left-to-right bars
+			if direction == 1 then -- top-to-bottom rows, left-to-right bars 
 				local x = xOffset + col * (bar_width + bar_spacing)
 				local y = -(row * (bar_height + bar_spacing))
 				bar:SetPoint("TOPLEFT", vigorBar, "TOPLEFT", x, y)

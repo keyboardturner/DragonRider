@@ -877,14 +877,14 @@ function DR.updateSpeed()
 end
 
 function DR.UpdateSpeedometerTheme()
-	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or 1
+	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or defaultsTable.themeSpeed
 	local themeData = DR.SpeedometerOptions[themeIndex] or DR.SpeedometerOptions[1]
 	local options = themeData.Cover
 	local barOptions = themeData.Bar
 	local isMinimalist = (themeData.key == "Minimalist")
 
-	DR.statusbar:SetWidth(DragonRider_DB.speedometerWidth or 244)
-	DR.statusbar:SetHeight(DragonRider_DB.speedometerHeight or 24)
+	DR.statusbar:SetWidth(DragonRider_DB.speedometerWidth or defaultsTable.speedometerWidth)
+	DR.statusbar:SetHeight(DragonRider_DB.speedometerHeight or defaultsTable.speedometerHeight)
 
 	if barOptions.BarTexture then
 		DR.statusbar:SetStatusBarTexture(barOptions.BarTexture)

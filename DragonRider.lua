@@ -654,7 +654,7 @@ end
 
 
 local function CreateColorPickerButtonForSetting(category, setting, tooltip)
-	local data = Settings.CreateSettingInitializerData(setting, {}, tooltip);
+	local data = Settings.CreateSettingInitializerData(setting, { hasOpacity = true }, tooltip);
 	local initializer = Settings.CreateSettingInitializer("DragonRiderColorSwatchSettingTemplate", data);
 	local layout = SettingsPanel:GetLayout(category);
 	layout:AddInitializer(initializer);
@@ -1695,6 +1695,25 @@ function DR.OnAddonLoaded()
 		---------------------------------------------------------------------------------------------------------------------------------
 		---------------------------------------------------------------------------------------------------------------------------------
 
+		local speedTicker = nil
+
+		local function OnUpdate()
+			DR.updateSpeed();
+		end
+
+		local function StartSpeedTicker()
+			if not speedTicker then
+				speedTicker = C_Timer.NewTicker(0.1, OnUpdate)
+			end
+		end
+
+		local function StopSpeedTicker()
+			if speedTicker then
+				speedTicker:Cancel()
+				speedTicker = nil
+			end
+		end
+
 		-- when the player takes off and starts flying
 		local function OnAdvFlyStart()
 			DR.ShowWithFadeBar();
@@ -1716,7 +1735,9 @@ function DR.OnAddonLoaded()
 			DR.UpdateVigorFillDirection();
 			DR.UpdateVigorTheme();
 			DR.UpdateSpeedometerTheme();
-			DR.UpdateChargePositions()
+			DR.UpdateChargePositions();
+
+			StartSpeedTicker();
 		end
 
 		local function OnAdvFlyEnd()
@@ -1729,6 +1750,8 @@ function DR.OnAddonLoaded()
 			DR.HideWithFadeBar();
 			DR.clearPositions();
 			DR.vigorBar:Hide();
+
+			StopSpeedTicker();
 		end
 
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_START, OnAdvFlyStart);
@@ -1739,12 +1762,16 @@ function DR.OnAddonLoaded()
 		local function OnDriveStart()
 			if DR.DriveUtils.IsDriving() then
 				OnAdvFlyStart();
+				StartSpeedTicker();
 			end
 		end
 
 		local function OnDriveEnd()
 			if not DR.DriveUtils.IsDriving() then
 				OnAdvFlyEnd();
+				if not LibAdvFlight.IsAdvFlyEnabled() then
+					StopSpeedTicker();
+				end
 			end
 		end
 
@@ -1759,13 +1786,17 @@ function DR.OnAddonLoaded()
 		f:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA");
 		f:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA");
 
-		-- this will run every frame, forever :)
-		-- put anything that needs to run every frame in here
-		local function OnUpdate()
-			DR.updateSpeed();
-		end
+		DR.UpdateSpeedometerTheme();
+		DR.UpdateVigorLayout();
+		DR.UpdateVigorFillDirection();
+		DR.UpdateVigorTheme();
+		DR.modelSetup();
+		DR.ToggleDecor();
+		DR.UpdateChargePositions();
 
-		C_Timer.NewTicker(0.1, OnUpdate);
+		if LibAdvFlight.IsAdvFlyEnabled() then
+			OnAdvFlyEnabled();
+		end
 	end
 end
 
