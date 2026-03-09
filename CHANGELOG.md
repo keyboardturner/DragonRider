@@ -1,3 +1,9 @@
+# 1.1.1
+
+Re-added "Fade Vigor" option at long last, which will hide the vigor while mounted on a skyriding mount and while skyriding charges are full.
+
+Added some secret-protection to DriveUI stuff.
+
 # 1.1.0
 
 Made "Unlock Frame" button move the movable widgets to their saved location. The settings will close when unlocking the movable widgets, and re-open upon locking (does not function in combat).
