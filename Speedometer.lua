@@ -1163,6 +1163,7 @@ end
 -- Function to hide the frame with a fade out animation
 function DR.HideWithFadeBar()
 	if DR.IsEditMode then return end
+	if not DR.statusbar:IsShown() then return end
 	
 	if SettingsPanel:IsShown() then return end
 	DR.fadeOutBarGroup:Stop(); -- Stop any ongoing animations
