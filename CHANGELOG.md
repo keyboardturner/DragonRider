@@ -4,6 +4,9 @@ Re-added "Fade Vigor" option at long last, which will hide the vigor while mount
 
 Added some secret-protection to DriveUI stuff.
 
+Semi-fix to alpha transparency not being properly applied upon login/reload 
+ - Note: this is likely a weird interaction/bug with Blizz's animation API, it'll likely crop up in other areas. A future update will have to be made to actually fix this issue
+
 # 1.1.0
 
 Made "Unlock Frame" button move the movable widgets to their saved location. The settings will close when unlocking the movable widgets, and re-open upon locking (does not function in combat).
