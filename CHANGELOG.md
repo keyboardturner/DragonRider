@@ -1,3 +1,7 @@
+# 1.1.1a
+
+Fix up color picker thing being weird when pasting a hex color value and hitting enter (this is due to blizz color picker frame being limited to RGB even when alpha transparency is enabled)
+
 # 1.1.1
 
 Re-added "Fade Vigor" option at long last, which will hide the vigor while mounted on a skyriding mount and while skyriding charges are full.
