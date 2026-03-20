@@ -35,6 +35,7 @@ local defaultsTable = {
 	speedometerHeight = 24,
 	speedometerScale = 1,
 	speedValUnits = 1,
+	speedBarTexture = 1,
 	speedBarColor = {
 		slow = {
 			r = 0.77,
@@ -84,12 +85,12 @@ local defaultsTable = {
 			b = 1.00,
 			a = 0.80,
 		},
-		--spark = { -- NYI
-		--	r=1.00,
-		--	g=1.00,
-		--	b=1.00,
-		--	a=0.90,
-		--},
+		spark = {
+			r=1.00,
+			g=1.00,
+			b=1.00,
+			a=0.90,
+		},
 	},
 	speedTextColor = {
 		slow = {
@@ -1035,13 +1036,35 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-                for index, data in ipairs(DR.SpeedometerOptions) do
-                    if data.name then
-                        container:Add(index, data.name)
-                    else
-                        container:Add(index, "Theme " .. index)
-                    end
-                end
+				for index, data in ipairs(DR.SpeedometerOptions) do
+					if data.name then
+						container:Add(index, data.name)
+					else
+						container:Add(index, "Theme " .. index)
+					end
+				end
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "speedBarTexture"
+			local defaultValue = defaultsTable[variable]
+			local name = "[PH]" .. L["SpeedometerTexture"]
+			local tooltip = "[PH]" .. L["SpeedometerTextureTT"]
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				for index, data in ipairs(DR.SpeedometerBarOptions) do
+					if data.name then
+						container:Add(index, data.name)
+					else
+						container:Add(index, "Texture " .. index)
+					end
+				end
 				return container:GetData()
 			end
 
@@ -1243,13 +1266,13 @@ function DR.OnAddonLoaded()
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end
 
-		--do -- Speedometer Spark Color (Frame Not Yet Implemented)
-		--	local key, subKey = "speedBarColor", "spark"
-		--	local name = "[PH]"..L["SpeedometerSparkColor"] .. " [NYI]"
-		--	local tooltip = "[PH]"..L["SpeedometerSparkColorTT"] .. " [NYI]"
-		--	local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
-		--	CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
-		--end
+		do -- Speedometer Spark Color
+			local key, subKey = "speedBarColor", "spark"
+			local name = "[PH]"..L["SpeedometerSparkColor"]
+			local tooltip = "[PH]"..L["SpeedometerSparkColorTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
+		end
 
 
 		Settings.RegisterAddOnCategory(categorySpeedometer)
