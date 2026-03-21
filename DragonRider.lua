@@ -1078,8 +1078,8 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "speedBarTexture"
 			local defaultValue = defaultsTable[variable]
-			local name = "[PH]" .. L["SpeedometerTexture"]
-			local tooltip = "[PH]" .. L["SpeedometerTextureTT"]
+			local name = L["SpeedometerTexture"]
+			local tooltip = L["SpeedometerTextureTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
@@ -1159,7 +1159,7 @@ function DR.OnAddonLoaded()
 		--	Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
 		--end
 
-		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer("[PH] Text"));
+		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["SpeedometerText"]));
 
 		do
 			local variable = "speedValUnits"
@@ -1184,8 +1184,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedTextDecimals"
-			local name = "[PH] Decimal Places"
-			local tooltip = "[PH] Choose how many decimal places to show on the speedometer."
+			local name = L["DecimalPlaces"]
+			local tooltip = L["DecimalPlacesTT"]
 			local defaultValue = defaultsTable[variable]
 			local minValue = 0
 			local maxValue = 2
@@ -1215,8 +1215,8 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "speedTextFont"
 			local defaultValue = defaultsTable[variable]
-			local name = "[PH] Text Font"
-			local tooltip = "[PH] Choose the speedometer font."
+			local name = L["SpeedometerTextFont"]
+			local tooltip = L["SpeedometerTextFontTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
@@ -1233,14 +1233,14 @@ function DR.OnAddonLoaded()
 		do
 			local variable = "speedTextJustify"
 			local defaultValue = defaultsTable[variable]
-			local name = "[PH] Text Position"
-			local tooltip = "[PH] Set the position of the speedometer text."
+			local name = L["SpeedometerTextPosition"]
+			local tooltip = L["SpeedometerTextPositionTT"]
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add("LEFT",		"[PH] Left")
-				container:Add("CENTER",		"[PH] Center")
-				container:Add("RIGHT",		"[PH] Right")
+				container:Add("LEFT",		L["Left"])
+				container:Add("CENTER",		L["Center"])
+				container:Add("RIGHT",		L["Right"])
 				return container:GetData()
 			end
 
@@ -1248,12 +1248,12 @@ function DR.OnAddonLoaded()
 			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
 		end
 
-		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer("[PH] Text Flags"));
+		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["SpeedometerTextFlags"]));
 
 		do
 			local variable = "speedTextFlagOutline"
-			local name = "[PH] Outline"
-			local tooltip = "[PH] Apply a thin outline to the speedometer text."
+			local name = L["Outline"]
+			local tooltip = L["OutlineTT"]
 			local defaultValue = defaultsTable[variable]
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categorySpeedometer, setting, tooltip)
@@ -1261,8 +1261,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedTextFlagThickOutline"
-			local name = "[PH] Thick Outline"
-			local tooltip = "[PH] Apply a thick outline to the speedometer text."
+			local name = L["ThickOutline"]
+			local tooltip = L["ThickOutlineTT"]
 			local defaultValue = defaultsTable[variable]
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categorySpeedometer, setting, tooltip)
@@ -1270,8 +1270,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedTextFlagMonochrome"
-			local name = "[PH] Monochrome"
-			local tooltip = "[PH] Disable font anti-aliasing for a sharper, pixelated look."
+			local name = L["Monochrome"]
+			local tooltip = L["MonochromeTT"]
 			local defaultValue = defaultsTable[variable]
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categorySpeedometer, setting, tooltip)
@@ -1279,8 +1279,8 @@ function DR.OnAddonLoaded()
 
 		do
 			local variable = "speedTextFlagSlug"
-			local name = "[PH] Slug"
-			local tooltip = "[PH] Apply the SLUG rendering flag to the speedometer text."
+			local name = L["Slug"]
+			local tooltip = L["SlugTT"]
 			local defaultValue = defaultsTable[variable]
 			local setting = RegisterSetting(variable, defaultValue, name);
 			CreateCheckbox(categorySpeedometer, setting, tooltip)
@@ -1380,8 +1380,8 @@ function DR.OnAddonLoaded()
 
 		do -- Speedometer Spark Color
 			local key, subKey = "speedBarColor", "spark"
-			local name = "[PH]"..L["SpeedometerSparkColor"]
-			local tooltip = "[PH]"..L["SpeedometerSparkColorTT"]
+			local name = L["SpeedometerSpark_ColorPicker"]
+			local tooltip = L["SpeedometerSpark_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categorySpeedometer, setting, tooltip)
 		end

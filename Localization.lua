@@ -327,6 +327,47 @@ if LOCALE == "enUS" then
 	L["DR_Title"] = "Dragon Rider"
 	L["DR_Notes"] = "Displays a speedometer paired with the vigor bar and some other dragonriding-related options."
 
+	L["SpeedometerTexture"] = "Speedometer Progress Texture"
+	L["SpeedometerTextureTT"] = "Customize the speedometer progress bar texture."
+	L["SpeedometerText"] = "Text"
+	L["SpeedometerTextFlags"] = "Text Flags"
+	L["DecimalPlaces"] = "Decimal Places"
+	L["DecimalPlacesTT"] = "Choose how many decimal places to show on the speedometer."
+	L["SpeedometerTextFont"] = "Text Font"
+	L["SpeedometerTextFontTT"] = "Choose the speedometer text font."
+	L["SpeedometerTextPosition"] = "Text Position"
+	L["SpeedometerTextPositionTT"] = "Set the position of the speedometer text."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Center"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Outline"
+	L["OutlineTT"] = "Apply a thin outline to the speedometer text."
+	L["ThickOutline"] = "Outline"
+	L["ThickOutlineTT"] = "Apply a thick outline to the speedometer text."
+	L["Monochrome"] = "Monochrome"
+	L["MonochromeTT"] = "Disable font anti-aliasing for a sharper, pixelated look."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Apply the SLUG rendering flag to the speedometer text."
+	L["SpeedometerSpark_ColorPicker"] = "Speedometer Spark Color"
+	L["SpeedometerSpark_ColorPickerTT"] = "Pick a color for the Speedometer spark. This is the texture at the very edge of the current progress bar value."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	-- koKR - "Fonts\\2002.TTF"
+	-- zhCN - "Fonts\\ARHei.ttf"
+	-- zhTW - "Fonts\\arheiuhk_bd.TTF"
+
+	L["Font_Morpheus"] = "Morpheus"
+	-- koKR - "Fonts\\K_Pagetext.ttf"
+	-- zhCN - "Fonts\\ARKai_T.ttf"
+	-- zhTW - "Fonts\\blei00d.ttf"
+	-- ruRU - "Fonts\\MORPHEUS_CYR.TTF"
+
+	L["Font_Skurri"] = "Skurri"
+	-- koKR - "Fonts\\K_Damage.ttf"
+	-- zhCN - "Fonts\\ARKai_C.ttf"
+	-- zhTW - "Fonts\\bKAI00M.ttf"
+	-- ruRU - "Fonts\\SKURRI_CYR.TTF"
+
 
 return end
 
@@ -580,6 +621,34 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	-- TOC translations
 	L["DR_Title"] = "Jinete de Dragón"
 	L["DR_Notes"] = "Muestra un velocímetro emparejado con la barra de vigor y algunas otras opciones relacionadas con la conducción de dragones."
+
+	L["SpeedometerTexture"] = "Textura de progreso del velocímetro"
+	L["SpeedometerTextureTT"] = "Personaliza la textura de la barra de progreso."
+	L["SpeedometerText"] = "Texto"
+	L["SpeedometerTextFlags"] = "Opciones de texto"
+	L["DecimalPlaces"] = "Decimales"
+	L["DecimalPlacesTT"] = "Elige cuántos decimales mostrar."
+	L["SpeedometerTextFont"] = "Fuente del texto"
+	L["SpeedometerTextFontTT"] = "Elige la fuente del velocímetro."
+	L["SpeedometerTextPosition"] = "Posición del texto"
+	L["SpeedometerTextPositionTT"] = "Configura la posición del texto."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Centro"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Contorno"
+	L["OutlineTT"] = "Aplica un contorno fino."
+	L["ThickOutline"] = "Contorno"
+	L["ThickOutlineTT"] = "Aplica un contorno grueso."
+	L["Monochrome"] = "Monocromo"
+	L["MonochromeTT"] = "Desactiva el suavizado de fuente."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Aplica el flag SLUG."
+	L["SpeedometerSpark_ColorPicker"] = "Color de chispa"
+	L["SpeedometerSpark_ColorPickerTT"] = "Elige el color de la chispa."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
 
 
 return end
@@ -836,6 +905,34 @@ if LOCALE == "deDE" then
 	L["DR_Title"] = "Drachenreiter"
 	L["DR_Notes"] = "Zeigt einen Tachometer gepaart mit der Energieleiste und einigen anderen Drachenreiten-bezogenen Optionen an."
 
+	L["SpeedometerTexture"] = "Tachometer-Fortschrittstextur"
+	L["SpeedometerTextureTT"] = "Passe die Textur des Tachometer-Fortschrittsbalkens an."
+	L["SpeedometerText"] = "Text"
+	L["SpeedometerTextFlags"] = "Textoptionen"
+	L["DecimalPlaces"] = "Dezimalstellen"
+	L["DecimalPlacesTT"] = "Wähle, wie viele Dezimalstellen im Tachometer angezeigt werden."
+	L["SpeedometerTextFont"] = "Textschriftart"
+	L["SpeedometerTextFontTT"] = "Wähle die Schriftart für den Tachometertext."
+	L["SpeedometerTextPosition"] = "Textposition"
+	L["SpeedometerTextPositionTT"] = "Lege die Position des Tachometertexts fest."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Zentriert"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Umrandung"
+	L["OutlineTT"] = "Wendet eine dünne Umrandung auf den Tachometertext an."
+	L["ThickOutline"] = "Umrandung"
+	L["ThickOutlineTT"] = "Wendet eine dicke Umrandung auf den Tachometertext an."
+	L["Monochrome"] = "Monochrom"
+	L["MonochromeTT"] = "Deaktiviert die Kantenglättung für ein schärferes, pixeliges Aussehen."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Wendet das SLUG-Rendering-Flag auf den Tachometertext an."
+	L["SpeedometerSpark_ColorPicker"] = "Tachometer-Funkenfarbe"
+	L["SpeedometerSpark_ColorPickerTT"] = "Wähle eine Farbe für den Tachometer-Funken am Rand des Fortschrittsbalkens."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
+
 
 return end
 
@@ -1090,6 +1187,34 @@ if LOCALE == "frFR" then
 	L["DR_Title"] = "Dragonnier"
 	L["DR_Notes"] = "Affiche un indicateur de vitesse associé à la barre de vigueur et à d'autres options liées à la conduite de dragons."
 
+	L["SpeedometerTexture"] = "Texture de progression du compteur de vitesse"
+	L["SpeedometerTextureTT"] = "Personnalise la texture de la barre de progression du compteur de vitesse."
+	L["SpeedometerText"] = "Texte"
+	L["SpeedometerTextFlags"] = "Options de texte"
+	L["DecimalPlaces"] = "Décimales"
+	L["DecimalPlacesTT"] = "Choisissez le nombre de décimales à afficher sur le compteur de vitesse."
+	L["SpeedometerTextFont"] = "Police du texte"
+	L["SpeedometerTextFontTT"] = "Choisissez la police du texte du compteur."
+	L["SpeedometerTextPosition"] = "Position du texte"
+	L["SpeedometerTextPositionTT"] = "Définit la position du texte du compteur."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Centre"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Contour"
+	L["OutlineTT"] = "Applique un contour fin au texte du compteur."
+	L["ThickOutline"] = "Contour"
+	L["ThickOutlineTT"] = "Applique un contour épais au texte du compteur."
+	L["Monochrome"] = "Monochrome"
+	L["MonochromeTT"] = "Désactive l’anticrénelage pour un rendu plus net et pixelisé."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Applique le flag de rendu SLUG au texte du compteur."
+	L["SpeedometerSpark_ColorPicker"] = "Couleur de l’étincelle"
+	L["SpeedometerSpark_ColorPickerTT"] = "Choisissez une couleur pour l’étincelle du compteur."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
+
 return end
 
 if LOCALE == "itIT" then
@@ -1342,6 +1467,34 @@ if LOCALE == "itIT" then
 	-- TOC translations
 	L["DR_Title"] = "Cavaliere del Drago"
 	L["DR_Notes"] = "Mostra un tachimetro abbinato alla barra del vigore e alcune altre opzioni relative alla cavalcata dei draghi."
+
+	L["SpeedometerTexture"] = "Texture barra progresso tachimetro"
+	L["SpeedometerTextureTT"] = "Personalizza la texture della barra di progresso del tachimetro."
+	L["SpeedometerText"] = "Testo"
+	L["SpeedometerTextFlags"] = "Opzioni testo"
+	L["DecimalPlaces"] = "Decimali"
+	L["DecimalPlacesTT"] = "Scegli quante cifre decimali mostrare."
+	L["SpeedometerTextFont"] = "Font testo"
+	L["SpeedometerTextFontTT"] = "Scegli il font del testo del tachimetro."
+	L["SpeedometerTextPosition"] = "Posizione testo"
+	L["SpeedometerTextPositionTT"] = "Imposta la posizione del testo."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Centro"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Contorno"
+	L["OutlineTT"] = "Applica un contorno sottile al testo."
+	L["ThickOutline"] = "Contorno"
+	L["ThickOutlineTT"] = "Applica un contorno spesso al testo."
+	L["Monochrome"] = "Monocromatico"
+	L["MonochromeTT"] = "Disabilita l’anti-alias per un aspetto più nitido."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Applica il flag SLUG al rendering del testo."
+	L["SpeedometerSpark_ColorPicker"] = "Colore scintilla"
+	L["SpeedometerSpark_ColorPickerTT"] = "Scegli un colore per la scintilla del tachimetro."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
 
 
 return end
@@ -1596,6 +1749,34 @@ if LOCALE == "ptBR" then
 	-- TOC translations
 	L["DR_Title"] = "Cavaleiro do Dragão"
 	L["DR_Notes"] = "Exibe um velocímetro emparelhado com a barra de vigor e algumas outras opções relacionadas à cavalgada de dragões."
+
+	L["SpeedometerTexture"] = "Textura da barra de progresso do velocímetro"
+	L["SpeedometerTextureTT"] = "Personaliza a textura da barra de progresso do velocímetro."
+	L["SpeedometerText"] = "Texto"
+	L["SpeedometerTextFlags"] = "Opções de texto"
+	L["DecimalPlaces"] = "Casas decimais"
+	L["DecimalPlacesTT"] = "Escolha quantas casas decimais mostrar."
+	L["SpeedometerTextFont"] = "Fonte do texto"
+	L["SpeedometerTextFontTT"] = "Escolha a fonte do velocímetro."
+	L["SpeedometerTextPosition"] = "Posição do texto"
+	L["SpeedometerTextPositionTT"] = "Define a posição do texto."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "Centro"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Contorno"
+	L["OutlineTT"] = "Aplica um contorno fino ao texto."
+	L["ThickOutline"] = "Contorno"
+	L["ThickOutlineTT"] = "Aplica um contorno grosso ao texto."
+	L["Monochrome"] = "Monocromático"
+	L["MonochromeTT"] = "Desativa o anti-alias para aparência pixelada."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Aplica o flag SLUG ao texto."
+	L["SpeedometerSpark_ColorPicker"] = "Cor da faísca"
+	L["SpeedometerSpark_ColorPickerTT"] = "Escolha a cor da faísca do velocímetro."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
 
 
 -- Note that the EU Portuguese WoW client also
@@ -1853,6 +2034,34 @@ if LOCALE == "ruRU" then
 	L["DR_Title"] = "Драконий Всадник"
 	L["DR_Notes"] = "Отображает спидометр в паре с полосой энергии и некоторыми другими параметрами, связанными с верховой ездой на драконах."
 
+	L["SpeedometerTexture"] = "Текстура шкалы спидометра"
+	L["SpeedometerTextureTT"] = "Настройка текстуры шкалы спидометра."
+	L["SpeedometerText"] = "Текст"
+	L["SpeedometerTextFlags"] = "Параметры текста"
+	L["DecimalPlaces"] = "Знаки после запятой"
+	L["DecimalPlacesTT"] = "Выберите количество отображаемых знаков."
+	L["SpeedometerTextFont"] = "Шрифт текста"
+	L["SpeedometerTextFontTT"] = "Выберите шрифт."
+	L["SpeedometerTextPosition"] = "Позиция текста"
+	L["SpeedometerTextPositionTT"] = "Установите позицию текста."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "По центру"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "Контур"
+	L["OutlineTT"] = "Применяет тонкий контур."
+	L["ThickOutline"] = "Контур"
+	L["ThickOutlineTT"] = "Применяет толстый контур."
+	L["Monochrome"] = "Монохром"
+	L["MonochromeTT"] = "Отключает сглаживание шрифта."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "Применяет флаг SLUG."
+	L["SpeedometerSpark_ColorPicker"] = "Цвет искры"
+	L["SpeedometerSpark_ColorPickerTT"] = "Выберите цвет искры."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "Arial Narrow"
+	L["Font_Morpheus"] = "Morpheus"
+	L["Font_Skurri"] = "Skurri"
+
 
 return end
 
@@ -2106,6 +2315,34 @@ if LOCALE == "koKR" then
 	-- TOC translations
 	L["DR_Title"] = "드래곤 라이더"
 	L["DR_Notes"] = "활력 막대 및 기타 드래곤 라이딩 관련 옵션과 페어링된 속도계를 표시합니다."
+
+	L["SpeedometerTexture"] = "속도계 진행 텍스처"
+	L["SpeedometerTextureTT"] = "속도계 진행 바 텍스처를 설정합니다."
+	L["SpeedometerText"] = "텍스트"
+	L["SpeedometerTextFlags"] = "텍스트 옵션"
+	L["DecimalPlaces"] = "소수점 자리수"
+	L["DecimalPlacesTT"] = "표시할 소수점 자리수를 선택합니다."
+	L["SpeedometerTextFont"] = "텍스트 글꼴"
+	L["SpeedometerTextFontTT"] = "속도계 텍스트 글꼴을 선택합니다."
+	L["SpeedometerTextPosition"] = "텍스트 위치"
+	L["SpeedometerTextPositionTT"] = "텍스트 위치를 설정합니다."
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "가운데"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "외곽선"
+	L["OutlineTT"] = "얇은 외곽선을 적용합니다."
+	L["ThickOutline"] = "외곽선"
+	L["ThickOutlineTT"] = "두꺼운 외곽선을 적용합니다."
+	L["Monochrome"] = "단색"
+	L["MonochromeTT"] = "글꼴 안티앨리어싱을 비활성화합니다."
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "SLUG 렌더링 플래그를 적용합니다."
+	L["SpeedometerSpark_ColorPicker"] = "스파크 색상"
+	L["SpeedometerSpark_ColorPickerTT"] = "속도계 스파크 색상을 선택합니다."
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "2002"
+	L["Font_Morpheus"] = "K_Pagetext"
+	L["Font_Skurri"] = "K_Damage"
 
 
 return end
@@ -2363,6 +2600,34 @@ if LOCALE == "zhCN" then
 	L["DR_Title"] = "Dragon Rider: 龙骑士"
 	L["DR_Notes"] = "显示与活力条和其他一些与龙骑术相关的选项配对的速度计。"
 
+	L["SpeedometerTexture"] = "速度计进度纹理"
+	L["SpeedometerTextureTT"] = "自定义速度计进度条纹理。"
+	L["SpeedometerText"] = "文本"
+	L["SpeedometerTextFlags"] = "文本选项"
+	L["DecimalPlaces"] = "小数位数"
+	L["DecimalPlacesTT"] = "选择显示的小数位数。"
+	L["SpeedometerTextFont"] = "文本字体"
+	L["SpeedometerTextFontTT"] = "选择速度计字体。"
+	L["SpeedometerTextPosition"] = "文本位置"
+	L["SpeedometerTextPositionTT"] = "设置文本位置。"
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "居中"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "描边"
+	L["OutlineTT"] = "应用细描边。"
+	L["ThickOutline"] = "描边"
+	L["ThickOutlineTT"] = "应用粗描边。"
+	L["Monochrome"] = "单色"
+	L["MonochromeTT"] = "禁用抗锯齿以获得像素风效果。"
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "应用 SLUG 渲染标志。"
+	L["SpeedometerSpark_ColorPicker"] = "火花颜色"
+	L["SpeedometerSpark_ColorPickerTT"] = "选择速度计火花颜色。"
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "ARHei"
+	L["Font_Morpheus"] = "ARKai_T"
+	L["Font_Skurri"] = "ARKai_C"
+
 
 return end
 
@@ -2617,6 +2882,34 @@ if LOCALE == "zhTW" then
 	-- TOC translations
 	L["DR_Title"] = "Dragon Rider: 龍騎士"
 	L["DR_Notes"] = "顯示與活力條和其他一些與龍騎術相關的選項配對的速度計。"
+
+	L["SpeedometerTexture"] = "速度計進度材質"
+	L["SpeedometerTextureTT"] = "自訂速度計進度條材質。"
+	L["SpeedometerText"] = "文字"
+	L["SpeedometerTextFlags"] = "文字選項"
+	L["DecimalPlaces"] = "小數位數"
+	L["DecimalPlacesTT"] = "選擇顯示的小數位數。"
+	L["SpeedometerTextFont"] = "文字字型"
+	L["SpeedometerTextFontTT"] = "選擇速度計字型。"
+	L["SpeedometerTextPosition"] = "文字位置"
+	L["SpeedometerTextPositionTT"] = "設定文字位置。"
+	L["Left"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_LEFT
+	L["Center"] = "置中"
+	L["Right"] = HUD_EDIT_MODE_SETTING_AURA_FRAME_ICON_DIRECTION_RIGHT
+	L["Outline"] = "外框"
+	L["OutlineTT"] = "套用細外框。"
+	L["ThickOutline"] = "外框"
+	L["ThickOutlineTT"] = "套用粗外框。"
+	L["Monochrome"] = "單色"
+	L["MonochromeTT"] = "停用抗鋸齒以獲得像素化效果。"
+	L["Slug"] = "Slug"
+	L["SlugTT"] = "套用 SLUG 渲染旗標。"
+	L["SpeedometerSpark_ColorPicker"] = "火花顏色"
+	L["SpeedometerSpark_ColorPickerTT"] = "選擇速度計火花顏色。"
+	L["Font_FrizQuadrata"] = "Friz Quadrata"
+	L["Font_ArialNarrow"] = "arheiuhk_bd"
+	L["Font_Morpheus"] = "blei00d"
+	L["Font_Skurri"] = "bKAI00M"
 
 
 return end

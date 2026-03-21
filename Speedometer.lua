@@ -899,12 +899,12 @@ local _drLocale = GetLocale()
 DR.SpeedometerFontOptions = {
 	{
 		key = "FrizQuadrata",
-		name = "[PH] Friz Quadrata (Default)",
+		name = L["Font_FrizQuadrata"],
 		path = STANDARD_TEXT_FONT,
 	},
 	{
 		key = "ArialNarrow",
-		name = "[PH] Arial Narrow",
+		name = L["Font_ArialNarrow"],
 		path = (_drLocale == "koKR") and "Fonts\\2002.TTF"
 			or (_drLocale == "zhCN") and "Fonts\\ARHei.ttf"
 			or (_drLocale == "zhTW") and "Fonts\\arheiuhk_bd.TTF"
@@ -912,7 +912,7 @@ DR.SpeedometerFontOptions = {
 	},
 	{
 		key = "Morpheus",
-		name = "[PH] Morpheus",
+		name = L["Font_Morpheus"],
 		path = (_drLocale == "koKR") and "Fonts\\K_Pagetext.ttf"
 			or (_drLocale == "zhCN") and "Fonts\\ARKai_T.ttf"
 			or (_drLocale == "zhTW") and "Fonts\\blei00d.ttf"
@@ -921,7 +921,7 @@ DR.SpeedometerFontOptions = {
 	},
 	{
 		key = "Skurri",
-		name = "[PH] Skurri",
+		name = L["Font_Skurri"],
 		path = (_drLocale == "koKR") and "Fonts\\K_Damage.ttf"
 			or (_drLocale == "zhCN") and "Fonts\\ARKai_C.ttf"
 			or (_drLocale == "zhTW") and "Fonts\\bKAI00M.ttf"
