@@ -872,6 +872,83 @@ end
 
 AddBuiltInBarOptions()
 
+
+local _drLocale = GetLocale()
+
+DR.SpeedometerFontOptions = {
+	{
+		key = "FrizQuadrata",
+		name = "[PH] Friz Quadrata (Default)",
+		path = STANDARD_TEXT_FONT,
+	},
+	{
+		key = "ArialNarrow",
+		name = "[PH] Arial Narrow",
+		path = (_drLocale == "koKR") and "Fonts\\2002.TTF"
+			or (_drLocale == "zhCN") and "Fonts\\ARHei.ttf"
+			or (_drLocale == "zhTW") and "Fonts\\arheiuhk_bd.TTF"
+			or "Fonts\\ARIALN.TTF",
+	},
+	{
+		key = "Morpheus",
+		name = "[PH] Morpheus",
+		path = (_drLocale == "koKR") and "Fonts\\K_Pagetext.ttf"
+			or (_drLocale == "zhCN") and "Fonts\\ARKai_T.ttf"
+			or (_drLocale == "zhTW") and "Fonts\\blei00d.ttf"
+			or (_drLocale == "ruRU") and "Fonts\\MORPHEUS_CYR.TTF"
+			or "Fonts\\MORPHEUS.ttf",
+	},
+	{
+		key = "Skurri",
+		name = "[PH] Skurri",
+		path = (_drLocale == "koKR") and "Fonts\\K_Damage.ttf"
+			or (_drLocale == "zhCN") and "Fonts\\ARKai_C.ttf"
+			or (_drLocale == "zhTW") and "Fonts\\bKAI00M.ttf"
+			or (_drLocale == "ruRU") and "Fonts\\SKURRI_CYR.TTF"
+			or "Fonts\\skurri.ttf",
+	},
+};
+
+function DR.GetSpeedTextFlags()
+	if not DragonRider_DB then return "" end
+	local flags = {}
+	if DragonRider_DB.speedTextFlagOutline then
+		table.insert(flags, "OUTLINE")
+	end
+	if DragonRider_DB.speedTextFlagThickOutline then
+		table.insert(flags, "THICKOUTLINE")
+	end
+	if DragonRider_DB.speedTextFlagMonochrome then
+		table.insert(flags, "MONOCHROME")
+	end
+	if DragonRider_DB.speedTextFlagSlug then
+		table.insert(flags, "SLUG")
+	end
+	return table.concat(flags, ", ")
+end
+
+function DR.UpdateSpeedTextAppearance()
+	if not DragonRider_DB then return end
+
+	local fontIndex = DragonRider_DB.speedTextFont or 1
+	local fontEntry = DR.SpeedometerFontOptions[fontIndex] or DR.SpeedometerFontOptions[1]
+	local flags = DR.GetSpeedTextFlags()
+	DR.glide:SetFont(fontEntry.path, DragonRider_DB.speedTextScale or 12, flags)
+
+	local justifyIndex = DragonRider_DB.speedTextJustify or 1
+	DR.glide:ClearAllPoints()
+	if justifyIndex == 2 then
+		DR.glide:SetJustifyH("CENTER")
+		DR.glide:SetPoint("CENTER", DR.statusbar, "CENTER", 0, 0)
+	elseif justifyIndex == 3 then
+		DR.glide:SetJustifyH("RIGHT")
+		DR.glide:SetPoint("RIGHT", DR.statusbar, "RIGHT", -10, 0)
+	else
+		DR.glide:SetJustifyH("LEFT")
+		DR.glide:SetPoint("LEFT", DR.statusbar, "LEFT", 10, 0)
+	end
+end
+
 local DefOptions = DR.SpeedometerOptions[1].Cover
 local DefBarEntry = DR.SpeedometerBarOptions[1]
 
@@ -1081,7 +1158,8 @@ Footer:SetSize(unpack(DefOptions.FooterSize))
 DR.statusbar.Topper = Topper
 DR.statusbar.Footer = Footer
 
-DR.glide = DR.statusbar.overlayFrame:CreateFontString(nil, nil, "GameTooltipText")
+DR.glide = DR.statusbar.overlayFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+DR.glide:SetDrawLayer("OVERLAY", 7)
 DR.glide:SetPoint("LEFT", DR.statusbar, "LEFT", 10, 0)
 
 function DR.useUnits()
@@ -1123,16 +1201,23 @@ end
 local DRAGON_RACE_AURA_ID = 369968;
 
 function DR.updateSpeed()
-	if not LibAdvFlight.IsAdvFlyEnabled() and not DR.DriveUtils.IsDriving() then
-		return;
+	if not DR.IsPreviewMode then
+		if not LibAdvFlight.IsAdvFlyEnabled() and not DR.DriveUtils.IsDriving() then
+			return;
+		end
 	end
 
-	local forwardSpeed = LibAdvFlight.GetForwardSpeed();
-	if not LibAdvFlight.IsAdvFlyEnabled() then
-		forwardSpeed = DR.DriveUtils.GetSmoothedSpeed()
+	local forwardSpeed;
+	if DR.IsPreviewMode and DR.previewSpeed then
+		forwardSpeed = DR.previewSpeed;
+	elseif LibAdvFlight.IsAdvFlyEnabled() then
+		forwardSpeed = LibAdvFlight.GetForwardSpeed();
+	else
+		forwardSpeed = DR.DriveUtils.GetSmoothedSpeed();
 	end
+
 	local racing
-	if C_Secrets and not C_Secrets.ShouldSpellCooldownBeSecret(DRAGON_RACE_AURA_ID) then
+	if not DR.IsPreviewMode and C_Secrets and not C_Secrets.ShouldSpellCooldownBeSecret(DRAGON_RACE_AURA_ID) then
 		racing = C_UnitAuras.GetPlayerAuraBySpellID(DRAGON_RACE_AURA_ID)
 	end
 
@@ -1141,7 +1226,12 @@ function DR.updateSpeed()
 	local MIN_BAR_VALUE;
 	local MAX_BAR_VALUE;
 
-	if DR.DragonRidingZoneCheck() == true or racing then
+	if DR.IsPreviewMode then
+		THRESHOLD_HIGH = 65;
+		THRESHOLD_LOW = 60;
+		MIN_BAR_VALUE = 0;
+		MAX_BAR_VALUE = 100;
+	elseif DR.DragonRidingZoneCheck() == true or racing then
 		THRESHOLD_HIGH = 65;
 		THRESHOLD_LOW = 60;
 		MIN_BAR_VALUE = 0;
@@ -1182,7 +1272,12 @@ function DR.updateSpeed()
 	end
 
 	textColor = CreateColor(textColor.r, textColor.g, textColor.b, textColor.a);
-	local text = format("|c%s%.1f%s|r", textColor:GenerateHexColor(), DR:convertUnits(forwardSpeed), DR.useUnits());
+	
+	local decimals = DragonRider_DB.speedTextDecimals or 1
+	local formatString = "|c%s%." .. decimals .. "f%s|r"
+	
+	local text = format(formatString, textColor:GenerateHexColor(), DR:convertUnits(forwardSpeed), DR.useUnits());
+	
 	if DR.DriveUtils.IsDriving() then
 		text = format("|c%s%.0f%s|r", textColor:GenerateHexColor(), DR:convertUnits(forwardSpeed), DR.useUnits());
 	end

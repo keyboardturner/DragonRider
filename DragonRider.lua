@@ -113,6 +113,13 @@ local defaultsTable = {
 		},
 	},
 	speedTextScale = 12,
+	speedTextFont = 1,
+	speedTextJustify = 1, -- 1 = LEFT, 2 = CENTER, 3 = RIGHT
+	speedTextFlagOutline = false,
+	speedTextFlagThickOutline = false,
+	speedTextFlagMonochrome = false,
+	speedTextFlagSlug = false,
+	speedTextDecimals = 1,
 	glyphDetector = true, -- unused
 	vigorProgressStyle = 1, -- 1 = vertical, 2 = horizontal, 3 = cooldown
 	cooldownTimer = { -- unused
@@ -485,7 +492,7 @@ function DR.setPositions()
 		DR.statusbar:SetPoint("CENTER", UIParent, "CENTER", xOfs, yOfs)
 	end
 	
-	DR.glide:SetFont(STANDARD_TEXT_FONT, DragonRider_DB.speedTextScale)
+	DR.UpdateSpeedTextAppearance()
 	
 	DR.vigorBar:SetParent(UIParent)
 	DR.vigorBar:ClearAllPoints()
@@ -780,6 +787,7 @@ function DR.OnAddonLoaded()
 			DR.vigorCounter();
 			DR.setPositions();
 			DR.UpdateSpeedometerTheme();
+			DR.UpdateSpeedTextAppearance();
 			DR.UpdateVigorLayout();
 			DR.UpdateVigorFillDirection();
 			DR.UpdateVigorTheme();
@@ -1138,6 +1146,8 @@ function DR.OnAddonLoaded()
 		--	Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
 		--end
 
+		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer("[PH] Text"));
+
 		do
 			local variable = "speedValUnits"
 			local defaultValue = defaultsTable[variable]  -- Corresponds to "Option 1" below.
@@ -1160,6 +1170,21 @@ function DR.OnAddonLoaded()
 		end
 
 		do
+			local variable = "speedTextDecimals"
+			local name = "[PH] Decimal Places"
+			local tooltip = "[PH] Choose how many decimal places to show on the speedometer."
+			local defaultValue = defaultsTable[variable]
+			local minValue = 0
+			local maxValue = 2
+			local step = 1
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
+			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
+			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		do
 			local variable = "speedTextScale"
 			local name = L["SpeedTextScale"]
 			local tooltip = L["SpeedTextScaleTT"]
@@ -1172,6 +1197,80 @@ function DR.OnAddonLoaded()
 			local options = Settings.CreateSliderOptions(minValue, maxValue, step)
 			options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right);
 			Settings.CreateSlider(categorySpeedometer, setting, options, tooltip)
+		end
+
+		do
+			local variable = "speedTextFont"
+			local defaultValue = defaultsTable[variable]
+			local name = "[PH] Text Font"
+			local tooltip = "[PH] Choose the speedometer font."
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				for index, data in ipairs(DR.SpeedometerFontOptions) do
+					container:Add(index, data.name)
+				end
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		do
+			local variable = "speedTextJustify"
+			local defaultValue = defaultsTable[variable]
+			local name = "[PH] Text Position"
+			local tooltip = "[PH] Set the position of the speedometer text."
+
+			local function GetOptions()
+				local container = Settings.CreateControlTextContainer()
+				container:Add(1, "[PH] Left")
+				container:Add(2, "[PH] Center")
+				container:Add(3, "[PH] Right")
+				return container:GetData()
+			end
+
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateDropdown(categorySpeedometer, setting, GetOptions, tooltip)
+		end
+
+		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer("[PH] Text Flags"));
+
+		do
+			local variable = "speedTextFlagOutline"
+			local name = "[PH] Outline"
+			local tooltip = "[PH] Apply a thin outline to the speedometer text."
+			local defaultValue = defaultsTable[variable]
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
+		end
+
+		do
+			local variable = "speedTextFlagThickOutline"
+			local name = "[PH] Thick Outline"
+			local tooltip = "[PH] Apply a thick outline to the speedometer text."
+			local defaultValue = defaultsTable[variable]
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
+		end
+
+		do
+			local variable = "speedTextFlagMonochrome"
+			local name = "[PH] Monochrome"
+			local tooltip = "[PH] Disable font anti-aliasing for a sharper, pixelated look."
+			local defaultValue = defaultsTable[variable]
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
+		end
+
+		do
+			local variable = "speedTextFlagSlug"
+			local name = "[PH] Slug"
+			local tooltip = "[PH] Apply the SLUG rendering flag to the speedometer text."
+			local defaultValue = defaultsTable[variable]
+			local setting = RegisterSetting(variable, defaultValue, name);
+			CreateCheckbox(categorySpeedometer, setting, tooltip)
 		end
 
 		layoutSpeedometer:AddInitializer(CreateSettingsListSectionHeaderInitializer(COLOR_PICKER));
@@ -1742,6 +1841,86 @@ function DR.OnAddonLoaded()
 				speedTicker = nil
 			end
 		end
+
+
+		local previewTicker = nil
+
+		local PREVIEW_VIGOR_MIN = 3
+		local PREVIEW_VIGOR_MAX = 5  -- charge 6 stays permanently empty
+
+		local PREVIEW_SPEED_MIN = 50
+		local PREVIEW_SPEED_MAX = 100
+
+		local PREVIEW_SPEED_PERIOD  = 15
+		local PREVIEW_VIGOR_PERIOD  = 24
+
+		local function UpdatePreviewValues()
+			local t = GetTime()
+
+			local speedMid   = (PREVIEW_SPEED_MIN + PREVIEW_SPEED_MAX) / 2
+			local speedRange = (PREVIEW_SPEED_MAX - PREVIEW_SPEED_MIN) / 2
+			DR.previewSpeed  = speedMid + math.sin(t * (2 * math.pi / PREVIEW_SPEED_PERIOD) - math.pi / 2) * speedRange
+
+			local vigorRange = PREVIEW_VIGOR_MAX - PREVIEW_VIGOR_MIN  -- = 2
+			local vigorPhase = (t % PREVIEW_VIGOR_PERIOD) / PREVIEW_VIGOR_PERIOD
+			local vigorWave
+			if vigorPhase < 0.5 then
+				vigorWave = vigorPhase * 2
+			else
+				vigorWave = (1 - vigorPhase) * 2
+			end
+			local vigorF       = PREVIEW_VIGOR_MIN + vigorWave * vigorRange
+			local vigorCurrent = math.floor(vigorF)
+			local vigorProgress = vigorF - vigorCurrent
+
+			local chargeDuration = (PREVIEW_VIGOR_PERIOD / 2) / vigorRange
+
+			if vigorCurrent >= PREVIEW_VIGOR_MAX then
+				DR.previewVigor = { current = PREVIEW_VIGOR_MAX, max = 6, start = 0, duration = 0 }
+			else
+				DR.previewVigor = {
+					current  = vigorCurrent,
+					max      = 6,
+					start    = t - vigorProgress * chargeDuration,
+					duration = chargeDuration,
+				}
+			end
+		end
+
+		local function StartPreviewMode()
+			if previewTicker then return end
+			DR.IsPreviewMode = true
+			previewTicker = C_Timer.NewTicker(0.05, function()
+				UpdatePreviewValues()
+				DR.updateSpeed()
+				DR.vigorCounter()
+			end)
+		end
+
+		local function StopPreviewMode()
+			DR.IsPreviewMode = false
+			DR.previewSpeed  = nil
+			DR.previewVigor  = nil
+			if previewTicker then
+				previewTicker:Cancel()
+				previewTicker = nil
+			end
+		end
+
+		EventRegistry:RegisterCallback('Settings.CategoryChanged', function(_, args)
+			if args and args.ID and
+			   (args.ID == DR.SettingsCategoryID or
+			   (args.parentCategory and args.parentCategory.ID == DR.SettingsCategoryID)) and
+			   SettingsPanel and SettingsPanel:IsShown() then
+				StartPreviewMode()
+			else
+				StopPreviewMode()
+			end
+		end)
+
+		EventRegistry:RegisterCallback('SettingsPanel.OnHide', function()
+			StopPreviewMode()
+		end)
 
 		-- when the player takes off and starts flying
 		local function OnAdvFlyStart()

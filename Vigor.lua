@@ -55,8 +55,8 @@ local DECOR_Y = -10
 
 DR.VigorOptions = {
 	[1] = { 
-		key = "Default",          -- Add Internal Key
-		name = L["Default"],      -- Add Display Name
+		key = "Default", -- Add Internal Key
+		name = L["Default"], -- Add Display Name
 		Full = {
 			Atlas = "dragonriding_vigor_fillfull",
 			Desat = false,
@@ -1069,24 +1069,35 @@ end
 
 local function UpdateChargeBars()
 
-	local info = C_Spell.GetSpellCharges(SPELL_ID)
-	if not info then return end
+	local current, max, start, duration
 
-	local current = info.currentCharges or 0
-	if issecretvalue and issecretvalue(current) then
-		return
+	if DR.IsPreviewMode and DR.previewVigor then
+		current = DR.previewVigor.current
+		max = DR.previewVigor.max
+		start = DR.previewVigor.start
+		duration = DR.previewVigor.duration
+	else
+		local info = C_Spell.GetSpellCharges(SPELL_ID)
+		if not info then return end
+
+		current = info.currentCharges or 0
+		if issecretvalue and issecretvalue(current) then
+			return
+		end
+		max = info.maxCharges or MAX_CHARGES
+		start = info.cooldownStartTime or 0
+		duration = info.cooldownDuration or 0
 	end
-	local max = info.maxCharges or MAX_CHARGES
-	local start = info.cooldownStartTime or 0
-	local duration = info.cooldownDuration or 0
 
 	-- fadeVigor option
-	if DR.EvaluateVigorVisibility then
+	if not DR.IsPreviewMode and DR.EvaluateVigorVisibility then
 		DR.EvaluateVigorVisibility(current, max)
 	end
 
-	if not DR.vigorBar:IsShown() and DR.vigorBar:GetAlpha() == 0 and not DR.fadeInVigorGroup:IsPlaying() then
-		return
+	if not DR.IsPreviewMode then
+		if not DR.vigorBar:IsShown() and DR.vigorBar:GetAlpha() == 0 and not DR.fadeInVigorGroup:IsPlaying() then
+			return
+		end
 	end
 
 	local rF, gF, bF, aF = GetRGBA(DragonRider_DB and DragonRider_DB.vigorBarColor and DragonRider_DB.vigorBarColor.full, VigorColors.full)
@@ -1337,7 +1348,13 @@ end
 DR.hideModels()
 
 function DR.vigorCounter()
-	local vigorCurrent = LibAdvFlight:GetCurrentVigor()
+	local vigorCurrent
+	if DR.IsPreviewMode and DR.previewVigor then
+		vigorCurrent = DR.previewVigor.current
+	else
+		vigorCurrent = LibAdvFlight:GetCurrentVigor()
+	end
+
 	local toggleModels = DragonRider_DB and DragonRider_DB.toggleModels
 	if not vigorCurrent then
 		-- vigorCurrent will be nil during login I think
