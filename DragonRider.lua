@@ -34,8 +34,8 @@ local defaultsTable = {
 	speedometerWidth = 244,
 	speedometerHeight = 24,
 	speedometerScale = 1,
-	speedValUnits = 1,
-	speedBarTexture = 1,
+	speedValUnits = "Yards",
+	speedBarTexture = "Default",
 	speedBarColor = {
 		slow = {
 			r = 0.77,
@@ -113,15 +113,15 @@ local defaultsTable = {
 		},
 	},
 	speedTextScale = 12,
-	speedTextFont = 1,
-	speedTextJustify = 1, -- 1 = LEFT, 2 = CENTER, 3 = RIGHT
+	speedTextFont = "FrizQuadrata",
+	speedTextJustify = "LEFT", -- "LEFT", "CENTER", or "RIGHT"
 	speedTextFlagOutline = false,
 	speedTextFlagThickOutline = false,
 	speedTextFlagMonochrome = false,
 	speedTextFlagSlug = false,
 	speedTextDecimals = 1,
 	glyphDetector = true, -- unused
-	vigorProgressStyle = 1, -- 1 = vertical, 2 = horizontal, 3 = cooldown
+	vigorProgressStyle = "Vertical", -- "Vertical", "Horizontal", or "Cooldown"
 	cooldownTimer = { -- unused
 		whirlingSurge = true,
 		bronzeTimelock = true,
@@ -131,7 +131,7 @@ local defaultsTable = {
 	statistics = {},
 	multiplayer = true,
 	sideArt = true,
-	sideArtStyle = 1,
+	sideArtStyle = "Default",
 	sideArtPosX = -15,
 	sideArtPosY = -10,
 	sideArtRot = 0,
@@ -148,23 +148,21 @@ local defaultsTable = {
 	staticChargeWidth = 36,
 	staticChargeHeight = 36,
 	muteVigorSound = false,
-	themeSpeed = 1, -- default
-	themeVigor = 1, -- default
+	themeSpeed = "Default", -- default
+	themeVigor = "Default", -- default
 	vigorPosX = 0, -- deprecated, moved to position
 	vigorPosY = -200, -- deprecated, moved to position
 	vigorBarWidth = 32,
 	vigorBarHeight = 32,
 	vigorBarSpacing = 10,
-	vigorBarOrientation = 2,		-- 1 for vertical (stacks up), 2 for horizontal (stacks right)
-	vigorBarDirection = 1,			-- 1 for top-to-bottom / left-to-right growth
-									-- 2 for bottom-to-top / right-to-left growth
+	vigorBarOrientation = "Horizontal",	-- "Vertical" or "Horizontal"
+	vigorBarDirection = "DownRight",	-- "DownRight" or "UpLeft"
 	vigorWrap = 6,					-- How many bubbles before wrapping to a new row/column
-	vigorBarFillDirection = 1,		-- 1 for vertical
-									-- 2 for horizontal
+	vigorBarFillDirection = "Vertical",	-- "Vertical" or "Horizontal"
 	vigorSparkThickness = 12,
 	toggleFlashFull = true,
 	toggleFlashProgress = true,
-	modelTheme = 1,
+	modelTheme = "Wind",
 	toggleSpeedometer = true,
 	toggleVigor = true,
 	toggleTopper = true,
@@ -718,6 +716,29 @@ function DR.OnAddonLoaded()
 			DR.MergeDefaults(DragonRider_DB, defaultsTable)
 		end
 
+		do
+			local db = DragonRider_DB
+			local speedValUnitsMap = { [1]="Yards", [2]="Miles", [3]="Meters", [4]="Kilometers", [5]="Percent", [6]="None" }
+			local justifyMap = { [1]="LEFT", [2]="CENTER", [3]="RIGHT" }
+			local orientationMap = { [1]="Vertical", [2]="Horizontal" }
+			local directionMap = { [1]="DownRight", [2]="UpLeft" }
+			local fillDirMap = { [1]="Vertical", [2]="Horizontal" }
+			local sideArtMap = { [1]="Default", [2]="AlgariBronze", [3]="Algari_Dark", [4]="Algari_Gold", [5]="Algari_Silver", [6]="Default_Desat", [7]="Algari_Desat", [8]="Gryphon_Desat", [9]="Wyvern_Desat", [10]="Dragon_Desat" }
+			local modelMap = { [1]="Wind", [2]="Lightning", [3]="FireForm", [4]="ArcaneForm", [5]="FrostForm", [6]="HolyForm", [7]="NatureForm", [8]="ShadowForm" }
+
+			if type(db.speedValUnits) == "number" then db.speedValUnits = speedValUnitsMap[db.speedValUnits] or "Yards" end
+			if type(db.speedTextJustify) == "number" then db.speedTextJustify = justifyMap[db.speedTextJustify] or "LEFT" end
+			if type(db.vigorBarOrientation) == "number" then db.vigorBarOrientation = orientationMap[db.vigorBarOrientation] or "Horizontal" end
+			if type(db.vigorBarDirection) == "number" then db.vigorBarDirection = directionMap[db.vigorBarDirection] or "DownRight" end
+			if type(db.vigorBarFillDirection)== "number" then db.vigorBarFillDirection= fillDirMap[db.vigorBarFillDirection] or "Vertical" end
+			if type(db.sideArtStyle) == "number" then db.sideArtStyle = sideArtMap[db.sideArtStyle] or "Default" end
+			if type(db.modelTheme) == "number" then db.modelTheme = modelMap[db.modelTheme] or "Wind" end
+			if type(db.themeSpeed) == "number" then db.themeSpeed = (DR.SpeedometerOptions[db.themeSpeed] and DR.SpeedometerOptions[db.themeSpeed].key) or "Default" end
+			if type(db.speedBarTexture)== "number" then db.speedBarTexture= (DR.SpeedometerBarOptions[db.speedBarTexture] and DR.SpeedometerBarOptions[db.speedBarTexture].key) or "Default" end
+			if type(db.speedTextFont) == "number" then db.speedTextFont = (DR.SpeedometerFontOptions[db.speedTextFont] and DR.SpeedometerFontOptions[db.speedTextFont].key) or "FrizQuadrata" end
+			if type(db.themeVigor) == "number" then db.themeVigor = (DR.VigorOptions[db.themeVigor] and DR.VigorOptions[db.themeVigor].key) or "Default" end
+		end
+
 		-- build the currency-to-race lookup map on addon load.
 		do
 			local function buildCurrencyMap()
@@ -1044,12 +1065,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				for index, data in ipairs(DR.SpeedometerOptions) do
-					if data.name then
-						container:Add(index, data.name)
-					else
-						container:Add(index, "Theme " .. index)
-					end
+				for _, data in ipairs(DR.SpeedometerOptions) do
+					container:Add(data.key, data.name or ("Theme " .. data.key))
 				end
 				return container:GetData()
 			end
@@ -1066,12 +1083,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				for index, data in ipairs(DR.SpeedometerBarOptions) do
-					if data.name then
-						container:Add(index, data.name)
-					else
-						container:Add(index, "Texture " .. index)
-					end
+				for _, data in ipairs(DR.SpeedometerBarOptions) do
+					container:Add(data.key, data.name or ("Texture " .. data.key))
 				end
 				return container:GetData()
 			end
@@ -1156,12 +1169,12 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Yards"] .. " - " .. L["UnitYards"])
-				container:Add(2, L["Miles"] .. " - " .. L["UnitMiles"])
-				container:Add(3, L["Meters"] .. " - " .. L["UnitMeters"])
-				container:Add(4, L["Kilometers"] .. " - " .. L["UnitKilometers"])
-				container:Add(5, L["Percent"] .. " - " .. L["UnitPercent"])
-				container:Add(6, NONE)
+				container:Add("Yards",			L["Yards"] .. " - " .. L["UnitYards"])
+				container:Add("Miles",			L["Miles"] .. " - " .. L["UnitMiles"])
+				container:Add("Meters",			L["Meters"] .. " - " .. L["UnitMeters"])
+				container:Add("Kilometers",		L["Kilometers"] .. " - " .. L["UnitKilometers"])
+				container:Add("Percent",		L["Percent"] .. " - " .. L["UnitPercent"])
+				container:Add("None",			NONE)
 				return container:GetData()
 			end
 
@@ -1207,8 +1220,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				for index, data in ipairs(DR.SpeedometerFontOptions) do
-					container:Add(index, data.name)
+				for _, data in ipairs(DR.SpeedometerFontOptions) do
+					container:Add(data.key, data.name)
 				end
 				return container:GetData()
 			end
@@ -1225,9 +1238,9 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, "[PH] Left")
-				container:Add(2, "[PH] Center")
-				container:Add(3, "[PH] Right")
+				container:Add("LEFT",		"[PH] Left")
+				container:Add("CENTER",		"[PH] Center")
+				container:Add("RIGHT",		"[PH] Right")
 				return container:GetData()
 			end
 
@@ -1406,14 +1419,9 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				for index, data in ipairs(DR.VigorOptions) do
-					if data.name then
-						container:Add(index, data.name)
-					else
-						container:Add(index, "Theme " .. index)
-					end
+				for _, data in ipairs(DR.VigorOptions) do
+					container:Add(data.key, data.name or ("Theme " .. data.key))
 				end
-
 				return container:GetData()
 			end
 
@@ -1474,8 +1482,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Orientation_Vertical"])
-				container:Add(2, L["Orientation_Horizontal"])
+				container:Add("Vertical",		L["Orientation_Vertical"])
+				container:Add("Horizontal",		L["Orientation_Horizontal"])
 				return container:GetData()
 			end
 
@@ -1491,8 +1499,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Direction_DownRight"])
-				container:Add(2, L["Direction_UpLeft"])
+				container:Add("DownRight",		L["Direction_DownRight"])
+				container:Add("UpLeft",			L["Direction_UpLeft"])
 				return container:GetData()
 			end
 
@@ -1523,8 +1531,8 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Direction_Vertical"])
-				container:Add(2, L["Direction_Horizontal"])
+				container:Add("Vertical",		L["Direction_Vertical"])
+				container:Add("Horizontal",		L["Direction_Horizontal"])
 				return container:GetData()
 			end
 
@@ -1587,14 +1595,14 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["ModelTheme_Wind"])
-				container:Add(2, L["ModelTheme_Lightning"])
-				container:Add(3, L["ModelTheme_FireForm"])
-				container:Add(4, L["ModelTheme_ArcaneForm"])
-				container:Add(5, L["ModelTheme_FrostForm"])
-				container:Add(6, L["ModelTheme_HolyForm"])
-				container:Add(7, L["ModelTheme_NatureForm"])
-				container:Add(8, L["ModelTheme_ShadowForm"])
+				container:Add("Wind",			L["ModelTheme_Wind"])
+				container:Add("Lightning",		L["ModelTheme_Lightning"])
+				container:Add("FireForm",		L["ModelTheme_FireForm"])
+				container:Add("ArcaneForm",		L["ModelTheme_ArcaneForm"])
+				container:Add("FrostForm",		L["ModelTheme_FrostForm"])
+				container:Add("HolyForm",		L["ModelTheme_HolyForm"])
+				container:Add("NatureForm",		L["ModelTheme_NatureForm"])
+				container:Add("ShadowForm",		L["ModelTheme_ShadowForm"])
 				return container:GetData()
 			end
 
@@ -1620,16 +1628,16 @@ function DR.OnAddonLoaded()
 
 			local function GetOptions()
 				local container = Settings.CreateControlTextContainer()
-				container:Add(1, L["Default"])
-				container:Add(2, L["ThemeAlgari_Bronze"])
-				container:Add(3, L["ThemeAlgari_Dark"])
-				container:Add(4, L["ThemeAlgari_Gold"])
-				container:Add(5, L["ThemeAlgari_Silver"])
-				container:Add(6, L["ThemeDefault_Desaturated"])
-				container:Add(7, L["ThemeAlgari_Desaturated"])
-				container:Add(8, L["ThemeGryphon_Desaturated"])
-				container:Add(9, L["ThemeWyvern_Desaturated"])
-				container:Add(10, L["ThemeDragon_Desaturated"])
+				container:Add("Default",			L["Default"])
+				container:Add("AlgariBronze",		L["ThemeAlgari_Bronze"])
+				container:Add("Algari_Dark",		L["ThemeAlgari_Dark"])
+				container:Add("Algari_Gold",		L["ThemeAlgari_Gold"])
+				container:Add("Algari_Silver",		L["ThemeAlgari_Silver"])
+				container:Add("Default_Desat",		L["ThemeDefault_Desaturated"])
+				container:Add("Algari_Desat",		L["ThemeAlgari_Desaturated"])
+				container:Add("Gryphon_Desat",		L["ThemeGryphon_Desaturated"])
+				container:Add("Wyvern_Desat",		L["ThemeWyvern_Desaturated"])
+				container:Add("Dragon_Desat",		L["ThemeDragon_Desaturated"])
 				return container:GetData()
 			end
 

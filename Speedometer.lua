@@ -872,6 +872,27 @@ end
 
 AddBuiltInBarOptions()
 
+function DR.FindSpeedometerTheme(key)
+	for _, t in ipairs(DR.SpeedometerOptions) do
+		if t.key == key then return t end
+	end
+	return DR.SpeedometerOptions[1]
+end
+
+function DR.FindSpeedometerBar(key)
+	for _, b in ipairs(DR.SpeedometerBarOptions) do
+		if b.key == key then return b end
+	end
+	return DR.SpeedometerBarOptions[1]
+end
+
+function DR.FindSpeedometerFont(key)
+	for _, f in ipairs(DR.SpeedometerFontOptions) do
+		if f.key == key then return f end
+	end
+	return DR.SpeedometerFontOptions[1]
+end
+
 
 local _drLocale = GetLocale()
 
@@ -930,17 +951,16 @@ end
 function DR.UpdateSpeedTextAppearance()
 	if not DragonRider_DB then return end
 
-	local fontIndex = DragonRider_DB.speedTextFont or 1
-	local fontEntry = DR.SpeedometerFontOptions[fontIndex] or DR.SpeedometerFontOptions[1]
+	local fontEntry = DR.FindSpeedometerFont(DragonRider_DB.speedTextFont or "FrizQuadrata")
 	local flags = DR.GetSpeedTextFlags()
 	DR.glide:SetFont(fontEntry.path, DragonRider_DB.speedTextScale or 12, flags)
 
-	local justifyIndex = DragonRider_DB.speedTextJustify or 1
+	local justify = DragonRider_DB.speedTextJustify or "LEFT"
 	DR.glide:ClearAllPoints()
-	if justifyIndex == 2 then
+	if justify == "CENTER" then
 		DR.glide:SetJustifyH("CENTER")
 		DR.glide:SetPoint("CENTER", DR.statusbar, "CENTER", 0, 0)
-	elseif justifyIndex == 3 then
+	elseif justify == "RIGHT" then
 		DR.glide:SetJustifyH("RIGHT")
 		DR.glide:SetPoint("RIGHT", DR.statusbar, "RIGHT", -10, 0)
 	else
@@ -1163,37 +1183,33 @@ DR.glide:SetDrawLayer("OVERLAY", 7)
 DR.glide:SetPoint("LEFT", DR.statusbar, "LEFT", 10, 0)
 
 function DR.useUnits()
-	if DragonRider_DB.speedValUnits == 1 then
+	local u = DragonRider_DB.speedValUnits
+	if u == "Yards" then
 		return " " .. L["UnitYards"]
-	elseif DragonRider_DB.speedValUnits == 2 then
+	elseif u == "Miles" then
 		return " " .. L["UnitMiles"]
-	elseif DragonRider_DB.speedValUnits == 3 then
+	elseif u == "Meters" then
 		return " " .. L["UnitMeters"]
-	elseif DragonRider_DB.speedValUnits == 4 then
+	elseif u == "Kilometers" then
 		return " " .. L["UnitKilometers"]
-	elseif DragonRider_DB.speedValUnits == 5 then
+	elseif u == "Percent" then
 		return "%" --.. L["UnitPercent"]
-	elseif DragonRider_DB.speedValUnits == 6 then
+	elseif u == "None" then
 		return ""
 	else
-		return L["UnitYards"]
+		return " " .. L["UnitYards"]
 	end
 end
 
 function DR:convertUnits(forwardSpeed)
-	if DragonRider_DB.speedValUnits == 1 then
-		return forwardSpeed
-	elseif DragonRider_DB.speedValUnits == 2 then
+	local u = DragonRider_DB.speedValUnits
+	if u == "Miles" then
 		return forwardSpeed*2.045
-	elseif DragonRider_DB.speedValUnits == 3 then
-		return forwardSpeed
-	elseif DragonRider_DB.speedValUnits == 4 then
+	elseif u == "Kilometers" then
 		return forwardSpeed*3.6
-	elseif DragonRider_DB.speedValUnits == 5 then
+	elseif u == "Percent" then
 		return forwardSpeed/7*100
-	elseif DragonRider_DB.speedValUnits == 6 then
-		return forwardSpeed
-	else
+	else -- "Yards", "Meters", "None", or fallback
 		return forwardSpeed
 	end
 end
@@ -1248,8 +1264,8 @@ function DR.updateSpeed()
 		MAX_BAR_VALUE = 85;
 	end
 	
-	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or 1
-	local options = DR.SpeedometerOptions[themeIndex] and DR.SpeedometerOptions[themeIndex].Cover or DR.SpeedometerOptions[1].Cover
+	local themeData = DR.FindSpeedometerTheme((DragonRider_DB and DragonRider_DB.themeSpeed) or "Default")
+	local options = themeData.Cover
 	local yOffset = options.TickYOffset or 0
 
 	DR.statusbar.tick_1:ClearAllPoints()
@@ -1283,7 +1299,7 @@ function DR.updateSpeed()
 	end
 	DR.glide:SetText(text);
 	
-	if DragonRider_DB.speedValUnits == 6 then
+	if DragonRider_DB.speedValUnits == "None" then
 		DR.glide:SetText("")
 	end
 	DR.statusbar.fill:SetVertexColor(barColor.r, barColor.g, barColor.b, barColor.a);
@@ -1301,8 +1317,7 @@ function DR.updateSpeed()
 end
 
 function DR.UpdateSpeedometerTheme()
-	local themeIndex = (DragonRider_DB and DragonRider_DB.themeSpeed) or defaultsTable.themeSpeed
-	local themeData = DR.SpeedometerOptions[themeIndex] or DR.SpeedometerOptions[1]
+	local themeData = DR.FindSpeedometerTheme((DragonRider_DB and DragonRider_DB.themeSpeed) or defaultsTable.themeSpeed)
 	local options = themeData.Cover
 	local isMinimalist = (themeData.key == "Minimalist")
 
@@ -1310,8 +1325,7 @@ function DR.UpdateSpeedometerTheme()
 	DR.statusbar.fill:SetWidth(DragonRider_DB.speedometerWidth or defaultsTable.speedometerWidth)
 	DR.statusbar:SetHeight(DragonRider_DB.speedometerHeight or defaultsTable.speedometerHeight)
 
-	local texIndex = (DragonRider_DB and DragonRider_DB.speedBarTexture) or defaultsTable.speedBarTexture
-	local barEntry = DR.SpeedometerBarOptions[texIndex] or DR.SpeedometerBarOptions[1]
+	local barEntry = DR.FindSpeedometerBar((DragonRider_DB and DragonRider_DB.speedBarTexture) or defaultsTable.speedBarTexture)
 	DR.ApplyBarEntry(DR.statusbar.fill, barEntry)
 
 	if barEntry.BarAtlas then
