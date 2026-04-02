@@ -987,6 +987,8 @@ function DR.ApplyBarEntry(fill, barEntry)
 
 	if barEntry.BarTexCoords then
 		fill:SetTexCoord(unpack(barEntry.BarTexCoords))
+	else
+		fill:SetTexCoord(0, 1, 0, 1)
 	end
 
 	fill:SetDesaturated(barEntry.BarDesat or false)
