@@ -1,3 +1,11 @@
+# 1.1.2
+
+Added many new speedometer progress bar textures, including some animated flipbook options
+
+Added speedometer text options for the font style, justify, flags, and amount of decimals used
+
+Reworked some of the internals of how textures were chosen/set - some third party custom textures may need to be re-adjusted and APIs updated for Charges, Speedometer, and Vigor.
+
 # 1.1.1a
 
 Fix up color picker thing being weird when pasting a hex color value and hitting enter (this is due to blizz color picker frame being limited to RGB even when alpha transparency is enabled)
