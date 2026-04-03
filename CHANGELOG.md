@@ -1,3 +1,7 @@
+# 1.1.3
+
+Added hexagonal shape vigor themes as well as a variety of Narcissus vigor themes when Narcissus is enabled
+
 # 1.1.2
 
 Added many new speedometer progress bar textures, including some animated flipbook options
