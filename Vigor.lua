@@ -1094,7 +1094,7 @@ local function GetRGBA(colorTbl, fallbackTbl)
 	return c.r, c.g, c.b, c.a or 1
 end
 
-local function UpdateChargeBars()
+function DR.UpdateChargeBars()
 
 	local current, max, start, duration
 
@@ -1232,7 +1232,7 @@ vigorUpdater:SetScript("OnUpdate", function(self, elapsed)
 	updateTimer = updateTimer + elapsed
 	if updateTimer > 0.2 then
 		if LibAdvFlight and LibAdvFlight.IsAdvFlyEnabled() then
-			UpdateChargeBars();
+			DR.UpdateChargeBars();
 		end
 		updateTimer = 0
 	end

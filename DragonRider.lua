@@ -823,6 +823,7 @@ function DR.OnAddonLoaded()
 			DR.UpdateVigorTheme();
 			DR.modelSetup();
 			DR.ToggleDecor();
+			DR.UpdateChargeBars();
 			DR.UpdateChargePositions();
 			if DR.UpdateGroundSkimmingColor then
 				DR.UpdateGroundSkimmingColor();
@@ -1937,6 +1938,7 @@ function DR.OnAddonLoaded()
 				UpdatePreviewValues()
 				DR.updateSpeed()
 				DR.vigorCounter()
+				DR.UpdateChargeBars()
 			end)
 		end
 
