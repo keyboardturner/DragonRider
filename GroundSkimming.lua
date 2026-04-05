@@ -186,7 +186,9 @@ local function HideGroundSkimming()
 end
 
 local function HasGroundSkimmingAura()
-	return C_UnitAuras.GetPlayerAuraBySpellID(GROUND_SKIM_AURA) ~= nil;
+	if not issecretvalue(C_UnitAuras.GetPlayerAuraBySpellID(GROUND_SKIM_AURA)) then
+		return C_UnitAuras.GetPlayerAuraBySpellID(GROUND_SKIM_AURA) ~= nil;
+	end
 end
 
 function DR.EvaluateGroundSkimmingVisibility()
