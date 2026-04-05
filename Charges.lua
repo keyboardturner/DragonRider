@@ -339,6 +339,7 @@ function DR.charge:OnEvent(event, ...)
 	end
 	
 	if event == "SPELL_UPDATE_COOLDOWN" then
+		if not LibAdvFlight or not LibAdvFlight.IsAdvFlyEnabled() then return end
 		local isEnabled, startTime, modRate, duration
 		if C_Spell.GetSpellCooldown then
 			local cooldownInfo = C_Spell.GetSpellCooldown(418592)

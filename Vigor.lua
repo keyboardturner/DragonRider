@@ -1230,8 +1230,10 @@ local vigorUpdater = CreateFrame("Frame")
 local updateTimer = 0 -- throttle
 vigorUpdater:SetScript("OnUpdate", function(self, elapsed)
 	updateTimer = updateTimer + elapsed
-	if updateTimer > 0.1 then
-		UpdateChargeBars()
+	if updateTimer > 0.2 then
+		if LibAdvFlight and LibAdvFlight.IsAdvFlyEnabled() then
+			UpdateChargeBars();
+		end
 		updateTimer = 0
 	end
 end)
