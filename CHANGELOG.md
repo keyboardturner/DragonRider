@@ -6,6 +6,8 @@ Added option to display Ground Skimming glow effect beneath the vigor charges wh
 
 Fixed vigor non-flipbook themes persisting as flipbooks
 
+Adjusted some functions to only check during skyriding being enabled (should help with *some* performance issues)
+
 # 1.1.2
 
 Added many new speedometer progress bar textures, including some animated flipbook options
