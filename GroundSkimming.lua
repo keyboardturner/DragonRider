@@ -218,6 +218,7 @@ end
 local auraWatcher = CreateFrame("Frame")
 auraWatcher:RegisterEvent("UNIT_AURA")
 auraWatcher:SetScript("OnEvent", function(_, _, unitTarget)
+	if not LibAdvFlight or not LibAdvFlight.IsAdvFlyEnabled() then return end
 	if unitTarget == "player" then
 		DR.EvaluateGroundSkimmingVisibility();
 	end
