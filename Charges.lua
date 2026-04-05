@@ -301,6 +301,8 @@ end
 
 
 function DR.charge:OnEvent(event, ...)
+	if not LibAdvFlight or not LibAdvFlight.IsAdvFlyEnabled() then return end
+	
 	if event == "UNIT_AURA" then
 		local unit = select(1, ...)
 		if unit == "player" then
@@ -339,7 +341,6 @@ function DR.charge:OnEvent(event, ...)
 	end
 	
 	if event == "SPELL_UPDATE_COOLDOWN" then
-		if not LibAdvFlight or not LibAdvFlight.IsAdvFlyEnabled() then return end
 		local isEnabled, startTime, modRate, duration
 		if C_Spell.GetSpellCooldown then
 			local cooldownInfo = C_Spell.GetSpellCooldown(418592)
