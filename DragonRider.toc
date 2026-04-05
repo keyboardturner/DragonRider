@@ -60,4 +60,5 @@ DRJournal.lua
 Vigor.lua
 Speedometer.lua
 Charges.lua
+GroundSkimming.lua
 DragonRider.lua

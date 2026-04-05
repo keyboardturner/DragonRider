@@ -2,6 +2,8 @@
 
 Added hexagonal shape vigor themes as well as a variety of Narcissus vigor themes when Narcissus is enabled
 
+Added option to display Ground Skimming glow effect beneath the vigor charges while active
+
 Fixed vigor non-flipbook themes persisting as flipbooks
 
 # 1.1.2

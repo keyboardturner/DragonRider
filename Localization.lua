@@ -427,6 +427,23 @@ if LOCALE == "enUS" then
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Uncommon"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Void"
 
+	L["GroundSkimming"] = "Ground Skimming"
+	--[[
+		dede Bodenkratzer
+		esmx Al ras del suelo
+		frfr Rase-mottes
+		itit Rasoterra
+		ptbr Rasante no Solo
+		ruru Бреющий полет
+		kokr 초저고도 비행
+		zhcn 掠地滑翔
+		zhtw 貼地飛掠
+	]]
+	L["GroundSkimming_Toggle"] = "Show Ground Skimming"
+	L["GroundSkimming_ToggleTT"] = "Toggle the glow effect beneath the Vigor widget associated with the Ground Skimming aura."
+	L["GroundSkimming_ColorPicker"] = "Ground Skimming Color"
+	L["GroundSkimming_ColorPickerTT"] = "Pick a color for Ground Skimming."
+
 
 return end
 
@@ -767,6 +784,12 @@ if LOCALE == "esES" or LOCALE == "esMX" then
 	L["VigorTheme_Narci_HexagonBorder-Special"] = "Narcissus Especial"
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Poco común"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Vacío"
+
+	L["GroundSkimming"] = "Al ras del suelo"
+	L["GroundSkimming_Toggle"] = "Mostrar Al ras del suelo"
+	L["GroundSkimming_ToggleTT"] = "Activa o desactiva el efecto de brillo debajo del widget de Vigor asociado con el aura Al ras del suelo."
+	L["GroundSkimming_ColorPicker"] = "Color de Al ras del suelo"
+	L["GroundSkimming_ColorPickerTT"] = "Elige un color para Al ras del suelo."
 
 
 return end
@@ -1110,6 +1133,12 @@ if LOCALE == "deDE" then
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Ungewöhnlich"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Leere"
 
+	L["GroundSkimming"] = "Bodenkratzer"
+	L["GroundSkimming_Toggle"] = "Bodenkratzer anzeigen"
+	L["GroundSkimming_ToggleTT"] = "Schaltet den Leuchteffekt unter dem Vigor-Widget um, der mit der Bodenkratzer-Aura verbunden ist."
+	L["GroundSkimming_ColorPicker"] = "Bodenkratzer-Farbe"
+	L["GroundSkimming_ColorPickerTT"] = "Wähle eine Farbe für Bodenkratzer."
+
 
 return end
 
@@ -1451,6 +1480,12 @@ if LOCALE == "frFR" then
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Inhabituel"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Vide"
 
+	L["GroundSkimming"] = "Rase-mottes"
+	L["GroundSkimming_Toggle"] = "Afficher Rase-mottes"
+	L["GroundSkimming_ToggleTT"] = "Active ou désactive l'effet lumineux sous le widget de Vigueur associé à l'aura Rase-mottes."
+	L["GroundSkimming_ColorPicker"] = "Couleur de Rase-mottes"
+	L["GroundSkimming_ColorPickerTT"] = "Choisissez une couleur pour Rase-mottes."
+
 return end
 
 if LOCALE == "itIT" then
@@ -1790,6 +1825,12 @@ if LOCALE == "itIT" then
 	L["VigorTheme_Narci_HexagonBorder-Special"] = "Narcissus Speciale"
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Non comune"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Vuoto"
+
+	L["GroundSkimming"] = "Rasoterra"
+	L["GroundSkimming_Toggle"] = "Mostra Rasoterra"
+	L["GroundSkimming_ToggleTT"] = "Attiva o disattiva l'effetto luminoso sotto il widget Vigore associato all'aura Rasoterra."
+	L["GroundSkimming_ColorPicker"] = "Colore Rasoterra"
+	L["GroundSkimming_ColorPickerTT"] = "Scegli un colore per Rasoterra."
 
 
 return end
@@ -2131,6 +2172,12 @@ if LOCALE == "ptBR" then
 	L["VigorTheme_Narci_HexagonBorder-Special"] = "Narcissus Especial"
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Incomum"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Vazio"
+
+	L["GroundSkimming"] = "Rasante no Solo"
+	L["GroundSkimming_Toggle"] = "Mostrar Rasante no Solo"
+	L["GroundSkimming_ToggleTT"] = "Ativa ou desativa o efeito de brilho sob o widget de Vigor associado à aura Rasante no Solo."
+	L["GroundSkimming_ColorPicker"] = "Cor de Rasante no Solo"
+	L["GroundSkimming_ColorPickerTT"] = "Escolha uma cor para Rasante no Solo."
 
 
 -- Note that the EU Portuguese WoW client also
@@ -2475,6 +2522,12 @@ if LOCALE == "ruRU" then
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus Необычный"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus Пустота"
 
+	L["GroundSkimming"] = "Бреющий полет"
+	L["GroundSkimming_Toggle"] = "Показать \"Бреющий полет\""
+	L["GroundSkimming_ToggleTT"] = "Включает или отключает эффект свечения под виджетом энергии, связанным с аурой \"Бреющий полет\"."
+	L["GroundSkimming_ColorPicker"] = "Цвет \"Бреющий полет\""
+	L["GroundSkimming_ColorPickerTT"] = "Выберите цвет для \"Бреющий полет\"."
+
 
 return end
 
@@ -2815,6 +2868,12 @@ if LOCALE == "koKR" then
 	L["VigorTheme_Narci_HexagonBorder-Special"] = "Narcissus 특별"
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus 고급"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus 공허"
+
+	L["GroundSkimming"] = "초저고도 비행"
+	L["GroundSkimming_Toggle"] = "초저고도 비행 표시"
+	L["GroundSkimming_ToggleTT"] = "초저고도 비행 오라와 연관된 기력 위젯 아래의 빛 효과를 켜거나 끕니다."
+	L["GroundSkimming_ColorPicker"] = "초저고도 비행 색상"
+	L["GroundSkimming_ColorPickerTT"] = "초저고도 비행의 색상을 선택하세요."
 
 
 return end
@@ -3159,6 +3218,12 @@ if LOCALE == "zhCN" then
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus 优秀"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus 虚空"
 
+	L["GroundSkimming"] = "掠地滑翔"
+	L["GroundSkimming_Toggle"] = "显示掠地滑翔"
+	L["GroundSkimming_ToggleTT"] = "切换与掠地滑翔光环关联的活力组件下方的发光效果。"
+	L["GroundSkimming_ColorPicker"] = "掠地滑翔颜色"
+	L["GroundSkimming_ColorPickerTT"] = "选择掠地滑翔的颜色。"
+
 
 return end
 
@@ -3500,6 +3565,12 @@ if LOCALE == "zhTW" then
 	L["VigorTheme_Narci_HexagonBorder-Special"] = "Narcissus 特殊"
 	L["VigorTheme_Narci_HexagonBorder-Uncommon"] = "Narcissus 精良"
 	L["VigorTheme_Narci_HexagonBorder-Void"] = "Narcissus 虛空"
+	
+	L["GroundSkimming"] = "貼地飛掠"
+	L["GroundSkimming_Toggle"] = "顯示貼地飛掠"
+	L["GroundSkimming_ToggleTT"] = "切換與貼地飛掠光環相關的活力元件下方的發光效果。"
+	L["GroundSkimming_ColorPicker"] = "貼地飛掠顏色"
+	L["GroundSkimming_ColorPickerTT"] = "選擇貼地飛掠的顏色。"
 
 
 return end

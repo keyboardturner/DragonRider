@@ -217,6 +217,15 @@ local defaultsTable = {
 			a = 1.00,
 		},
 	},
+	toggleGroundSkimming = true,
+	groundSkimmingColor = {
+		main = {
+			r = 0.45,
+			g = 0.85,
+			b = 1.0,
+			a = 1.0,
+		},
+	},
 };
 
 DR.defaultsTable = defaultsTable
@@ -815,6 +824,12 @@ function DR.OnAddonLoaded()
 			DR.modelSetup();
 			DR.ToggleDecor();
 			DR.UpdateChargePositions();
+			if DR.UpdateGroundSkimmingColor then
+				DR.UpdateGroundSkimmingColor();
+			end
+			if DR.EvaluateGroundSkimmingVisibility then
+				DR.EvaluateGroundSkimmingVisibility();
+			end
 		end
 
 		local category, layout = Settings.RegisterVerticalLayoutCategory(L["DR_Title"])
@@ -1788,6 +1803,26 @@ function DR.OnAddonLoaded()
 			local key, subKey = "vigorBarColor", "decor"
 			local name = L["VigorBarDecor_ColorPicker"]
 			local tooltip = L["VigorBarDecor_ColorPickerTT"]
+			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
+			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
+		end
+
+		layoutVigor:AddInitializer(CreateSettingsListSectionHeaderInitializer(L["GroundSkimming"]));
+
+		do
+			local variable = "toggleGroundSkimming"
+			local name = L["GroundSkimming_Toggle"]
+			local tooltip = L["GroundSkimming_ToggleTT"]
+			local defaultValue = defaultsTable[variable]
+
+			local setting = RegisterSetting(variable, defaultValue, name)
+			CreateCheckbox(categoryVigor, setting, tooltip)
+		end
+
+		do
+			local key, subKey = "groundSkimmingColor", "main"
+			local name = L["GroundSkimming_ColorPicker"]
+			local tooltip = L["GroundSkimming_ColorPickerTT"]
 			local setting = RegisterSetting(key, defaultsTable[key][subKey], name, subKey)
 			CreateColorPickerButtonForSetting(categoryVigor, setting, tooltip)
 		end
