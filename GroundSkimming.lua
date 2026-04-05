@@ -196,7 +196,7 @@ function DR.EvaluateGroundSkimmingVisibility()
 		HideGroundSkimming();
 		return;
 	end
-	if HasGroundSkimmingAura() then
+	if DR.IsPreviewMode or HasGroundSkimmingAura() then
 		ShowGroundSkimming();
 	else
 		HideGroundSkimming();

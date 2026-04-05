@@ -1934,6 +1934,7 @@ function DR.OnAddonLoaded()
 		local function StartPreviewMode()
 			if previewTicker then return end
 			DR.IsPreviewMode = true
+			DR.EvaluateGroundSkimmingVisibility()
 			previewTicker = C_Timer.NewTicker(0.05, function()
 				UpdatePreviewValues()
 				DR.updateSpeed()
@@ -1950,6 +1951,7 @@ function DR.OnAddonLoaded()
 				previewTicker:Cancel()
 				previewTicker = nil
 			end
+			DR.EvaluateGroundSkimmingVisibility()
 		end
 
 		EventRegistry:RegisterCallback('Settings.CategoryChanged', function(_, args)
