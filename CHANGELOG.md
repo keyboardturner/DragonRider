@@ -1,3 +1,7 @@
+# 1.1.3a
+
+Disabled ground skimming option by default
+
 # 1.1.3
 
 Added hexagonal shape vigor themes as well as a variety of Narcissus vigor themes when Narcissus is enabled
