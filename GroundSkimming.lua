@@ -192,7 +192,7 @@ local function HasGroundSkimmingAura()
 end
 
 function DR.EvaluateGroundSkimmingVisibility()
-	if not DragonRider_DB or not DragonRider_DB.toggleGroundSkimming then
+	if not DragonRider_DB or not DragonRider_DB.showGroundSkimming then
 		HideGroundSkimming();
 		return;
 	end
