@@ -1,3 +1,7 @@
+# 1.1.3b
+
+Ensure ground skimming hides upon skyriding end/disable
+
 # 1.1.3a
 
 Disabled ground skimming option by default

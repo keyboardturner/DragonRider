@@ -2002,6 +2002,7 @@ function DR.OnAddonLoaded()
 			DR.setPositions();
 			
 			if DR.EvaluateVigorVisibility then DR.EvaluateVigorVisibility() end
+			if DR.HideGroundSkimming then DR.HideGroundSkimming() end
 		end
 
 		-- when the player dismounts
@@ -2012,6 +2013,7 @@ function DR.OnAddonLoaded()
 			StopSpeedTicker();
 			
 			if DR.EvaluateVigorVisibility then DR.EvaluateVigorVisibility() end
+			if DR.HideGroundSkimming then DR.HideGroundSkimming() end
 		end
 
 		LibAdvFlight.RegisterCallback(LibAdvFlight.Events.ADV_FLYING_START, OnAdvFlyStart);

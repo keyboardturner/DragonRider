@@ -185,6 +185,8 @@ local function HideGroundSkimming()
 	hideGroup:Play();
 end
 
+DR.HideGroundSkimming = HideGroundSkimming;
+
 local function HasGroundSkimmingAura()
 	if not issecretvalue(C_UnitAuras.GetPlayerAuraBySpellID(GROUND_SKIM_AURA)) then
 		return C_UnitAuras.GetPlayerAuraBySpellID(GROUND_SKIM_AURA) ~= nil;
