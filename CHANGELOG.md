@@ -1,3 +1,11 @@
+# 1.1.5
+
+[LibAdvFlight update](https://github.com/Ghostopheles/LibAdvFlight/releases/tag/v1.1.1)
+ - this *should* reduce CPU usage while idle / dismounted fairly significantly
+
+Potentially fixed an issue with Narcissus vigor options loading too early for DragonRider (I wasn't able to reproduce this issue myself)
+
+
 # 1.1.4
 
 12.0.5 toc update
