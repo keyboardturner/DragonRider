@@ -7,6 +7,7 @@
 ## AddonCompartmentFuncOnEnter: DragonRider_OnAddonCompartmentEnter
 ## AddonCompartmentFuncOnLeave: DragonRider_OnAddonCompartmentLeave
 ## IconTexture: Interface/Icons/ability_dragonriding_glyph01.blp
+## LoadWith: Narcissus
 ## X-Curse-Project-ID: 893295
 ## X-WoWI-ID: 26618
 ## X-Wago-ID: XKq9EDKy
