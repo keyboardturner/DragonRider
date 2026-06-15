@@ -1,3 +1,7 @@
+# 1.1.6
+
+12.0.7 toc update
+
 # 1.1.5
 
 [LibAdvFlight update](https://github.com/Ghostopheles/LibAdvFlight/releases/tag/v1.1.1)
