@@ -1006,9 +1006,9 @@ end
 DR.mainFrame:RegisterEvent("QUEST_REMOVED")
 DR.mainFrame:SetScript("OnEvent", DR.mainFrame.WorldQuestHandler)
 
-DR.mainFrame.OpenTalentsButton = CreateFrame("Button", nil, DR.mainFrame)''
-DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -10, -25)''
-DR.mainFrame.OpenTalentsButton:SetSize(30, 30)''
+DR.mainFrame.OpenTalentsButton = CreateFrame("Button", nil, DR.mainFrame);
+DR.mainFrame.OpenTalentsButton:SetPoint("TOPRIGHT", DR.mainFrame, "TOPRIGHT", -10, -25);
+DR.mainFrame.OpenTalentsButton:SetSize(30, 30);
 
 DR.mainFrame.OpenTalentsButton.Icon = DR.mainFrame.OpenTalentsButton:CreateTexture(nil, "ARTWORK");
 DR.mainFrame.OpenTalentsButton.Icon:SetAllPoints();
