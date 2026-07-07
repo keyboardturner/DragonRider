@@ -656,7 +656,7 @@ end
 
 
 function DR.EventsList:PLAYER_LOGIN()
-	DR.mainFrame.DoPopulationStuff();
+	DR.mainFrame.UpdatePopulation();
 	local SeasonID = PlayerGetTimerunningSeasonID()
 	if SeasonID then -- needs to fire late to register any data
 		DR.mainFrame.CreateDragonRiderFlipbook()
@@ -793,8 +793,6 @@ function DR.OnAddonLoaded()
 		end
 		if DragonRider_DB.useAccountData == nil then
 			DragonRider_DB.useAccountData = false;
-		else
-			DR.mainFrame.accountAll_Checkbox:SetChecked(DragonRider_DB.useAccountData)
 		end
 		if DragonRider_DB.raceData == nil then
 			DragonRider_DB.raceData = {};
