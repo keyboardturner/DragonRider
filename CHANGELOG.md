@@ -1,3 +1,13 @@
+[Full Changelog & Previous Releases](https://github.com/keyboardturner/HousingMusic/releases)
+
+# 1.2.0
+
+Dragon Rider has hit over 1 million downloads!
+
+The Big Journal Update™ is now implemented, redesigning how race data info is presented and no longer haveing these very weird kind of blank storm/reverse/challenge categories. It's now a little bit more intelligent about what race data is presented.
+
+Import/Export is now also a thing added, with loadouts that you can select for your whole account as well as your character's specs. Also there's some buttons to export the loadout as a json string (and import them), so that might help a bit with being able to share a UI layout since there's so many options to choose from. In a future update I plan to make creating custom themes for various assets a bit easier, since right now it's still pretty hidden in some APIs, and other things like the SharedMedia library can be pretty useful.
+
 # 1.1.6
 
 12.0.7 toc update

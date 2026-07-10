@@ -63,3 +63,4 @@ Speedometer.lua
 Charges.lua
 GroundSkimming.lua
 DragonRider.lua
+ProfileManager.lua

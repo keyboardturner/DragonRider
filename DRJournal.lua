@@ -8,16 +8,6 @@ local function Print(...)
 	DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
-function DR.tooltip_OnEnter(frame, tooltip)
-	GameTooltip:SetOwner(frame, "ANCHOR_TOP")
-	GameTooltip_AddNormalLine(GameTooltip, tooltip);
-	GameTooltip:Show();
-end
-
-function DR.tooltip_OnLeave()
-	GameTooltip:Hide();
-end
-
 -- Using Blizz's globally accessible frame fade function causes taint with the map
 -- So just add their own code in locally
 
@@ -195,7 +185,7 @@ function DR.GetZoneDataList()
 
 	for _, continentData in ipairs(DR.RaceData) do
 		local mapID = continentData.zone;
-		local zoneName = C_Map.GetMapInfo(mapID).name or "Unknown Zone";
+		local zoneName = C_Map.GetMapInfo(mapID).name or UNKNOWN;
 		
 		if DR.searchQuery == "" or string.find(string.lower(zoneName), searchLower) then
 			table.insert(dataList, {
@@ -208,9 +198,13 @@ function DR.GetZoneDataList()
 	return dataList;
 end
 
+DR.pendingNameRefresh = false;
+
 function DR.GetRaceDataList()
 	local dataList = {};
 	local searchLower = string.lower(DR.searchQuery);
+	
+	DR.pendingNameRefresh = false;
 	
 	local difficultyOrder = {
 		{key = "normal", name = L["Normal"]},
@@ -223,11 +217,17 @@ function DR.GetRaceDataList()
 
 	for _, continentData in ipairs(DR.RaceData) do
 		local mapID = continentData.zone;
-		local zoneName = C_Map.GetMapInfo(mapID).name or "Unknown Zone";
+		local zoneName = C_Map.GetMapInfo(mapID).name or UNKNOWN;
 		
 		if (DR.searchQuery ~= "" or mapID == DR.selectedZoneMapID) then
 			for _, raceInfo in ipairs(continentData.races) do
-				local questName = DR.QuestTitleFromID[raceInfo.questID] or "[Loading Race Data...]";
+				
+				local questTitle = DR.QuestTitleFromID[raceInfo.questID];
+				if not questTitle then
+					DR.pendingNameRefresh = true;
+				end
+				
+				local questName = questTitle or "...";
 				local questNameLower = string.lower(questName);
 				local zoneNameLower = string.lower(zoneName);
 				
@@ -265,6 +265,75 @@ tinsert(UISpecialFrames, DR.mainFrame:GetName())
 local DRportrait = DR.mainFrame.PortraitContainer.portrait
 DRportrait:SetTexCoord(0.03, 1, 0.03, 1) -- centers the icon a little bit more, since there was a large gap in the top / left
 DRportrait:SetTexture("Interface\\ICONS\\Ability_DragonRiding_Glyph01")
+
+local DragonRiderPortraitMixin = {};
+
+DragonRiderPortraitMixin.SoundFileList = {
+	4621637, 4621639, 4621641, 4621643, 4621645,
+	4621647, 4621649, 4621651, 4621653, 4621655,
+	4621657, 4621659, 4621661, 4621663, 4621665,
+	4621667, 4621669,
+};
+
+function DragonRiderPortraitMixin:OnLoad()
+	self.clickCount = 0;
+	self.clickThreshold = 10;
+	self.timeFrame = 0.2;
+	self.lastClickTime = 0;
+	self:RegisterForClicks("AnyDown", "AnyUp");
+end
+
+function DragonRiderPortraitMixin:OnClick(button, down)
+	--[[ -- future addition maybe, gonna make something to automate it tho
+	if button == "RightButton" then
+		if not down and DR.ToggleChangelog then
+			DR.ToggleChangelog();
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		end
+	end
+	]]
+
+	if button then
+		if not down then
+			self.Icon:SetTexCoord(0.03, 1, 0.03, 1);
+		else
+			self.Icon:SetTexCoord(0.05, 0.98, 0.05, 0.98);
+		end
+
+		if down then return; end
+
+		local currentTime = GetTime();
+		if currentTime - self.lastClickTime > self.timeFrame then
+			self:ResetClicks();
+		end
+
+		self.clickCount = self.clickCount + 1;
+		self.lastClickTime = currentTime;
+
+		if self.clickCount >= self.clickThreshold then
+			self:ResetClicks();
+			self:PlaySecretSound();
+		end
+	end
+end
+
+function DragonRiderPortraitMixin:ResetClicks()
+	self.clickCount = 0;
+end
+
+function DragonRiderPortraitMixin:PlaySecretSound()
+	local sound = self.SoundFileList[math.random(1, #self.SoundFileList)];
+	PlaySoundFile(sound, "SFX");
+end
+
+local portraitButton = CreateFrame("Button", nil, DR.mainFrame.PortraitContainer);
+portraitButton:SetAllPoints(DRportrait);
+portraitButton.Icon = DRportrait;
+portraitButton:EnableMouse(true);
+
+FrameUtil.SpecializeFrameWithMixins(portraitButton, DragonRiderPortraitMixin);
+portraitButton:OnLoad();
+portraitButton:SetScript("OnClick", portraitButton.OnClick);
 
 --DR.mainFrame.PortraitContainer.portrait:SetTexture("Interface\\AddOns\\Languages\\Languages_Icon_Small")
 DR.mainFrame:SetTitle(L["DragonRider"])
@@ -649,7 +718,8 @@ end
 DR.mainFrame.Bg:Hide();
 
 DR.mainFrame.backgroundTex = DR.mainFrame:CreateTexture(nil, "BACKGROUND", nil, 0);
-DR.mainFrame.backgroundTex:SetAllPoints(DR.mainFrame);
+DR.mainFrame.backgroundTex:SetPoint("TOPLEFT", 2, -2);
+DR.mainFrame.backgroundTex:SetPoint("BOTTOMRIGHT", -2, 2);
 DR.mainFrame.backgroundTex:SetAtlas("Dragonflight-Landingpage-Background");
 
 local searchBox = CreateFrame("EditBox", "DragonRiderSearchBox", content1, "SearchBoxTemplate");
@@ -760,7 +830,7 @@ raceView:SetElementInitializer("Button", function(row, data)
 	row.bg:Hide();
 	row.scoreText:Hide();
 	row:SetScript("OnEnter", nil);
-	row:SetScript("OnLeave", DR.tooltip_OnLeave);
+	row:SetScript("OnLeave", function() GameTooltip:Hide(); end);
 	row:SetScript("OnClick", nil);
 	row:EnableMouse(true);
 
@@ -783,6 +853,16 @@ raceView:SetElementInitializer("Button", function(row, data)
 				PlaySound(170270);
 			end
 		end);
+
+		row:SetScript("OnEnter", function(self)
+			local questName = data.text or "";
+			local trackedTooltip = "|A:Waypoint-MapPin-Tracked:15:15|a " .. (VOICE_CHAT_CHANNEL_INACTIVE_TOOLTIP_INSTRUCTIONS);
+			
+			GameTooltip:SetOwner(self, "ANCHOR_TOP")
+			GameTooltip:SetText(questName, 0.4, 0.8, 1);
+			GameTooltip:AddLine(trackedTooltip, 1, 0.82, 0);
+			GameTooltip:Show();
+		end)
 
 	elseif data.type == "difficulty" then
 		row.title:SetPoint("LEFT", row, "LEFT", 25, 0);
@@ -827,6 +907,18 @@ function DR.mainFrame.UpdatePopulation()
 	raceDP:Flush();
 	raceDP:InsertTable(raceData);
 	raceScroll:SetScrollPercentage(currentRaceScroll);
+	
+	--sometimes names aren't loaded, i don't request them all in 1 go like before
+	if DR.pendingNameRefresh then
+		if not DR.nameRefreshTimer then
+			DR.nameRefreshTimer = C_Timer.NewTimer(0.5, function()
+				DR.nameRefreshTimer = nil;
+				if DR.mainFrame:IsShown() then
+					DR.mainFrame.UpdatePopulation();
+				end
+			end)
+		end
+	end
 end
 
 
@@ -872,13 +964,18 @@ DR.mainFrame.accountAll_Checkbox.text:SetFont(STANDARD_TEXT_FONT, 11)
 DR.mainFrame.accountAll_Checkbox.text:SetPoint("LEFT", DR.mainFrame.accountAll_Checkbox, "RIGHT", 0, 0)
 DR.mainFrame.accountAll_Checkbox.text:SetText(L["UseAccountScores"])
 DR.mainFrame.accountAll_Checkbox.text:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, L["UseAccountScoresTT"])
+	GameTooltip:SetOwner(self, "ANCHOR_TOP");
+	GameTooltip_AddNormalLine(GameTooltip, L["UseAccountScoresTT"]);
+	GameTooltip:Show();
 end);
-DR.mainFrame.accountAll_Checkbox.text:SetScript("OnLeave", DR.tooltip_OnLeave);
+DR.mainFrame.accountAll_Checkbox.text:SetScript("OnLeave", function() GameTooltip:Hide(); end);
+
 DR.mainFrame.accountAll_Checkbox:SetScript("OnEnter", function(self)
-	DR.tooltip_OnEnter(self, L["UseAccountScoresTT"])
+	GameTooltip:SetOwner(self, "ANCHOR_TOP");
+	GameTooltip_AddNormalLine(GameTooltip, L["UseAccountScoresTT"]);
+	GameTooltip:Show();
 end);
-DR.mainFrame.accountAll_Checkbox:SetScript("OnLeave", DR.tooltip_OnLeave);
+DR.mainFrame.accountAll_Checkbox:SetScript("OnLeave", function() GameTooltip:Hide(); end);
 
 --DR.mainFrame.backgroundTex = DR.mainFrame.ScrollFrame:CreateTexture()
 --DR.mainFrame.backgroundTex:SetAllPoints(DR.mainFrame.ScrollFrame)
@@ -989,15 +1086,16 @@ function DR.mainFrame.WorldQuestHandler()
 					if disp_time(C_TaskQuest.GetQuestTimeLeftSeconds(v)) then
 						taskInfo = taskInfo .. "\n" .. disp_time(C_TaskQuest.GetQuestTimeLeftSeconds(v));
 					end
-					DR.tooltip_OnEnter(self, taskInfo);
+					
+					GameTooltip:SetOwner(self, "ANCHOR_TOP");
+					GameTooltip_AddNormalLine(GameTooltip, taskInfo);
+					GameTooltip:Show();
 				end);
 
 			end);
 			DR.mainFrame["WorldQuestList_"..v]:SetScript("OnLeave", function(self)
-				DR.tooltip_OnLeave();
-
-				DR.mainFrame["WorldQuestList_"..v]:SetScript("OnUpdate", nil);
-
+				GameTooltip:Hide();
+				self:SetScript("OnUpdate", nil);
 			end);
 		end
 	end
@@ -1045,17 +1143,21 @@ DR.mainFrame.multiplayerRace.tex:SetAtlas("racing");
 
 DR.mainFrame.multiplayerRace:SetScript("OnEnter", function(self)
 	local activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo = DR.mainFrame.multiplayerRace_TT();
-	DR.tooltip_OnEnter(self, tooltipInfo);
+	GameTooltip:SetOwner(self, "ANCHOR_TOP");
+	GameTooltip_AddNormalLine(GameTooltip, tooltipInfo);
+	GameTooltip:Show();
 
 	DR.mainFrame.multiplayerRace:SetScript("OnUpdate", function(self)
-		local activeMapID, activePOI, activePOI_X, activePOI_Y, tooltipInfo = DR.mainFrame.multiplayerRace_TT();
-		DR.tooltip_OnEnter(self, tooltipInfo);
+		local _, _, _, _, info = DR.mainFrame.multiplayerRace_TT();
+		GameTooltip:SetOwner(self, "ANCHOR_TOP");
+		GameTooltip_AddNormalLine(GameTooltip, info);
+		GameTooltip:Show();
 	end);
 end);
 
 DR.mainFrame.multiplayerRace:SetScript("OnLeave", function(self)
-	DR.tooltip_OnLeave();
-	DR.mainFrame.multiplayerRace:SetScript("OnUpdate", nil);
+	GameTooltip:Hide();
+	self:SetScript("OnUpdate", nil);
 end);
 
 DR.mainFrame.multiplayerRace:SetScript("OnClick", function(self)
