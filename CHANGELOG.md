@@ -1,4 +1,4 @@
-[Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/tag/1.1.6)
+[Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/)
 
 # 1.2.0
 
