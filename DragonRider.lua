@@ -13,6 +13,7 @@ local LibAdvFlight = LibStub:GetLibrary("LibAdvFlight-1.1");
 DR.CurrencyToRaceMap = {}
 
 local defaultsTable = {
+	hasSeenChangelog = false,
 	toggleModels = true,
 	speedometerPosPoint = 1, -- deprecated
 	speedometerPosX = 0, -- deprecated, moved to position

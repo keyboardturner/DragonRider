@@ -284,14 +284,12 @@ function DragonRiderPortraitMixin:OnLoad()
 end
 
 function DragonRiderPortraitMixin:OnClick(button, down)
-	--[[ -- future addition maybe, gonna make something to automate it tho
 	if button == "RightButton" then
 		if not down and DR.ToggleChangelog then
 			DR.ToggleChangelog();
 			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 		end
 	end
-	]]
 
 	if button then
 		if not down then
@@ -331,9 +329,41 @@ portraitButton:SetAllPoints(DRportrait);
 portraitButton.Icon = DRportrait;
 portraitButton:EnableMouse(true);
 
+DR.mainFrame.portraitButton = portraitButton;
+
+local glowFrame = CreateFrame("Frame", nil, DR.mainFrame.PortraitContainer);
+glowFrame:SetPoint("CENTER", DRportrait, "CENTER");
+glowFrame:SetSize(85, 85);
+glowFrame:SetFrameLevel(800);
+
+glowFrame.Glow = glowFrame:CreateTexture();
+glowFrame.Glow:SetAllPoints(glowFrame);
+glowFrame.Glow:SetTexture(136477); -- interface/minimap/ui-minimap-zoombutton-highlight.blp
+glowFrame.Glow:SetBlendMode("ADD");
+glowFrame.Glow:SetVertexColor(1, 1, 1, 1);
+glowFrame.Glow:Hide();
+
+glowFrame.PulseAnim = glowFrame.Glow:CreateAnimationGroup();
+glowFrame.PulseAnim:SetLooping("BOUNCE");
+local alphaAnim = glowFrame.PulseAnim:CreateAnimation("Alpha");
+alphaAnim:SetFromAlpha(0.2);
+alphaAnim:SetToAlpha(1.0);
+alphaAnim:SetDuration(0.75);
+
+DR.mainFrame.portraitButton.Glow = glowFrame.Glow;
+DR.mainFrame.portraitButton.PulseAnim = glowFrame.PulseAnim;
+
 FrameUtil.SpecializeFrameWithMixins(portraitButton, DragonRiderPortraitMixin);
 portraitButton:OnLoad();
 portraitButton:SetScript("OnClick", portraitButton.OnClick);
+portraitButton:SetScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT");
+	GameTooltip:SetText(ITEM_READABLE, 0.4, 0.8, 1);
+	GameTooltip:Show();
+end);
+portraitButton:SetScript("OnLeave", function()
+	GameTooltip:Hide();
+end);
 
 --DR.mainFrame.PortraitContainer.portrait:SetTexture("Interface\\AddOns\\Languages\\Languages_Icon_Small")
 DR.mainFrame:SetTitle(L["DragonRider"])
@@ -349,9 +379,6 @@ DR.mainFrame:SetScript("OnMouseUp", function(self, button)
 end);
 DR.mainFrame:SetFrameStrata("HIGH")
 DR.mainFrame:Hide()
-DR.mainFrame:SetScript("OnHide", function()
-	PlaySound(74423);
-end);
 
 --[[
 -- cool funni dragon portrait, maybe for something cool some day
@@ -1181,7 +1208,24 @@ function DR.mainFrame.Script_OnShow()
 end
 
 DR.mainFrame:SetScript("OnShow", DR.mainFrame.Script_OnShow);
-DR.mainFrame:HookScript("OnShow", SetupFade);
+DR.mainFrame:HookScript("OnShow", function(self)
+	SetupFade(self);
+	if DragonRider_DB and not DragonRider_DB.hasSeenChangelog then
+		DR.mainFrame.portraitButton.Glow:Show();
+		DR.mainFrame.portraitButton.PulseAnim:Play();
+	else
+		if DR.mainFrame.portraitButton.Glow then
+			DR.mainFrame.portraitButton.Glow:Hide();
+			DR.mainFrame.portraitButton.PulseAnim:Stop();
+		end
+	end
+end);
+DR.mainFrame:SetScript("OnHide", function()
+	PlaySound(74423);
+	if DR.HideChangelog then
+		DR.HideChangelog();
+	end
+end);
 DR.mainFrame:HookScript("OnHide", CleanupFade);
 
 local loader = CreateFrame("Frame");
