@@ -1,4 +1,4 @@
-[Full Changelog & Previous Releases](https://github.com/keyboardturner/HousingMusic/releases)
+[Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/tag/1.1.6)
 
 # 1.2.0
 
