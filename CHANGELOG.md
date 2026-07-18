@@ -1,5 +1,9 @@
 [Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/)
 
+# 1.2.0a
+
+Attempted fixes to some profile switching issues with color pickers and ground skimming
+
 # 1.2.0
 
 Dragon Rider has hit over 1 million downloads!
