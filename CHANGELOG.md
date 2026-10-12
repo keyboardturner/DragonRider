@@ -1,5 +1,9 @@
 [Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/)
 
+# 1.2.2
+
+12.1.5 toc update
+
 # 1.2.1
 
 12.1.0 toc update
