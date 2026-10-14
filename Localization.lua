@@ -3238,7 +3238,7 @@ if LOCALE == "zhCN" then
 	L["BestCharacter"] = "最佳角色: "
 	L["GoldTime"] = "金牌时间: "
 	L["SilverTime"] = "银牌时间: "
-	L["MuteVigorSound_Settings"] = "静音精力音效"
+	L["MuteVigorSound_Settings"] = "静音精力音效" -- translated
 	L["MuteVigorSound_SettingsTT"] = "切换驭空术坐骑获得精力时播放的声音。"  -- translated 11.0
 	L["SpeedometerTheme"] = "速度计主题"
 	L["SpeedometerThemeTT"] = "自定义速度计主题。"
