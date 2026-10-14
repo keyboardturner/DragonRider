@@ -1,5 +1,9 @@
 [Full Changelog & Previous Releases](https://github.com/keyboardturner/DragonRider/releases/)
 
+# 1.2.2a
+
+zhCN localization updates (thank you to [nanjuekaien1](https://github.com/keyboardturner/DragonRider/commit/3984ce268221955c81d9bdb7a5ef302f700fc9ee))
+
 # 1.2.2
 
 12.1.5 toc update
